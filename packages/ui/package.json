@@ -1,0 +1,47 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "scripts": {
+    "lint": "eslint .",
+    "generate:component": "turbo gen react-component"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@turbo/gen": "^1.13.0",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "react": "^18.2.0",
+    "react-hook-form": "^7.51.2",
+    "tailwind-config": "*",
+    "tailwindcss": "^3.4.3",
+    "tsconfig": "*",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
+    "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-menubar": "^1.0.4",
+    "@radix-ui/react-slot": "^1.0.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.363.0",
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4"
+  },
+  "exports": {
+    "./globals.css": "./src/globals.css",
+    "./lib/*": "./src/lib/*.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./tailwind.config": "./tailwind.config.js",
+    "./postcss.config": "./postcss.config.js"
+  }
+}
