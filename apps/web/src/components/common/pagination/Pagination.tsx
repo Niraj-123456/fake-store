@@ -36,7 +36,7 @@ const Pagination = ({
 
   let pageNumberOutofRange: boolean;
 
-  const pageNumbers = [...new Array(itemsCount)].map((_, idx) => {
+  const pageNumbers = [...new Array(pagesCount)].map((_, idx) => {
     const pageNumber = idx + 1;
     const isPageNumberFirst = pageNumber === 1;
     const isPageNumberLast = pageNumber === pagesCount;
@@ -73,25 +73,27 @@ const Pagination = ({
   });
 
   return (
-    <div className="flex gap-2 items-center">
-      <Button
-        size={"sm"}
-        className="text-xl py-0 px-1 bg-transparent text-black border border-gray-400 h-8 hover:bg-gray-300"
-        disabled={currentPage === 1}
-      >
-        <ChevronLeft size={"1.5rem"} />
-      </Button>
+    isPaginationVisible && (
+      <div className="flex gap-2 items-center">
+        <Button
+          size={"sm"}
+          className="text-xl py-0 px-1 bg-transparent text-black border border-gray-400 h-8 hover:bg-gray-300"
+          disabled={isCurrentPageFirst}
+        >
+          <ChevronLeft size={"1.5rem"} />
+        </Button>
 
-      {pageNumbers}
+        {pageNumbers}
 
-      <Button
-        size={"sm"}
-        className="text-xl py-0 px-1 bg-transparent text-black border border-gray-400 h-8 hover:bg-gray-300"
-        disabled={currentPage === itemsCount}
-      >
-        <ChevronRight size={"1.5rem"} />
-      </Button>
-    </div>
+        <Button
+          size={"sm"}
+          className="text-xl py-0 px-1 bg-transparent text-black border border-gray-400 h-8 hover:bg-gray-300"
+          disabled={isCurrentPageLast}
+        >
+          <ChevronRight size={"1.5rem"} />
+        </Button>
+      </div>
+    )
   );
 };
 

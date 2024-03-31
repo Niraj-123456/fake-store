@@ -10,6 +10,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
     "tsconfig": "*",
     "turbo": "^1.13.0"
   },
