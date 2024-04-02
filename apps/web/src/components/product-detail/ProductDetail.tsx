@@ -36,7 +36,7 @@ const ProductDetail = () => {
 
   const { data, isFetching } = useQuery("product", () => fetchProduct(id));
 
-  const product: Product = data?.data;
+  const product: Product = data?.data?.data;
 
   const handleUpdateSelectedImageIdx = (idx: number) => {
     setSelectedImageIdx(idx);
@@ -53,7 +53,7 @@ const ProductDetail = () => {
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:w-2/3 lg:px-8">
       <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
-        {product?.images.length > 0 && (
+        {product?.images?.length > 0 && (
           <div className="flex flex-col gap-6 p-2">
             <ProductImage
               className="w-full h-96"

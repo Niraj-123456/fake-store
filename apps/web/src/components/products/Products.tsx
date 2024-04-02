@@ -29,7 +29,7 @@ const Products = () => {
 
   const { data: products, isFetching } = useQuery(
     ["products", currentPage],
-    () => fetchProducts(currentPage - 1, pageSize),
+    () => fetchProducts(currentPage, pageSize),
     {
       retry: 2,
     }
@@ -48,8 +48,8 @@ const Products = () => {
   return (
     <div>
       <div className="grid place-items-center grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5">
-        {products?.data?.map((product: Product) => (
-          <Link key={product.id} href={`/product/${product.id}`}>
+        {products?.data?.data?.data?.map((product: Product) => (
+          <Link key={product.id} href={`/product/${product._id}`}>
             <ProductCard
               image={
                 <ProductImage

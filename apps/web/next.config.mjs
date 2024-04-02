@@ -23,6 +23,15 @@ const nextConfig = {
       {
         hostname: "products.com",
       },
+      {
+        hostname: "via.placeholder.com",
+      },
+      {
+        hostname: "ejemplo.com",
+      },
+      {
+        hostname: "img.freepik.com",
+      },
     ],
   },
 };

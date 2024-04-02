@@ -1,7 +1,8 @@
+import Products from "@next/components/Products/Products";
 import React from "react";
 
 const ProductsPage = () => {
-  return <div>This is products page</div>;
+  return <Products />;
 };
 
 export default ProductsPage;

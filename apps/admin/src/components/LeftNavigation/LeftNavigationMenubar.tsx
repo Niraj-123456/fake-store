@@ -12,7 +12,7 @@ import { cn } from "ui/lib/utils";
 import Link from "next/link";
 
 const linkOptions = [
-  { name: "Dashboard", pathname: "/dashboard", icon: <LayoutDashboard /> },
+  { name: "Dashboard", pathname: "/", icon: <LayoutDashboard /> },
   {
     name: "Products",
     pathname: "/products",
