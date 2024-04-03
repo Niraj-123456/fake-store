@@ -3,7 +3,7 @@ import DashboardHeader from "@next/components/Dashboard/DashboardHeader";
 import Header from "@next/components/Header/Header";
 import LeftNavigationMenubar from "@next/components/LeftNavigation/LeftNavigationMenubar";
 import { Inter } from "next/font/google";
-import "ui/globals.css";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

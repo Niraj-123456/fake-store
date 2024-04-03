@@ -27,6 +27,7 @@
     "eslint": "^8",
     "eslint-config-custom": "*",
     "postcss": "^8",
+    "tailwind-config": "*",
     "tailwindcss": "^3.3.0",
     "tsconfig": "*",
     "typescript": "^5.4.3"

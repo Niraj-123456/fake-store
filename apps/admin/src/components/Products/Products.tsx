@@ -9,6 +9,7 @@ import {
   DialogDescription,
   DialogContent,
 } from "ui/components/ui/dialog";
+import ProductForm from "../common/ProductForm/ProductForm";
 
 type Product = {
   _id: string;
@@ -16,11 +17,13 @@ type Product = {
   price: number;
 };
 
-const Products = async () => {
+const Products = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       fetch("http://localhost:3001/api/product/list", {
         method: "GET",
         headers: {
@@ -31,12 +34,17 @@ const Products = async () => {
         .then(async (response) => {
           const { data } = await response.json();
           setProducts(data.data);
+          setLoading(false);
         })
         .catch((err) => console.log("error", err));
     };
 
     fetchProducts();
   }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="">
@@ -49,6 +57,7 @@ const Products = async () => {
             <DialogTitle>Add Product</DialogTitle>
             <DialogDescription>Add new product</DialogDescription>
           </DialogHeader>
+          <ProductForm />
         </DialogContent>
       </Dialog>
       <table>

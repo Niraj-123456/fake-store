@@ -1,15 +1,16 @@
-/** @type {import('tailwindcss').Config} */
+const config = require("tailwind-config/tailwind.config");
 module.exports = {
+  ...config,
+
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-    "../../packages/ui/src/**/*.{ts,tsx}",
+    ...config.content,
+    "../../packages/**/*.{js,ts,jsx,tsx}",
+    "../../packages/ui/src/globals.css",
   ],
   prefix: "",
   theme: {
+    ...config.theme,
     container: {
       center: true,
       padding: "2rem",
@@ -18,6 +19,7 @@ module.exports = {
       },
     },
     extend: {
+      ...config.theme.extend,
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -74,5 +76,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [...config.plugins, require("tailwindcss-animate")],
 };
