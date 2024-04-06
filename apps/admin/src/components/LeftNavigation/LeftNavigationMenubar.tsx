@@ -61,7 +61,7 @@ const LeftNavigationMenubar = () => {
           </defs>
         </svg>
       </div>
-      <ul className="flex flex-col py-4 mt-10">
+      <ul className="flex flex-col py-4 mt-10 sticky top-0">
         {linkOptions?.map((option, idx) => (
           <Link href={option.pathname} key={idx}>
             <li

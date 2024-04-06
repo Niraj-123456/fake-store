@@ -1,9 +1,8 @@
-"use client";
 import DashboardHeader from "@next/components/Dashboard/DashboardHeader";
 import Header from "@next/components/Header/Header";
 import LeftNavigationMenubar from "@next/components/LeftNavigation/LeftNavigationMenubar";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "ui/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +20,7 @@ export default function RootLayout({
             <LeftNavigationMenubar />
             <div className="w-full p-10 rounded-3xl bg-white text-[#42427D]">
               <DashboardHeader />
-              <div className="flex">{children}</div>
+              <div className="flex mt-2">{children}</div>
             </div>
           </div>
         </main>

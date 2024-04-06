@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3001/api";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080/api";
 
 export function fetchProducts(pageNumber: number, limit: number) {
   return axios.get(

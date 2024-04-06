@@ -21,6 +21,19 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "cdn.britannica.com",
+      },
+      {
+        hostname: "i.imgur.com",
+      },
+      {
+        hostname: "via.placeholder.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

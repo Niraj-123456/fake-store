@@ -1,8 +1,8 @@
 "use client";
-import "ui/globals.css";
 import Header from "@/components/header/Header";
 import { Inter } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "react-query";
+import "ui/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,9 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <meta charSet="UTF-8" />
       <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="description" content="My App is a..." />
       <title>Fake Store</title>
       <body className={inter.className}>

@@ -1,5 +1,1 @@
-const config = require("tailwind-config/tailwind.config");
-
-module.exports = {
-  ...config,
-};
+export * from "ui/tailwind.config";

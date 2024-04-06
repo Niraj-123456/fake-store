@@ -1,3 +1,4 @@
+"use client";
 import { Bell, ShoppingBag } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "ui/components/ui/avatar";
 

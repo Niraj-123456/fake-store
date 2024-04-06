@@ -1,6 +1,4 @@
-"use client";
 import Dashboard from "@next/components/Dashboard/Dashboard";
-import Header from "@next/components/Header/Header";
 import TopSelling from "@next/components/Sales/TopSelling";
 
 export default function Home() {

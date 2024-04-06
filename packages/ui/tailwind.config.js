@@ -1,16 +1,15 @@
-const config = require("tailwind-config/tailwind.config");
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  ...config,
-
   darkMode: ["class"],
   content: [
-    ...config.content,
-    "../../packages/**/*.{js,ts,jsx,tsx}",
-    "../../packages/ui/src/globals.css",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+    "../../packages/ui/src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
-    ...config.theme,
     container: {
       center: true,
       padding: "2rem",
@@ -19,7 +18,6 @@ module.exports = {
       },
     },
     extend: {
-      ...config.theme.extend,
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -76,5 +74,5 @@ module.exports = {
       },
     },
   },
-  plugins: [...config.plugins, require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate")],
 };

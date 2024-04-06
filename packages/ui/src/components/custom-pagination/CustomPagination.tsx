@@ -1,38 +1,39 @@
-import { Button } from "ui/components/ui/button";
+"use client";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "../ui/button";
 import {
   Pagination,
-  PaginationItem,
+  PaginationContent,
   PaginationEllipsis,
-} from "ui/components/ui/pagination";
-import { cn } from "ui/lib/utils";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../ui/pagination";
 import { useRouter } from "next/navigation";
-import React from "react";
+import { cn } from "../../lib/utils";
 
 type Pagination = {
   currentPage: number;
   itemsCount: number;
   itemsPerPage: number;
-  onChangePageNumber: (page: number) => void;
+  className?: string;
 };
 
 const CustomPagination = ({
   currentPage,
   itemsCount,
   itemsPerPage,
-  onChangePageNumber,
+  className,
 }: Pagination) => {
   const router = useRouter();
   const pagesCount = Math.ceil(itemsCount / itemsPerPage);
-
-  console.log("pages count: " + pagesCount);
 
   const isPaginationVisible = pagesCount > 0;
   const isCurrentPageFirst = currentPage === 1;
   const isCurrentPageLast = currentPage === pagesCount;
 
   const handleUpdatePageNumber = (page: number) => {
-    onChangePageNumber(page);
     router.push(`?page=${page}`);
     window.scrollTo(0, 0);
   };
@@ -53,18 +54,14 @@ const CustomPagination = ({
     ) {
       pageNumberOutofRange = false;
       return (
-        <button
-          key={pageNumber}
-          className={cn(
-            pageNumber === currentPage
-              ? "bg-gray-200 outline outline-1 border-gray-600"
-              : "bg-white",
-            "border border-gray-400 py-1 px-3 text-sm font-bold rounded-sm h-8"
-          )}
-          onClick={() => handleUpdatePageNumber(pageNumber)}
-        >
-          {pageNumber}
-        </button>
+        <PaginationItem key={pageNumber}>
+          <PaginationLink
+            isActive={pageNumber === currentPage}
+            onClick={() => handleUpdatePageNumber(pageNumber)}
+          >
+            {pageNumber}
+          </PaginationLink>
+        </PaginationItem>
       );
     }
 
@@ -77,24 +74,29 @@ const CustomPagination = ({
 
   return (
     isPaginationVisible && (
-      <Pagination>
-        <Button
-          size={"sm"}
-          className="text-xl py-0 px-1 bg-transparent text-black border border-gray-400 h-8 hover:bg-gray-300"
-          disabled={isCurrentPageFirst}
-        >
-          <ChevronLeft size={"1.5rem"} />
-        </Button>
+      <Pagination className={cn(className)}>
+        <PaginationContent>
+          <PaginationItem>
+            <Button
+              variant={"outline"}
+              disabled={isCurrentPageFirst}
+              className="w-10 h-10 p-0"
+            >
+              <ChevronLeft />
+            </Button>
+          </PaginationItem>
 
-        {pageNumbers}
-
-        <Button
-          size={"sm"}
-          className="text-xl py-0 px-1 bg-transparent text-black border border-gray-400 h-8 hover:bg-gray-300"
-          disabled={isCurrentPageLast}
-        >
-          <ChevronRight size={"1.5rem"} />
-        </Button>
+          {pageNumbers}
+          <PaginationItem>
+            <Button
+              variant={"outline"}
+              disabled={isCurrentPageLast}
+              className="w-10 h-10 p-0"
+            >
+              <ChevronRight />
+            </Button>
+          </PaginationItem>
+        </PaginationContent>
       </Pagination>
     )
   );
