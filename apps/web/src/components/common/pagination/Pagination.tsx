@@ -25,8 +25,6 @@ const CustomPagination = ({
   const router = useRouter();
   const pagesCount = Math.ceil(itemsCount / itemsPerPage);
 
-  console.log("pages count: " + pagesCount);
-
   const isPaginationVisible = pagesCount > 0;
   const isCurrentPageFirst = currentPage === 1;
   const isCurrentPageLast = currentPage === pagesCount;

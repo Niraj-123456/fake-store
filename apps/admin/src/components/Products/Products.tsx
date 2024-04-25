@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import ProductModal from "./ProductModal";
 import {
   Table,
@@ -11,9 +10,10 @@ import {
 } from "ui/components/ui/table";
 import { Search } from "lucide-react";
 import CustomPagination from "ui/components/custom-pagination/CustomPagination";
-import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Skeleton } from "ui/components/ui/skeleton";
+import useProducts from "@next/hooks/products/useProducts";
+import { Suspense } from "react";
 
 type Product = {
   _id: string;
@@ -22,39 +22,11 @@ type Product = {
   creationAt: string;
 };
 
-type ProductMetaData = {
-  totalCount: number;
-  offset: number;
-  limit: number;
-};
-
 const Products = () => {
   const searchParams = useSearchParams();
   const pageNumber = searchParams.get("page") || "1";
-  const [fetching, setFetching] = useState<boolean>(true);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [metaData, setMetaData] = useState<ProductMetaData>();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setFetching(true);
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/product/list?offset=${Number(
-            pageNumber
-          )}&limit=20`
-        );
-        setFetching(false);
-        if (res.status === 200) {
-          setProducts(res?.data?.data?.data);
-          setMetaData(res?.data?.data?.metadata);
-        }
-      } catch (err: any) {
-        setFetching(false);
-      }
-    };
-    fetchProducts();
-  }, [pageNumber]);
+  const { fetching, products, metaData } = useProducts({ pageNumber });
 
   if (fetching) {
     return (
@@ -88,17 +60,23 @@ const Products = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Rating</TableHead>
-              <TableHead>Created At</TableHead>
+              <TableHead className="font-bold">Name</TableHead>
+              <TableHead className="font-bold">Price</TableHead>
+              <TableHead className="font-bold">Rating</TableHead>
+              <TableHead className="font-bold">Created At</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {products?.map((product: Product) => (
-              <TableRow key={product._id}>
-                <TableCell>{product.title}</TableCell>
-                <TableCell>${product.price}</TableCell>
+              <TableRow
+                key={product?._id}
+                onClick={() =>
+                  window.open(`http://localhost:3000/product/${product?._id}`)
+                }
+                className="cursor-pointer"
+              >
+                <TableCell>{product?.title}</TableCell>
+                <TableCell>${product?.price}</TableCell>
                 <TableCell>5</TableCell>
                 <TableCell>
                   {new Date(product?.creationAt).toDateString()}

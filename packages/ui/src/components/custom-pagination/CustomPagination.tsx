@@ -7,8 +7,6 @@ import {
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "../ui/pagination";
 import { useRouter } from "next/navigation";
 import { cn } from "../../lib/utils";
@@ -56,6 +54,7 @@ const CustomPagination = ({
       return (
         <PaginationItem key={pageNumber}>
           <PaginationLink
+            className="cursor-pointer"
             isActive={pageNumber === currentPage}
             onClick={() => handleUpdatePageNumber(pageNumber)}
           >
@@ -81,6 +80,7 @@ const CustomPagination = ({
               variant={"outline"}
               disabled={isCurrentPageFirst}
               className="w-10 h-10 p-0"
+              onClick={() => handleUpdatePageNumber(currentPage - 1)}
             >
               <ChevronLeft />
             </Button>
@@ -92,6 +92,7 @@ const CustomPagination = ({
               variant={"outline"}
               disabled={isCurrentPageLast}
               className="w-10 h-10 p-0"
+              onClick={() => handleUpdatePageNumber(currentPage + 1)}
             >
               <ChevronRight />
             </Button>

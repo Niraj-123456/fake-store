@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import ProductRating from "../products/ProductRating";
 import { Button } from "ui/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "ui/components/ui/form";
@@ -43,7 +43,7 @@ const ProductDetail = () => {
   };
 
   const onSubmit = (data: IFormInput) => {
-    console.log("form data", data);
+    //
   };
 
   if (isFetching) {

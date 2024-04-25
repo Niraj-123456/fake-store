@@ -9,6 +9,7 @@ export async function GET(req: Request) {
     const db = client.db("fake-store");
     const collection = db.collection("products");
     const cursor = collection.aggregate([
+      { $sort: { creationAt: -1 } },
       {
         $facet: {
           metadata: [{ $count: "totalCount" }],
@@ -32,7 +33,6 @@ export async function GET(req: Request) {
       },
     });
   } catch (ex) {
-    console.log("ex", ex);
     return Response.json({ error: "Something went wrong" });
   }
 }

@@ -45,8 +45,6 @@ const products = [
 //   };
 // });
 
-// console.log("modified products: ", modifiedProducts);
-
 export function GET() {
   return Response.json({ message: "Ok!" });
 }
@@ -59,7 +57,6 @@ export function GET() {
 //     const res = await productCollection.insertMany(modifiedProducts);
 //     return Response.json({ data: res });
 //   } catch (ex) {
-//     console.log("ex", ex);
 //     return Response.json({ error: "Something went wrong" });
 //   }
 // }

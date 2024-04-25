@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import {
   Form,
   FormField,
@@ -18,6 +18,7 @@ import {
   SelectContent,
   SelectLabel,
 } from "ui/components/ui/select";
+import { Plus, X } from "lucide-react";
 import { DialogClose, DialogFooter } from "ui/components/ui/dialog";
 import { Input } from "ui/components/ui/input";
 import { Button } from "ui/components/ui/button";
@@ -26,11 +27,22 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const ProductSchema = z.object({
-  title: z.string({ required_error: "Please enter product title." }),
-  description: z.string(),
-  price: z.number(),
-  category: z.string(),
+  title: z.string({
+    required_error: "Please enter product title",
+    invalid_type_error: "Product title must be a string",
+  }),
+  description: z.string().optional(),
+  price: z.string({
+    required_error: "Please enter price",
+  }),
+  images: z.string().array(),
+  category: z.string({
+    required_error: "Please select a category",
+    invalid_type_error: "Category must be a string",
+  }),
 });
+
+type Product = z.infer<typeof ProductSchema>;
 
 type Category = {
   _id: string;
@@ -43,16 +55,15 @@ type Category = {
 const ProductForm = () => {
   const [fetching, setFetching] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
-  const form = useForm<z.infer<typeof ProductSchema>>({
+  const form = useForm<Product>({
     resolver: zodResolver(ProductSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      price: 0,
-      category: "",
-    },
+    mode: "onSubmit",
   });
+
   const { control, handleSubmit } = form;
+
+  //@ts-ignore
+  const { fields, append, remove } = useFieldArray({ name: "images", control });
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -72,8 +83,18 @@ const ProductForm = () => {
     fetchCategories();
   }, []);
 
-  const handleSubmitProduct = (values: z.infer<typeof ProductSchema>) => {
-    console.log("values", values);
+  const handleSubmitProduct = async (values: Product) => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/product`,
+        values
+      );
+      if (res.status === 200) {
+        //
+      }
+    } catch (ex) {
+      //
+    }
   };
 
   return (
@@ -134,6 +155,51 @@ const ProductForm = () => {
               </FormItem>
             )}
           />
+          <div className="w-full">
+            {fields.map((field, idx) => (
+              <FormField
+                key={field.id}
+                control={control}
+                name={`images.${idx}`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Images URL</FormLabel>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Enter image URL"
+                          className="py-3 w-full"
+                        />
+                      </FormControl>
+
+                      {idx !== 0 && (
+                        <Button
+                          size={"sm"}
+                          type="button"
+                          variant={"destructive"}
+                          className="w-7 h-7 font-bold rounded-full p-1"
+                          onClick={() => remove(idx)}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
+            <Button
+              size={"sm"}
+              type="button"
+              className="w-max h-5 mt-2 text-xs rounded-sm"
+              onClick={() => append("")}
+            >
+              Add image URL
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
           <FormField
             control={control}
             name="category"
@@ -154,7 +220,10 @@ const ProductForm = () => {
                     <SelectGroup>
                       <SelectLabel>Category</SelectLabel>
                       {categories.map((category) => (
-                        <SelectItem key={category._id} value={category._id}>
+                        <SelectItem
+                          key={category._id}
+                          value={JSON.stringify(category)}
+                        >
                           {category.name}
                         </SelectItem>
                       ))}

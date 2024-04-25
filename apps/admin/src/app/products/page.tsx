@@ -1,8 +1,12 @@
 import Products from "@next/components/Products/Products";
-import React from "react";
+import { Suspense } from "react";
 
 const ProductsPage = () => {
-  return <Products />;
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <Products />
+    </Suspense>
+  );
 };
 
 export default ProductsPage;

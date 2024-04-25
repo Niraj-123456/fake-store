@@ -17,7 +17,9 @@ export default function RootLayout({
         <main className="flex min-h-screen flex-col items-center">
           <Header />
           <div className="flex w-full px-8">
-            <LeftNavigationMenubar />
+            <div className="mt-1.5">
+              <LeftNavigationMenubar />
+            </div>
             <div className="w-full p-10 rounded-3xl bg-white text-[#42427D]">
               <DashboardHeader />
               <div className="flex mt-2">{children}</div>
