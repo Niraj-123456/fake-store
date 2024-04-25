@@ -3,19 +3,25 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { imageURLCleaner } from "ui/lib/imageFormatter";
+import { Skeleton } from "ui/components/ui/skeleton";
 import axios from "axios";
 
 const TopSelling = () => {
+  const [fetching, setFetching] = useState(true);
   const [topSellingProducts, setTopSellingProducts] = useState([]);
 
   useEffect(() => {
     const handleFetchProducts = async () => {
+      setFetching(true);
       try {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/product/sales/top-selling`
         );
         if (res.status === 200) {
+          setFetching(false);
           setTopSellingProducts(res?.data?.data);
+        } else {
+          setFetching(false);
         }
       } catch (err) {
         //
@@ -23,6 +29,22 @@ const TopSelling = () => {
     };
     handleFetchProducts();
   }, []);
+
+  if (fetching) {
+    return (
+      <div className="flex flex-col gap-8 mt-4 w-96 max-w-96">
+        {Array.from({ length: 5 }, (_, idx) => idx).map((number) => (
+          <div key={number} className="flex items-center gap-5 w-full">
+            <Skeleton className="w-[54px] h-[54px] rounded-sm" />
+            <div className="w-full">
+              <Skeleton className="w-4/5 h-4" />
+              <Skeleton className="w-1/2 h-4 mt-2" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col max-w-96 w-96">

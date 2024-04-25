@@ -1,5 +1,5 @@
 "use client";
-import { Bell, ShoppingBag } from "lucide-react";
+import { Bell } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "ui/components/ui/avatar";
 import {
   Menubar,
@@ -15,13 +15,7 @@ import { User, Settings, LogOut } from "lucide-react";
 const Header = () => {
   return (
     <div className="w-full flex justify-between items-center py-4 px-8">
-      <div className="flex item-center gap-2 text-[#42427D]">
-        <ShoppingBag className="w-6 h-8" />
-        <h1 className="text-2xl font-semibold subpixel-antialiased">
-          Fake Store
-        </h1>
-      </div>
-      <div className="flex flex-1 justify-end gap-4 items-center">
+      <div className="flex flex-1 justify-end items-center">
         <Menubar className="border-none">
           <MenubarMenu>
             <MenubarTrigger className="-p-1 rounded-full transition-all data-[state=open]:bg-transparent data-[state=open]:ring-2 data-[state=open]:ring-[#5840bb] hover:ring-2 hover:ring-[#5840bb]">
