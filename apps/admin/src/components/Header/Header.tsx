@@ -14,7 +14,10 @@ import { User, Settings, LogOut } from "lucide-react";
 
 const Header = () => {
   return (
-    <div className="w-full flex justify-between items-center py-4 px-8">
+    <div className="w-full flex justify-between items-center py-4 px-8 border">
+      <h1 className="text-3xl subpixel-antialiased text-[#42427D]">
+        Welcome, <span className="font-bold">Niraj</span>
+      </h1>
       <div className="flex flex-1 justify-end items-center">
         <Menubar className="border-none">
           <MenubarMenu>
