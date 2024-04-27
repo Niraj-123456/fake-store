@@ -8,8 +8,8 @@ import {
   ClipboardMinus,
   ShoppingBasket,
   ShoppingBag,
-  ChevronLeftCircle,
-  ChevronRightCircle,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "ui/lib/utils";
 import Link from "next/link";
@@ -37,51 +37,61 @@ const LeftNavigationMenubar = () => {
   return (
     <div
       className={cn(
-        "bg-gray-700 text-white relative min-h-screen transition-[width] duration-300",
+        "bg-gray-700 text-white relative min-h-screen transition-all duration-300 ease-in-out",
         collaspe ? "max-w-20 w-20" : "max-w-80 w-80"
       )}
     >
-      <div className="sticky top-0 pt-10">
-        <div
+      <div className="sticky top-0 min-h-screen">
+        <ul
           className={cn(
-            "flex items-center gap-2 p-5 mb-3 text-white",
-            collaspe ? "justify-center" : ""
+            "flex items-center gap-2 px-6 py-5 mb-3 text-white overflow-hidden"
           )}
         >
-          <ShoppingBag className="w-7 h-9" />
-          <h1
-            className="text-2xl font-semibold subpixel-antialiased"
-            hidden={collaspe}
-          >
-            Fake Store
-          </h1>
-        </div>
+          <li className={cn("flex items-center gap-3 ml-0.5")}>
+            <ShoppingBag className="w-7 h-10" />
+            <span
+              className={cn(
+                "text-2xl font-semibold subpixel-antialiased whitespace-nowrap transition-all duration-300 ease-in-out",
+                collaspe ? "opacity-0" : "opacity-100"
+              )}
+              role="heading"
+            >
+              Fake Store
+            </span>
+          </li>
+        </ul>
 
-        <ul className="flex flex-col mt-1 sticky top-0 px-2 gap-1">
+        <ul className="flex flex-col mt-6 px-2 gap-1 overflow-hidden">
           {linkOptions?.map((option, idx) => (
             <Link href={option.pathname} key={idx}>
               <li
                 className={cn(
-                  "flex items-center gap-3 text-lg py-4  cursor-pointer font-semibold transition-all duration-300 rounded-md hover:bg-white hover:text-gray-800",
-                  option?.pathname === pathname ? "bg-white text-gray-800" : "",
-                  collaspe ? "px-2 justify-center" : "px-5"
+                  "flex items-center gap-5 text-lg py-4 px-5 cursor-pointer font-semibold rounded-md hover:bg-white hover:text-gray-800 white",
+                  option?.pathname === pathname ? "bg-white text-gray-800" : ""
                 )}
               >
-                {option?.icon}
-                <span hidden={collaspe}>{option?.name}</span>
+                <span>{option?.icon}</span>
+                <span
+                  className={cn(
+                    "transition-all duration-300 ease-in-out",
+                    collaspe ? "opacity-0" : "opacity-100"
+                  )}
+                >
+                  {option?.name}
+                </span>
               </li>
             </Link>
           ))}
         </ul>
 
         {!collaspe ? (
-          <ChevronLeftCircle
-            className="top-7 right-0 absolute w-6 h-6 cursor-pointer transition-all duration-300 hover:opacity-50"
+          <ChevronLeft
+            className="top-1/2 -right-3 absolute w-7 h-7 p-1 cursor-pointer transition-all duration-300 bg-gray-700 rounded-full ring-4 ring-white"
             onClick={handleToggleCollapse}
           />
         ) : (
-          <ChevronRightCircle
-            className="top-7 right-0 absolute w-6 h-6 cursor-pointer transition-all duration-300 hover:opacity-50"
+          <ChevronRight
+            className="top-1/2 -right-3 absolute w-7 h-7 p-1 cursor-pointer transition-all duration-300 bg-gray-700 rounded-full ring-4 ring-white"
             onClick={handleToggleCollapse}
           />
         )}

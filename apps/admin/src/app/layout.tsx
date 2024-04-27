@@ -19,7 +19,7 @@ export default function RootLayout({
 
             <div className="w-full">
               <Header />
-              <div className="w-full p-10 rounded-3xl bg-white">
+              <div className="w-full px-8 py-4 rounded-3xl bg-white">
                 <div className="flex mt-2">{children}</div>
               </div>
             </div>
