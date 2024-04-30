@@ -37,7 +37,7 @@ const LeftNavigationMenubar = () => {
   return (
     <div
       className={cn(
-        "bg-gray-700 text-white relative min-h-screen transition-all duration-300 ease-in-out",
+        "bg-[#111827] text-white relative min-h-screen transition-all duration-300 ease-in-out",
         collaspe ? "max-w-20 w-20" : "max-w-80 w-80"
       )}
     >
@@ -66,8 +66,10 @@ const LeftNavigationMenubar = () => {
             <Link href={option.pathname} key={idx}>
               <li
                 className={cn(
-                  "flex items-center gap-5 text-lg py-4 px-5 cursor-pointer font-semibold rounded-md hover:bg-white hover:text-gray-800 white",
-                  option?.pathname === pathname ? "bg-white text-gray-800" : ""
+                  "flex items-center gap-5 text-lg py-4 px-5 cursor-pointer font-semibold rounded-md hover:bg-[#1f2937] hover:text-white",
+                  option?.pathname === pathname
+                    ? "bg-[#1f2937] text-white"
+                    : "text-[#9ca3af]"
                 )}
               >
                 <span>{option?.icon}</span>
@@ -86,12 +88,12 @@ const LeftNavigationMenubar = () => {
 
         {!collaspe ? (
           <ChevronLeft
-            className="top-1/2 -right-3 absolute w-7 h-7 p-1 cursor-pointer transition-all duration-300 bg-gray-700 rounded-full ring-4 ring-white"
+            className="top-1/2 -right-3 absolute w-7 h-7 p-1 cursor-pointer transition-all duration-300 bg-[#111827] rounded-full ring-4 ring-white"
             onClick={handleToggleCollapse}
           />
         ) : (
           <ChevronRight
-            className="top-1/2 -right-3 absolute w-7 h-7 p-1 cursor-pointer transition-all duration-300 bg-gray-700 rounded-full ring-4 ring-white"
+            className="top-1/2 -right-3 absolute w-7 h-7 p-1 cursor-pointer transition-all duration-300 bg-[#111827] rounded-full ring-4 ring-white"
             onClick={handleToggleCollapse}
           />
         )}

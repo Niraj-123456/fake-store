@@ -31,8 +31,7 @@ const CustomPagination = ({
 
   const handleUpdatePageNumber = (page: number) => {
     onChangePageNumber(page);
-    router.push(`?page=${page}`);
-    window.scrollTo(0, 0);
+    router.push(`?page=${page}`, { scroll: true });
   };
 
   let pageNumberOutofRange: boolean;
@@ -75,11 +74,12 @@ const CustomPagination = ({
 
   return (
     isPaginationVisible && (
-      <Pagination>
+      <Pagination className="gap-2">
         <Button
           size={"sm"}
           className="text-xl py-0 px-1 bg-transparent text-black border border-gray-400 h-8 hover:bg-gray-300"
           disabled={isCurrentPageFirst}
+          onClick={() => handleUpdatePageNumber(currentPage - 1)}
         >
           <ChevronLeft size={"1.5rem"} />
         </Button>
@@ -90,6 +90,7 @@ const CustomPagination = ({
           size={"sm"}
           className="text-xl py-0 px-1 bg-transparent text-black border border-gray-400 h-8 hover:bg-gray-300"
           disabled={isCurrentPageLast}
+          onClick={() => handleUpdatePageNumber(currentPage + 1)}
         >
           <ChevronRight size={"1.5rem"} />
         </Button>

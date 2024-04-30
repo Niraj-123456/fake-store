@@ -1,12 +1,5 @@
 "use client";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "ui/components/ui/select";
-import {
   Tabs,
   TabsTrigger,
   TabsContent,

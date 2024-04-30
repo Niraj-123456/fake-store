@@ -9,10 +9,6 @@ const ProductCardSkeleton = () => {
         <Skeleton className="h-4 w-[310px]" />
         <Skeleton className="h-4 w-[200px]" />
       </div>
-      <div>
-        <Skeleton className="h-9 w-[310px]" />
-        <Skeleton className="h-9 w-[310px] mt-2" />
-      </div>
     </div>
   );
 };

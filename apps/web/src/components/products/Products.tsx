@@ -24,6 +24,7 @@ const Products = () => {
   const handleChangePageNmuber = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
+    window.scrollTo(0, 0);
     return params;
   };
 
@@ -37,23 +38,23 @@ const Products = () => {
 
   if (isFetching) {
     return (
-      <div className="grid place-items-center grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5">
-        {Array.from({ length: 15 }, (_, i) => (
-          <ProductCardSkeleton key={i} />
+      <div className="grid place-items-center grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2">
+        {Array.from({ length: 15 }, (_, i) => i).map((number) => (
+          <ProductCardSkeleton key={number} />
         ))}
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="grid place-items-center grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5">
+    <div className="mt-8">
+      <div className="grid place-items-center grid-cols-1 gap-6 gap-y-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products?.data?.data?.data?.map((product: Product) => (
-          <Link key={product.id} href={`/product/${product._id}`}>
+          <Link key={product._id} href={`/product/${product._id}`}>
             <ProductCard
               image={
                 <ProductImage
-                  className="w-full h-[256px]"
+                  className="w-full h-full"
                   image={imageFormatter(product.images[0])}
                   alt={product.title}
                   priority={true}
@@ -62,11 +63,12 @@ const Products = () => {
               info={
                 <ProductInfo>
                   <h1
-                    className="text-lg font-bold line-clamp-2"
+                    className="text-lg font-bold line-clamp-2 pl-2"
                     title={product.title}
                   >
                     {product.title}
                   </h1>
+                  <p className="pt-2 pl-2 text-lg">${product.price}</p>
 
                   <div className="py-1 mt-1">
                     <ProductRating rating={{ rate: 4, count: 240 }} />
@@ -74,24 +76,24 @@ const Products = () => {
                   {/* <p className="pt-1 text-gray-500 line-clamp-4">
                   {product.description}
                 </p> */}
-                  <p className="pt-2 text-lg">${product.price}</p>
                 </ProductInfo>
               }
-              action={<ProductAction />}
+              // action={<ProductAction />}
             />
           </Link>
         ))}
       </div>
-      {totalProductCount > pageSize && (
-        <div className="p-2 flex justify-center mt-4">
-          <Pagination
-            currentPage={currentPage}
-            onChangePageNumber={handleChangePageNmuber}
-            itemsCount={totalProductCount}
-            itemsPerPage={pageSize}
-          />
-        </div>
-      )}
+      {products?.data?.data?.date?.length > 0 ||
+        (totalProductCount > pageSize && (
+          <div className="p-2 flex justify-center mt-8 w-full">
+            <Pagination
+              currentPage={currentPage}
+              onChangePageNumber={handleChangePageNmuber}
+              itemsCount={totalProductCount}
+              itemsPerPage={pageSize}
+            />
+          </div>
+        ))}
     </div>
   );
 };

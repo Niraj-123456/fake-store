@@ -20,7 +20,7 @@ const ProductRating = ({ rating }: Rating) => {
               key={rate}
               className={cn(
                 rating.rate > rate ? "text-yellow-500" : "text-gray-300",
-                "h-5 w-5 flex-shrink-0"
+                "h-4 w-4 flex-shrink-0"
               )}
               aria-hidden="true"
             />

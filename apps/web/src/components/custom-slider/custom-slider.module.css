@@ -1,0 +1,25 @@
+.slider__item {
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform: translateX(0);
+  transition: transform 1s ease;
+  position: relative;
+}
+
+.slider__item__active__1 {
+  transform: translateX(0);
+}
+
+.slider__item__active__2 {
+  transform: translateX(-100%);
+}
+
+.slider__item__active__3 {
+  transform: translateX(-200%);
+}
+
+.slider__item__active__4 {
+  transform: translateX(-300%);
+}
