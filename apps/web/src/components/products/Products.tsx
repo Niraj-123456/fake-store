@@ -1,13 +1,11 @@
 "use client";
-import React from "react";
 import ProductCard from "./ProductCard";
 import ProductImage from "./ProductImage";
 import { imageFormatter } from "@/lib/imageFormatter";
 import ProductInfo from "./ProductInfo";
 import ProductRating from "./ProductRating";
-import ProductAction from "./ProductAction";
 import Link from "next/link";
-import { fetchProducts } from "@/api/products";
+import { fetchProducts } from "@/app/api/products";
 import { useQuery } from "react-query";
 import { useSearchParams } from "next/navigation";
 import { Product } from "@/types/product";
@@ -38,7 +36,7 @@ const Products = () => {
 
   if (isFetching) {
     return (
-      <div className="grid place-items-center grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2">
+      <div className="grid place-items-center grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8">
         {Array.from({ length: 15 }, (_, i) => i).map((number) => (
           <ProductCardSkeleton key={number} />
         ))}

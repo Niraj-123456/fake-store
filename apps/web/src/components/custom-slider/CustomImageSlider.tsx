@@ -93,11 +93,11 @@ const CustomImageSlider = ({ images }: { images: Image[] }) => {
         ))}
       </div>
       <ChevronLeft
-        className="absolute left-1 w-8 h-8 bg-white rounded-full p-1 cursor-pointer hover:bg-white/80"
+        className="absolute left-4 w-8 h-8 bg-white rounded-full p-1 cursor-pointer hover:bg-white/80"
         onClick={handlePrev}
       />
       <ChevronRight
-        className="absolute right-1 w-8 h-8 bg-white rounded-full p-1 cursor-pointer hover:bg-white/80"
+        className="absolute right-4 w-8 h-8 bg-white rounded-full p-1 cursor-pointer hover:bg-white/80"
         onClick={handleNext}
       />
     </div>

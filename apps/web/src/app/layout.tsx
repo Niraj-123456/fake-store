@@ -1,5 +1,6 @@
 "use client";
 import Header from "@/components/header/Header";
+import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "ui/globals.css";
@@ -26,12 +27,14 @@ export default function RootLayout({
       <meta name="description" content="My App is a..." />
       <title>Fake Store</title>
       <body className={inter.className}>
-        <QueryClientProvider client={queryClient}>
-          <Header />
-          <main className="w-full flex min-h-screen flex-col items-center justify-between px-8 py-4">
-            {children}
-          </main>
-        </QueryClientProvider>
+        <SessionProvider>
+          <QueryClientProvider client={queryClient}>
+            <Header />
+            <main className="w-full min-h-[calc(100vh-72px)] h-[calc(100vh-72px)] grid place-items-center">
+              {children}
+            </main>
+          </QueryClientProvider>
+        </SessionProvider>
       </body>
     </html>
   );

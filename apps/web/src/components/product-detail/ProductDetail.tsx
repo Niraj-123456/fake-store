@@ -1,15 +1,16 @@
 "use client";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import ProductRating from "../products/ProductRating";
 import { Button } from "ui/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "ui/components/ui/form";
 import { Minus, Plus } from "lucide-react";
 import { Input } from "ui/components/ui/input";
+import { Skeleton } from "ui/components/ui/skeleton";
 import { useForm } from "react-hook-form";
 import ProductImage from "../products/ProductImage";
 import { useParams } from "next/navigation";
 import { useQuery } from "react-query";
-import { fetchProduct } from "@/api/products";
+import { fetchProduct } from "@/app/api/products";
 import { Product } from "@/types/product";
 import { cn } from "ui/lib/utils";
 
@@ -21,12 +22,17 @@ type IFormInput = {
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const [selectedImageIdx, setSelectedImageIdx] = useState(0);
+
+  const { data, isFetching } = useQuery("product", () => fetchProduct(id));
+
+  const product: Product = data?.data?.data;
+
   const form = useForm({
     defaultValues: {
       quantity: 1,
     },
   });
-  const [selectedImageIdx, setSelectedImageIdx] = useState(0);
 
   const { control, setValue, watch, formState, handleSubmit } = form;
 
@@ -34,20 +40,59 @@ const ProductDetail = () => {
 
   const quantity = watch("quantity", defaultValues?.quantity);
 
-  const { data, isFetching } = useQuery("product", () => fetchProduct(id));
-
-  const product: Product = data?.data?.data;
-
   const handleUpdateSelectedImageIdx = (idx: number) => {
     setSelectedImageIdx(idx);
   };
 
   const onSubmit = (data: IFormInput) => {
-    //
+    console.log("product", {
+      ...data,
+      product: {
+        id: id,
+        title: product.title,
+        description: product.description,
+        category: product.category,
+        price: product.price,
+        images: product.images,
+        rating: { count: 120, rate: 3.8 },
+      },
+    });
   };
 
   if (isFetching) {
-    return <p>Loading...</p>;
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:w-2/3 lg:px-8">
+        <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+          <Skeleton className="w-full h-96" />
+          <div className="flex flex-col gap-6 p-2">
+            <Skeleton className="w-96 h-7" />
+            <Skeleton className="w-full h-3" />
+            <Skeleton className="w-3/4 h-3" />
+            <Skeleton className="w-3/5 h-3" />
+            <Skeleton className="w-1/2 h-3" />
+            <Skeleton className="w-1/4 h-3" />
+            <div className="flex gap-2 mt-4">
+              <Skeleton className="w-8 h-8 rounded-full" />
+              <Skeleton className="w-8 h-8 rounded-full" />
+              <Skeleton className="w-8 h-8 rounded-full" />
+              <Skeleton className="w-8 h-8 rounded-full" />
+              <Skeleton className="w-8 h-8 rounded-full" />
+            </div>
+            <div className="flex gap-2 mt-8">
+              <Skeleton className="w-full h-10" />
+              <Skeleton className="w-full h-10" />
+            </div>
+          </div>
+        </div>
+        <div className="mt-20 flex flex-col gap-4">
+          <Skeleton className="w-48 h-7" />
+          <Skeleton className="w-full h-3" />
+          <Skeleton className="w-3/4 h-3" />
+          <Skeleton className="w-3/5 h-3" />
+          <Skeleton className="w-1/4 h-3" />
+        </div>
+      </div>
+    );
   }
 
   return (
