@@ -45,18 +45,18 @@ const ProductDetail = () => {
   };
 
   const onSubmit = (data: IFormInput) => {
-    console.log("product", {
-      ...data,
-      product: {
-        id: id,
-        title: product.title,
-        description: product.description,
-        category: product.category,
-        price: product.price,
-        images: product.images,
-        rating: { count: 120, rate: 3.8 },
-      },
-    });
+    // console.log("product", {
+    //   ...data,
+    //   product: {
+    //     id: id,
+    //     title: product.title,
+    //     description: product.description,
+    //     category: product.category,
+    //     price: product.price,
+    //     images: product.images,
+    //     rating: { count: 120, rate: 3.8 },
+    //   },
+    // });
   };
 
   if (isFetching) {

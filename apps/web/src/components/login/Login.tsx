@@ -48,8 +48,8 @@ const FacebookIcon = () => (
       y2="40.615"
       gradientUnits="userSpaceOnUse"
     >
-      <stop offset="0" stop-color="#2aa4f4"></stop>
-      <stop offset="1" stop-color="#007ad9"></stop>
+      <stop offset="0" stopColor="#2aa4f4"></stop>
+      <stop offset="1" stopColor="#007ad9"></stop>
     </linearGradient>
     <path
       fill="url(#Ld6sqrtcxMyckEl6xeDdMa_uLWV5A9vXIPu_gr1)"
@@ -74,18 +74,18 @@ const AppleIcon = () => (
   >
     <g
       fill="#ffffff"
-      fill-rule="nonzero"
+      fillRule="nonzero"
       stroke="none"
-      stroke-width="1"
-      stroke-linecap="butt"
-      stroke-linejoin="miter"
-      stroke-miterlimit="10"
-      stroke-dasharray=""
-      stroke-dashoffset="0"
-      font-family="none"
-      font-weight="none"
-      font-size="none"
-      text-anchor="none"
+      strokeWidth="1"
+      strokeLinecap="butt"
+      strokeLinejoin="miter"
+      strokeMiterlimit="10"
+      strokeDasharray=""
+      strokeDashoffset="0"
+      fontFamily="none"
+      fontWeight="none"
+      fontSize="none"
+      textAnchor="none"
       style={{ mixBlendMode: "normal" }}
     >
       <g transform="scale(8.53333,8.53333)">
@@ -97,8 +97,16 @@ const AppleIcon = () => (
 
 const Login = () => {
   return (
-    <div className="border bg-gray-100 max-w-xl px-4 py-10 w-[36rem]  flex flex-col justify-center items-center gap-4">
-      <Button className="w-64" onClick={() => signIn("google")}>
+    <div className="bg-gray-100 max-w-xl px-4 py-10 w-[36rem]  flex flex-col justify-center items-center gap-4">
+      <div>
+        <h1 className="text-2xl font-semibold p-4">
+          Please login to continue...
+        </h1>
+      </div>
+      <Button
+        className="w-64"
+        onClick={() => signIn("google", { callbackUrl: "/login" })}
+      >
         Login with Google
         <span className="ml-4">
           <GoogleIcon />

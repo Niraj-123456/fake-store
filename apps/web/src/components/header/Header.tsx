@@ -19,11 +19,11 @@ import {
   Search,
 } from "lucide-react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { Button } from "ui/components/ui/button";
+import { useSession, signOut } from "next-auth/react";
 
 const Header = () => {
   const { data: session } = useSession();
+  console.log("session", session);
   return (
     <div className="w-full h-[var(--default-header-height)] py-4 px-8 ">
       <div className="flex justify-between items-center">
@@ -75,7 +75,7 @@ const Header = () => {
                     <PlusCircle className="mr-2 h-4 w-4" />
                     <span>More...</span>
                   </MenubarItem>
-                  <MenubarItem>
+                  <MenubarItem onClick={() => signOut({ callbackUrl: "/" })}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </MenubarItem>
