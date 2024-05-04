@@ -100,12 +100,14 @@ const ProductDetail = () => {
       <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
         {product?.images?.length > 0 && (
           <div className="flex flex-col gap-6 p-2">
-            <ProductImage
-              className="w-full h-96"
-              image={product?.images[selectedImageIdx]}
-              alt={product?.title}
-              priority={true}
-            />
+            <div className="relative w-full h-[490px]">
+              <ProductImage
+                className="w-full h-full"
+                image={product?.images[selectedImageIdx]}
+                alt={product?.title}
+                priority={true}
+              />
+            </div>
             <div className="flex items-center justify-center gap-3">
               {product?.images?.map((image, idx) => (
                 <div
@@ -118,11 +120,13 @@ const ProductDetail = () => {
                       : "ring-1 ring-gray-400"
                   )}
                 >
-                  <ProductImage
-                    image={image}
-                    alt={product.title}
-                    className="w-20 h-20"
-                  />
+                  <div className="relative w-20 h-20">
+                    <ProductImage
+                      image={image}
+                      alt={product.title}
+                      className="w-full h-full"
+                    />
+                  </div>
                 </div>
               ))}
             </div>

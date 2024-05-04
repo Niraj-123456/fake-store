@@ -12,16 +12,14 @@ type ProductImage = {
 
 const ProductImage = ({ image, alt, className, priority }: ProductImage) => {
   return (
-    <div className={cn("relative", className)}>
-      <Image
-        src={imageFormatter(image)}
-        alt={alt}
-        fill
-        priority={priority}
-        sizes="100%"
-        className={cn("w-full h-full object-cover object-center", className)}
-      />
-    </div>
+    <Image
+      src={imageFormatter(image)}
+      alt={alt}
+      fill
+      priority={priority}
+      sizes="100%"
+      className={cn("object-cover object-center", className)}
+    />
   );
 };
 

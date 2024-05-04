@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "ui/components/ui/button";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 const GoogleIcon = () => (
   <svg
@@ -96,6 +96,17 @@ const AppleIcon = () => (
 );
 
 const Login = () => {
+  const [signingIn, setSigningIn] = useState(false);
+
+  const handleLoginWithProvider = (provider: string) => {
+    setSigningIn(true);
+    signIn(provider, { callbackUrl: "/" })
+      .then(() => {
+        setSigningIn(false);
+      })
+      .catch(() => setSigningIn(false));
+  };
+
   return (
     <div className="bg-gray-100 max-w-xl px-4 py-10 w-[36rem]  flex flex-col justify-center items-center gap-4">
       <div>
@@ -105,12 +116,16 @@ const Login = () => {
       </div>
       <Button
         className="w-64"
-        onClick={() => signIn("google", { callbackUrl: "/login" })}
+        onClick={() => handleLoginWithProvider("google")}
       >
         Login with Google
-        <span className="ml-4">
-          <GoogleIcon />
-        </span>
+        {signingIn ? (
+          "..."
+        ) : (
+          <span className="ml-4">
+            <GoogleIcon />
+          </span>
+        )}
       </Button>
       <Button className="w-64">
         Login with Facebook

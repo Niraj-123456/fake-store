@@ -4,7 +4,8 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
 import { Adapter } from "next-auth/adapters";
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   adapter: MongoDBAdapter(clientPromise) as Adapter,
   providers: [
     Google({
@@ -15,12 +16,13 @@ const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
     // Using the `...rest` parameter to be able to narrow down the type based on `trigger`
     async jwt({ token, account, session }) {
       if (account) {
-        console.log("account ", account);
-        console.log("session ", session);
         // Note, that `session` can be any arbitrary object, remember to validate it!
         token.accessToken = account.id_token;
       }

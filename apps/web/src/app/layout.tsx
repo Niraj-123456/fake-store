@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
@@ -30,9 +31,10 @@ export default function RootLayout({
         <SessionProvider>
           <QueryClientProvider client={queryClient}>
             <Header />
-            <main className="w-full min-h-[calc(100vh-72px)] h-[calc(100vh-72px)] grid place-items-center">
+            <main className="w-full min-h-[calc(100vh-72px)] grid place-items-center pb-6 px-10 sm:px-14 md:px-20 lg:px-52">
               {children}
             </main>
+            <Footer />
           </QueryClientProvider>
         </SessionProvider>
       </body>

@@ -70,7 +70,7 @@ const CustomImageSlider = ({ images }: { images: Image[] }) => {
       >
         Skip Image Slider
       </Link>
-      {images.map((image, idx) => (
+      {images?.map((image, idx) => (
         <div
           key={idx}
           aria-hidden={activeIndex !== idx}

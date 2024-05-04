@@ -1,15 +1,9 @@
-"use client";
-import HomeBanner from "@/components/banner/HomeBanner";
-import Products from "@/components/products/Products";
-import { Suspense } from "react";
+import Home from "@/components/home/Home";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="mt-8 px-10 sm:px-14 md:px-20 lg:px-52">
-      <HomeBanner />
-      <Suspense fallback={<p>Loading...</p>}>
-        <Products />
-      </Suspense>
+    <div className="mt-12 w-full">
+      <Home />
     </div>
   );
 }

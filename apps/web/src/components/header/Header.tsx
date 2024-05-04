@@ -23,7 +23,7 @@ import { useSession, signOut } from "next-auth/react";
 
 const Header = () => {
   const { data: session } = useSession();
-  console.log("session", session);
+
   return (
     <div className="w-full h-[var(--default-header-height)] py-4 px-8 ">
       <div className="flex justify-between items-center">
@@ -57,7 +57,10 @@ const Header = () => {
               <MenubarMenu>
                 <MenubarTrigger className="-p-1 rounded-full transition-all data-[state=open]:bg-transparent data-[state=open]:ring-4 data-[state=open]:ring-gray-200 hover:ring-4 hover:ring-gray-200">
                   <Avatar className="cursor-pointer border-2 border-white ">
-                    <AvatarImage src="https://" />
+                    <AvatarImage
+                      src={session.user?.image || ""}
+                      alt={session.user?.name || ""}
+                    />
                     <AvatarFallback>N</AvatarFallback>
                   </Avatar>
                 </MenubarTrigger>
