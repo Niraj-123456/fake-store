@@ -13,6 +13,9 @@ import { useQuery } from "react-query";
 import { fetchProduct } from "@/app/api/products";
 import { Product } from "@/types/product";
 import { cn } from "ui/lib/utils";
+import { addToCart } from "@/app/api/cart";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 const maxStockQuantity = 10;
 
@@ -21,12 +24,15 @@ type IFormInput = {
 };
 
 const ProductDetail = () => {
+  const { data: user } = useSession();
+  console.log("user", user);
   const { id } = useParams<{ id: string }>();
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   const { data, isFetching } = useQuery("product", () => fetchProduct(id));
 
-  const product: Product = data?.data?.data;
+  const product: Product = data?.data;
 
   const form = useForm({
     defaultValues: {
@@ -44,19 +50,26 @@ const ProductDetail = () => {
     setSelectedImageIdx(idx);
   };
 
-  const onSubmit = (data: IFormInput) => {
-    // console.log("product", {
-    //   ...data,
-    //   product: {
-    //     id: id,
-    //     title: product.title,
-    //     description: product.description,
-    //     category: product.category,
-    //     price: product.price,
-    //     images: product.images,
-    //     rating: { count: 120, rate: 3.8 },
-    //   },
-    // });
+  const onSubmit = async (data: IFormInput) => {
+    setAddingToCart(true);
+    const cartObj = {
+      ...data,
+      //@ts-ignore
+      userId: user?.user?.id,
+      productId: id,
+      name: product.title,
+      price: product.price,
+    };
+    try {
+      const res = await addToCart(cartObj);
+      if (res.status === 200) {
+        toast.success("Product added successfully");
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
+      setAddingToCart(false);
+    }
   };
 
   if (isFetching) {
@@ -165,6 +178,7 @@ const ProductDetail = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex gap-2 items-center">
                   <Button
+                    type="button"
                     variant={"default"}
                     size={"sm"}
                     className="text-lg"
@@ -190,6 +204,7 @@ const ProductDetail = () => {
                     )}
                   />
                   <Button
+                    type="button"
                     className="text-lg"
                     size={"sm"}
                     onClick={() => setValue("quantity", quantity + 1)}
@@ -204,7 +219,7 @@ const ProductDetail = () => {
                     type="submit"
                     className="bg-indigo-600 text-base  text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
                   >
-                    Add To Cart
+                    {addingToCart ? "..." : "Add To Cart"}
                   </Button>
 
                   <Button

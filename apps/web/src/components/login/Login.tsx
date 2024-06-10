@@ -1,7 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Button } from "ui/components/ui/button";
 import { signIn, useSession } from "next-auth/react";
+import { Input } from "ui/components/ui/input";
+import { Separator } from "ui/components/ui/separator";
+import { toast } from "sonner";
 
 const GoogleIcon = () => (
   <svg
@@ -96,49 +99,133 @@ const AppleIcon = () => (
 );
 
 const Login = () => {
+  // const { data: session } = useSession();
+  // const { user } = session;
   const [signingIn, setSigningIn] = useState(false);
+  const [userCredentials, setUserCredentials] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleLoginWithProvider = (provider: string) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserCredentials((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLoginWithCredentials = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: userCredentials.email,
+      password: userCredentials.password,
+    });
+    console.log("result", result);
+    if (result?.error) {
+      toast.error("Login Failed");
+      return;
+    }
+
+    toast.success("Login Successful");
+  };
+
+  const handleLoginWithProvider = async (provider: string) => {
     setSigningIn(true);
-    signIn(provider, { callbackUrl: "/" })
-      .then(() => {
-        setSigningIn(false);
-      })
-      .catch(() => setSigningIn(false));
+    try {
+      await signIn(provider, { callbackUrl: "/" });
+    } catch (err) {
+      console.log("login error", err);
+      setSigningIn(false);
+    }
   };
 
   return (
-    <div className="bg-gray-100 max-w-xl px-4 py-10 w-[36rem]  flex flex-col justify-center items-center gap-4">
+    <div className="bg-gray-100 max-w-xl px-4 py-10 w-[36rem] flex flex-col justify-center items-center gap-4">
       <div>
         <h1 className="text-2xl font-semibold p-4">
           Please login to continue...
         </h1>
       </div>
-      <Button
-        className="w-64"
-        onClick={() => handleLoginWithProvider("google")}
-      >
-        Login with Google
-        {signingIn ? (
-          "..."
-        ) : (
+
+      <div className="w-full py-4 px-20">
+        <form onSubmit={handleLoginWithCredentials}>
+          <div className="flex flex-col gap-2">
+            <label className="text-gray-600">Email</label>
+            <Input
+              name="email"
+              type="email"
+              placeholder="Your Email..."
+              value={userCredentials?.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2 mt-3">
+            <label className="text-gray-600">Password</label>
+            <Input
+              name="password"
+              type="password"
+              placeholder="Your Password..."
+              value={userCredentials?.password}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-4 flex justify-between">
+            <Button type="submit" className="text-md">
+              Login
+            </Button>
+            <div className="text-right">
+              <a href="/forgot-password" className="text-xs text-blue-700">
+                Forgot Password
+              </a>
+              <p className="text-xs">
+                Don't have account?{" "}
+                <a href="/register" className="text-blue-700">
+                  Register
+                </a>
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div className="flex items-center justify-center my-8">
+        <Separator />
+        <p className="px-4 whitespace-nowrap text-sm text-gray-400">
+          Or Signin with
+        </p>
+        <Separator />
+      </div>
+
+      <div className="flex flex-col gap-4 w-full px-24">
+        <Button
+          size={"lg"}
+          className="w-full"
+          onClick={() => handleLoginWithProvider("google")}
+        >
+          Login with Google
+          {signingIn ? (
+            "..."
+          ) : (
+            <span className="ml-4">
+              <GoogleIcon />
+            </span>
+          )}
+        </Button>
+        <Button size={"lg"} className="w-full">
+          Login with Facebook
           <span className="ml-4">
-            <GoogleIcon />
+            <FacebookIcon />
           </span>
-        )}
-      </Button>
-      <Button className="w-64">
-        Login with Facebook
-        <span className="ml-4">
-          <FacebookIcon />
-        </span>
-      </Button>
-      <Button className="w-64">
-        Login with Apple
-        <span className="ml-4">
-          <AppleIcon />
-        </span>
-      </Button>
+        </Button>
+        <Button size={"lg"} className="w-full">
+          Login with Apple
+          <span className="ml-4">
+            <AppleIcon />
+          </span>
+        </Button>
+      </div>
     </div>
   );
 };

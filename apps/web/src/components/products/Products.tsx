@@ -47,7 +47,7 @@ const Products = () => {
   return (
     <>
       <div className="grid grid-cols-1 gap-6 gap-y-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products?.data?.data?.data?.map((product: Product) => (
+        {products?.data?.map((product: Product) => (
           <Link key={product._id} href={`/product/${product._id}`}>
             <ProductCard
               image={

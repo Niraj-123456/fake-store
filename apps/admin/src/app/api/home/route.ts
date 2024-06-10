@@ -17,13 +17,17 @@ export async function GET() {
     const cursor2 = collection2.find().limit(5);
     const products = await cursor.toArray();
     const categories = await cursor2.toArray();
-    return Response.json({
-      banners: banners,
-      recommended: products,
-      categories: categories,
-      newArrivals: products,
-    });
+    console.log("products", products);
+    return Response.json(
+      {
+        banners: banners,
+        recommended: products,
+        categories: categories,
+        newArrivals: products,
+      },
+      { status: 200 }
+    );
   } catch (err) {
-    return Response.json({ error: "Something went wrong" });
+    return Response.json({ error: "Something went wrong" }, { status: 500 });
   }
 }

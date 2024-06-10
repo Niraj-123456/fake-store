@@ -5,7 +5,7 @@ import { config } from "@/lib/config";
 
 export function fetchProducts(pageNumber: number, limit: number) {
   return axios.get(
-    `${config.baseUrl}/product/list?offset=${pageNumber}&limit=${limit}`
+    `${config.baseUrl}/products/list?offset=${pageNumber}&limit=${limit}`
   );
 }
 

@@ -3,6 +3,7 @@ import Footer from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
+import { Toaster } from "ui/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "ui/globals.css";
 
@@ -35,6 +36,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            <Toaster />
           </QueryClientProvider>
         </SessionProvider>
       </body>

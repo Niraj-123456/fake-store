@@ -8,13 +8,24 @@ import Link from "next/link";
 import CategoyCard from "../categories/CategoyCard";
 import { Skeleton } from "ui/components/ui/skeleton";
 import HomeBanner from "../banner/HomeBanner";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { writeToLocalStorage } from "@/lib/localStorage";
 
 const Home = () => {
+  const { data: session } = useSession();
   const {
     data: homeData,
     isFetching,
     isLoading,
   } = useQuery("homeData", getHomeData);
+
+  useEffect(() => {
+    if (session) {
+      //@ts-ignore
+      writeToLocalStorage("accessToken", session?.access_token);
+    }
+  }, [session]);
 
   if (isFetching || isLoading) {
     return (
