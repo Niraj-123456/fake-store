@@ -4,8 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
 import { Adapter } from "next-auth/adapters";
-import { userLogin } from "../../auth";
-import { writeToLocalStorage } from "@/lib/localStorage";
+import { login } from "../../auth";
 
 export const authOptions: AuthOptions = {
   secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
@@ -18,14 +17,14 @@ export const authOptions: AuthOptions = {
     Credentials({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials) return;
-        const { email, password } = credentials;
+        const { username, password } = credentials;
         try {
-          const res = await userLogin(email, password);
+          const res = await login(username, password);
           if (res.status === 200) {
             const user = res.data;
             return user;
@@ -52,7 +51,10 @@ export const authOptions: AuthOptions = {
         return {
           ...token,
           id: user.id,
-          access_token: account?.access_token,
+          access_token: account?.access_token
+            ? account.access_token
+            : //@ts-ignore
+              user?.access_token,
         };
       }
       return token;

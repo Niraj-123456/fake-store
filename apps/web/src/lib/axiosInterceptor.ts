@@ -3,7 +3,6 @@ import { readFromLocalStorage } from "./localStorage";
 
 axios.interceptors.request.use((req) => {
   const token = readFromLocalStorage("accessToken");
-  console.log("token", token);
   req.headers.Authorization = token ? `Bearer ${token}` : "";
   return req;
 });

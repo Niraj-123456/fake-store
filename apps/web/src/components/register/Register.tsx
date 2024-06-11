@@ -1,51 +1,44 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "ui/components/ui/button";
 import { Input } from "ui/components/ui/input";
 import { Checkbox } from "ui/components/ui/checkbox";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-const UserRegistrationFormSchema = z
-  .object({
-    firstName: z.string({ required_error: "First Name is required." }),
-    lastName: z.string({ required_error: "Last Name is required." }),
-    email: z
-      .string({ required_error: "Email is required." })
-      .email("Email should be valid email"),
-    password: z.string({ required_error: "Password is required." }),
-    confirmPassword: z.string({
-      required_error: "Confirm Password is required.",
-    }),
-    agree: z.boolean(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password doesn't match",
-    path: ["confirmPassword"],
-  })
-  .refine((data) => data.agree === true, {
-    message: "You must agree to the terms and conditions",
-    path: ["agree"],
-  });
-
-type UserRegistrationFormType = z.infer<typeof UserRegistrationFormSchema>;
+import {
+  type User,
+  UserRegistrationFormSchema,
+} from "@/lib/validation/userValidation";
+import { register } from "@/app/api/auth";
+import { toast } from "sonner";
 
 const Register = () => {
-  const form = useForm<UserRegistrationFormType>({
-    defaultValues: {
-      agree: false,
-    },
+  const router = useRouter();
+  const form = useForm<User>({
     resolver: zodResolver(UserRegistrationFormSchema),
   });
+  const [loading, setLoading] = useState(false);
   const { control, handleSubmit, formState } = form;
   const { errors } = formState;
 
-  console.log("errors", errors);
-
-  const onSubmit: SubmitHandler<UserRegistrationFormType> = (data) => {
-    console.log("e", data);
+  const onSubmit: SubmitHandler<User> = async (data) => {
+    setLoading(true);
+    const { firstName, lastName, email, password } = data;
+    const username = firstName + lastName;
+    try {
+      const res = await register({ username, email, password });
+      if (res.status === 201) {
+        toast.success("User resubmitted successfully");
+        router.push("/");
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="bg-gray-100 max-w-xl px-4 py-10 w-[36rem] flex flex-col justify-center items-center gap-4">
       <div>
@@ -154,7 +147,7 @@ const Register = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Checkbox
-                    onChange={onChange}
+                    onCheckedChange={onChange}
                     onBlur={onBlur}
                     checked={value}
                   />
@@ -172,7 +165,7 @@ const Register = () => {
             )}
           </div>
           <div className="mt-5 flex justify-between">
-            <Button type="submit" className="text-md w-full">
+            <Button type="submit" className="text-md w-full" disabled={loading}>
               Register
             </Button>
           </div>

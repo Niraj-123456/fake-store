@@ -62,7 +62,7 @@ const ProductDetail = () => {
     };
     try {
       const res = await addToCart(cartObj);
-      if (res.status === 200) {
+      if (res.status === 201) {
         toast.success("Product added successfully");
       }
     } catch (err) {
@@ -215,6 +215,7 @@ const ProductDetail = () => {
                 </div>
                 <div className="mt-6 flex gap-2 flex-col sm:flex-row">
                   <Button
+                    disabled={addingToCart}
                     size={"lg"}
                     type="submit"
                     className="bg-indigo-600 text-base  text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
@@ -223,6 +224,7 @@ const ProductDetail = () => {
                   </Button>
 
                   <Button
+                    disabled={addingToCart}
                     variant={"outline"}
                     size={"lg"}
                     type="submit"

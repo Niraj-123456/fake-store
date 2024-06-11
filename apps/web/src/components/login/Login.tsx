@@ -5,6 +5,7 @@ import { signIn, useSession } from "next-auth/react";
 import { Input } from "ui/components/ui/input";
 import { Separator } from "ui/components/ui/separator";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const GoogleIcon = () => (
   <svg
@@ -101,9 +102,10 @@ const AppleIcon = () => (
 const Login = () => {
   // const { data: session } = useSession();
   // const { user } = session;
+  const router = useRouter();
   const [signingIn, setSigningIn] = useState(false);
   const [userCredentials, setUserCredentials] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -119,7 +121,7 @@ const Login = () => {
     e.preventDefault();
     const result = await signIn("credentials", {
       redirect: false,
-      email: userCredentials.email,
+      username: userCredentials.username,
       password: userCredentials.password,
     });
     console.log("result", result);
@@ -129,6 +131,7 @@ const Login = () => {
     }
 
     toast.success("Login Successful");
+    router.push("/");
   };
 
   const handleLoginWithProvider = async (provider: string) => {
@@ -154,10 +157,9 @@ const Login = () => {
           <div className="flex flex-col gap-2">
             <label className="text-gray-600">Email</label>
             <Input
-              name="email"
-              type="email"
-              placeholder="Your Email..."
-              value={userCredentials?.email}
+              name="username"
+              placeholder="Your Username..."
+              value={userCredentials?.username}
               onChange={handleChange}
             />
           </div>

@@ -1,4 +1,3 @@
-"use client";
 import {
   Menubar,
   MenubarContent,
@@ -21,7 +20,11 @@ import {
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 
-const Header = () => {
+type Header = {
+  cartItemsCount: number;
+};
+
+const Header = ({ cartItemsCount }: Header) => {
   const { data: session } = useSession();
 
   return (
@@ -48,8 +51,8 @@ const Header = () => {
             hover:ring-4 hover:ring-gray-200"
               />
             </Link>
-            <div className="flex max-w-max h-5 rounded-xl bg-red-600 text-white font-semibold absolute -top-2 right-0 text-[10px] p-1">
-              99+
+            <div className="flex items-center justify-center max-w-max h-4 rounded-xl bg-red-600 text-white font-semibold absolute -top-2 right-0 text-[10px] p-1">
+              {cartItemsCount}
             </div>
           </div>
           {session ? (

@@ -14,18 +14,16 @@ type Image = {
 
 const CustomImageSlider = ({ images }: { images: Image[] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [slideCompleted, setSlideCompleted] = useState(true);
   let timerId = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (slideCompleted) {
-      setSlideCompleted(false);
-      timerId.current = setTimeout(() => {
-        handleNext();
-        setSlideCompleted(true);
-      }, 2000);
-    }
-  }, [slideCompleted]);
+    timerId.current = setTimeout(() => {
+      handleNext();
+    }, 4000);
+    return () => {
+      clearTimeout(timerId.current!);
+    };
+  }, [activeIndex]);
 
   const handleNext = () => {
     setActiveIndex((prev) =>
@@ -41,20 +39,16 @@ const CustomImageSlider = ({ images }: { images: Image[] }) => {
 
   const handleGoto = (idx: number) => {
     setActiveIndex(idx);
-    setSlideCompleted(false);
   };
 
   const autoPlayStop = () => {
     if (timerId.current) {
       clearTimeout(timerId.current);
-      setSlideCompleted(false);
     }
   };
 
   const autoPlayStart = () => {
-    if (!slideCompleted) {
-      setSlideCompleted(true);
-    }
+    handleNext();
   };
 
   return (
