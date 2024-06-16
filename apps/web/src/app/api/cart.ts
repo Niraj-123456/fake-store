@@ -8,3 +8,13 @@ export function addToCart(data: any) {
 export function fetchCartItems(userId: string) {
   return https.get(`${config.baseUrl}/cart/items/${userId}`);
 }
+
+export function deleteCartItem(userId: string, productId: string) {
+  return https.delete(
+    `${config.baseUrl}/cart/item/remove/${userId}/${productId}`
+  );
+}
+
+export function fetchCartItemCount(userId: string) {
+  return https.get(`${config.baseUrl}/cart/items/count/${userId}`);
+}

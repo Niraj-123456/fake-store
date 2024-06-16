@@ -18,15 +18,12 @@ import {
   Search,
 } from "lucide-react";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import useCartContext from "@/context/CartContext";
 
-type Header = {
-  cartItemsCount: number;
-};
-
-const Header = ({ cartItemsCount }: Header) => {
+const Header = () => {
   const { data: session } = useSession();
-
+  const { count } = useCartContext();
   return (
     <div className="w-full h-[var(--default-header-height)] py-4 px-8 ">
       <div className="flex justify-between items-center">
@@ -52,7 +49,7 @@ const Header = ({ cartItemsCount }: Header) => {
               />
             </Link>
             <div className="flex items-center justify-center max-w-max h-4 rounded-xl bg-red-600 text-white font-semibold absolute -top-2 right-0 text-[10px] p-1">
-              {cartItemsCount}
+              {count ? count : 0}
             </div>
           </div>
           {session ? (

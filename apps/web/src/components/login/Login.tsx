@@ -124,7 +124,6 @@ const Login = () => {
       username: userCredentials.username,
       password: userCredentials.password,
     });
-    console.log("result", result);
     if (result?.error) {
       toast.error("Login Failed");
       return;
@@ -139,7 +138,6 @@ const Login = () => {
     try {
       await signIn(provider, { callbackUrl: "/" });
     } catch (err) {
-      console.log("login error", err);
       setSigningIn(false);
     }
   };

@@ -16,6 +16,7 @@ import { cn } from "ui/lib/utils";
 import { addToCart } from "@/app/api/cart";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import useCartContext from "@/context/CartContext";
 
 const maxStockQuantity = 10;
 
@@ -25,8 +26,8 @@ type IFormInput = {
 
 const ProductDetail = () => {
   const { data: user } = useSession();
-  console.log("user", user);
   const { id } = useParams<{ id: string }>();
+  const { handleUpdateCartItemCount } = useCartContext();
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
   const [addingToCart, setAddingToCart] = useState(false);
 
@@ -57,13 +58,15 @@ const ProductDetail = () => {
       //@ts-ignore
       userId: user?.user?.id,
       productId: id,
+      image: product.images[0],
       name: product.title,
       price: product.price,
     };
     try {
       const res = await addToCart(cartObj);
       if (res.status === 201) {
-        toast.success("Product added successfully");
+        toast.success("Product successfully added to cart.");
+        handleUpdateCartItemCount(quantity);
       }
     } catch (err) {
       toast.error("Something went wrong");

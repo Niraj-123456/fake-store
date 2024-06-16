@@ -17,7 +17,6 @@ export async function GET() {
     const cursor2 = collection2.find().limit(5);
     const products = await cursor.toArray();
     const categories = await cursor2.toArray();
-    console.log("products", products);
     return Response.json(
       {
         banners: banners,

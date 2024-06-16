@@ -3,12 +3,18 @@ import Image from "next/image";
 import { Input } from "ui/components/ui/input";
 import { Trash2 } from "lucide-react";
 import { Button } from "ui/components/ui/button";
-import { useQuery } from "react-query";
-import { fetchCartItems } from "@/app/api/cart";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient
+} from "react-query";
+import { deleteCartItem, fetchCartItems } from "@/app/api/cart";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "ui/components/ui/skeleton";
+import { toast } from "sonner";
 
 const Cart = () => {
+  const queryClient = useQueryClient();
   const { data: session } = useSession();
   const user: any = session?.user;
 
@@ -18,6 +24,11 @@ const Cart = () => {
     {
       enabled: !!user?.id,
     }
+  );
+
+  const mutation = useMutation(
+    ({ cartId, productId }: { cartId: string; productId: string }) =>
+      deleteCartItem(cartId, productId)
   );
 
   if (isFetching) {
@@ -49,53 +60,77 @@ const Cart = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-8 mt-8">
-      <div className="flex gap-40">
+      <h4 className="text-2xl text-bold">Your Cart (2 Items)</h4>
+      <div className="flex gap-40 mt-10">
         <div className="flex flex-col gap-8 divide-y-2 w-full max-w-3xl">
-          {cart?.data[0]?.products?.map((product: any) => (
-            <div
-              key={product?.productId}
-              className="flex justify-between items-start pt-8 gap-4"
-            >
-              <div className="relative w-24 h-28 overflow-hidden bg-gray-200">
-                <Image
-                  src={product?.image}
-                  alt="phone1"
-                  fill
-                  sizes="100%*100%"
-                  className="w-full h-full object-contain object-center mix-blend-darken"
-                />
-              </div>
+          {cart?.data?.products?.length > 0 ? (
+            cart?.data?.products?.map((product: any) => (
+              <div
+                key={product?.productId}
+                className="grid grid-cols-12 pt-8 gap-8 place-items-start"
+              >
+                <div className="relative w-24 h-28 overflow-hidden bg-gray-200 col-span-2">
+                  <Image
+                    src={product?.image}
+                    alt="phone1"
+                    fill
+                    sizes="100%*100%"
+                    className="w-full h-full object-contain object-center mix-blend-darken"
+                  />
+                </div>
 
-              <div>
-                <div>
-                  <div>{product?.name}</div>
-                  <div className="text-sm pt-1 text-gray-600">
-                    ${product?.price}
+                <div className="col-span-8 ml-4">
+                  <div>
+                    <div>{product?.name}</div>
+                    <div className="text-sm pt-1 text-gray-600">
+                      ${product?.price}
+                    </div>
+                  </div>
+                  <div className="mt-7">
+                    <Button
+                      size={"sm"}
+                      variant={"link"}
+                      className="text-red-700 px-0"
+                      onClick={() =>
+                        mutation.mutate(
+                          {
+                            cartId: cart.data._id,
+                            productId: product.productId,
+                          },
+                          {
+                            onSuccess: (data) => {
+                              toast.success("Cart item removed successfully");
+                              queryClient.setQueryData("cartItems", data);
+                            },
+                            onError: () => {
+                              toast.error(
+                                "Something went wrong while removing cart item. Please try again"
+                              );
+                            },
+                          }
+                        )
+                      }
+                    >
+                      <Trash2 className="mr-1 w-5 h-5" />
+                      Remove
+                    </Button>
                   </div>
                 </div>
-                <div className="mt-7">
-                  <Button
-                    size={"sm"}
-                    variant={"link"}
-                    className="text-red-700 px-0"
-                  >
-                    <Trash2 className="mr-1 w-5 h-5" />
-                    Remove
-                  </Button>
+
+                <div className="flex items-center gap-1 col-span-2">
+                  <Button className="h-9">-</Button>
+                  <Input
+                    value={product?.quantity}
+                    onChange={() => {}}
+                    className="w-12"
+                  />
+                  <Button className="h-9">+</Button>
                 </div>
               </div>
-
-              <div className="flex items-center gap-1">
-                <Button className="h-9">+</Button>
-                <Input
-                  value={product?.quantity}
-                  onChange={() => {}}
-                  className="w-12"
-                />
-                <Button className="h-9">-</Button>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <div>Cart is empty</div>
+          )}
         </div>
         <div className="bg-gray-100 rounded-md p-4 max-w-xs w-full h-full">
           <h4 className="p-2 font-semibold">Order Summary</h4>
