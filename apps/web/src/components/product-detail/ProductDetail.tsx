@@ -66,7 +66,7 @@ const ProductDetail = () => {
       const res = await addToCart(cartObj);
       if (res.status === 201) {
         toast.success("Product successfully added to cart.");
-        handleUpdateCartItemCount(quantity);
+        handleUpdateCartItemCount(quantity, "INCREMENT");
       }
     } catch (err) {
       toast.error("Something went wrong");
@@ -112,7 +112,7 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:w-2/3 lg:px-8">
+    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
         {product?.images?.length > 0 && (
           <div className="flex flex-col gap-6 p-2">

@@ -32,7 +32,7 @@ export const authOptions: AuthOptions = {
             return null;
           }
         } catch (error) {
-          return null;
+          throw error;
         }
       },
     }),

@@ -125,7 +125,7 @@ const Login = () => {
       password: userCredentials.password,
     });
     if (result?.error) {
-      toast.error("Login Failed");
+      toast.error("Invalid credentials");
       return;
     }
 

@@ -3,9 +3,11 @@ import { useSession } from "next-auth/react";
 import React, { createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
 
+type CartActionType = "INCREMENT" | "DECREMENT";
+
 type CartContextProps = {
   count: number;
-  handleUpdateCartItemCount: (qty: number) => void;
+  handleUpdateCartItemCount: (qty: number, action: CartActionType) => void;
 };
 
 type CartProviderProps = {
@@ -27,8 +29,12 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     retry: 2,
   });
 
-  const handleUpdateCartItemCount = (qty: number) => {
-    setCount((prev) => prev + qty);
+  const handleUpdateCartItemCount = (
+    qty: number,
+    action: "INCREMENT" | "DECREMENT"
+  ) => {
+    if (action === "INCREMENT") setCount((prev) => prev + qty);
+    else setCount((prev) => (prev > 0 ? prev - qty : 0));
   };
 
   return (
