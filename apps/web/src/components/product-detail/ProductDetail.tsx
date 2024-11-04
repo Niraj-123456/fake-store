@@ -27,7 +27,7 @@ type IFormInput = {
 const ProductDetail = () => {
   const { data: user } = useSession();
   const { id } = useParams<{ id: string }>();
-  const { handleUpdateCartItemCount } = useCartContext();
+  const { handleUpdateCartItem, handleUpdateCartItemCount } = useCartContext();
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
   const [addingToCart, setAddingToCart] = useState(false);
 
@@ -66,6 +66,7 @@ const ProductDetail = () => {
       const res = await addToCart(cartObj);
       if (res.status === 201) {
         toast.success("Product successfully added to cart.");
+        handleUpdateCartItem(res?.data);
         handleUpdateCartItemCount(quantity, "INCREMENT");
       }
     } catch (err) {

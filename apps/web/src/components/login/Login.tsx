@@ -6,6 +6,7 @@ import { Input } from "ui/components/ui/input";
 import { Separator } from "ui/components/ui/separator";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { writeToLocalStorage } from "@/lib/localStorage";
 
 const GoogleIcon = () => (
   <svg

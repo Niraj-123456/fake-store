@@ -20,10 +20,16 @@ import {
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import useCartContext from "@/context/CartContext";
+import { clearLocalStorage } from "@/lib/localStorage";
 
 const Header = () => {
   const { data: session } = useSession();
   const { count } = useCartContext();
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/" });
+    clearLocalStorage();
+  };
   return (
     <div className="w-full h-[var(--default-header-height)] py-4 px-8 ">
       <div className="flex justify-between items-center">
@@ -64,12 +70,18 @@ const Header = () => {
                     <AvatarFallback>N</AvatarFallback>
                   </Avatar>
                 </MenubarTrigger>
-                <MenubarContent>
+                <MenubarContent className="*:cursor-pointer">
                   <MenubarLabel>My Account</MenubarLabel>
                   <MenubarItem>
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </MenubarItem>
+                  <Link href={"/order"}>
+                    <MenubarItem className="cursor-pointer">
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      <span>My Order</span>
+                    </MenubarItem>
+                  </Link>
                   <MenubarItem>
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Settings</span>
@@ -78,7 +90,7 @@ const Header = () => {
                     <PlusCircle className="mr-2 h-4 w-4" />
                     <span>More...</span>
                   </MenubarItem>
-                  <MenubarItem onClick={() => signOut({ callbackUrl: "/" })}>
+                  <MenubarItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </MenubarItem>

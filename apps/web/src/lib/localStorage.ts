@@ -12,3 +12,11 @@ export function writeToLocalStorage(
 export function readFromLocalStorage(key: string) {
   return localStorage.getItem(key);
 }
+
+export function removeFromLocalStorage(key: string) {
+  return localStorage.removeItem(key);
+}
+
+export function clearLocalStorage() {
+  return localStorage.clear();
+}
