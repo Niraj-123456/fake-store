@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { CircleCheck } from "lucide-react";
 import { cn } from "ui/lib/utils";
+import { deliveryMethods } from "@/lib/shippingFee";
 
 type DeliveryMethod = {
   value: string;
@@ -8,11 +8,6 @@ type DeliveryMethod = {
   period: string;
   price: number;
 };
-
-export const deliveryMethods = [
-  { value: "STANDARD", label: "standard", period: "3 to 5", price: 4 },
-  { value: "EXPRESS", label: "express", period: "1 to 2", price: 10 },
-];
 
 const DeliveryMethod = ({
   selectedMethod,
@@ -25,7 +20,7 @@ const DeliveryMethod = ({
     <div className="mt-2">
       <h4 className="text-xl font-medium">Delivery Method</h4>
       <div className="flex gap-4 items-center mt-4">
-        {deliveryMethods?.map((deliveryMethod, idx) => (
+        {Object.values(deliveryMethods)?.map((deliveryMethod, idx) => (
           <div
             key={idx}
             onClick={() => onChangeDeliveryMethod(deliveryMethod)}

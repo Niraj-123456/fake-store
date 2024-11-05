@@ -8,3 +8,7 @@ export async function createUserOrder(data: any) {
 export async function getUserOrder(userId: string) {
   return await axios.get(`${config.baseUrl}/order/${userId}`);
 }
+
+export async function getOrderById(orderId: string) {
+  return await axios.get(`${config.baseUrl}/order/id/${orderId}`);
+}

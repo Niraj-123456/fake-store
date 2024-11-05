@@ -1,14 +1,18 @@
 "use client";
 import { paymentVerification } from "@/app/api/payment";
 import { CircleCheckBig, CircleX } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import CircularLoading from "ui/components/loading/circular-loading/circular-loading";
 
 const PaymentVerification = () => {
+  const router = useRouter();
   const params = useSearchParams();
   const paymentIntentId = params.get("payment_intent") ?? "";
-  console.log("payment intent id", paymentIntentId);
+  const orderId = params.get("oId") ?? "";
+
+  const [countDown, setCountDown] = useState(10);
 
   const { data, isFetching, isError } = useQuery(
     "payment-verification",
@@ -17,6 +21,23 @@ const PaymentVerification = () => {
       enabled: !!paymentIntentId,
     }
   );
+
+  const paymentStatus = data?.data?.status;
+  useEffect(() => {
+    if (paymentStatus) {
+      const timer = setInterval(() => {
+        setCountDown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            console.log("redirected to confirmed order page");
+            router.push(`/order/success?oId=${orderId}`);
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [paymentStatus]);
 
   return (
     <div className="border border-gray-200 rounded-sm py-4 px-8 text-center">
@@ -46,6 +67,8 @@ const PaymentVerification = () => {
         <p>Amount Paid</p>
         <p className="text-2xl font-semibold">$200</p>
       </div>
+
+      <div className="mt-4">Redirecting in {countDown}s</div>
     </div>
   );
 };

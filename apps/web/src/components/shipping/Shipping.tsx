@@ -1,17 +1,18 @@
 "use client";
 import OrderSummary from "./OrderSummary";
 import ShippingForm from "./ShippingForm";
-import DeliveryMethod, { deliveryMethods } from "./DeliveryMethod";
+import DeliveryMethod from "./DeliveryMethod";
 import SavedShippingAddressList, {
   ShippingAddress,
 } from "./SavedShippingAddressList";
 import { useState } from "react";
+import { deliveryMethods } from "@/lib/shippingFee";
 
 const Shipping = () => {
   const [selectedShippingAddress, setSelectedShippingAddress] =
     useState<ShippingAddress>();
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
-    deliveryMethods[0]
+    deliveryMethods.STANDARD
   );
 
   const handleChangeShippingAddress = (address: ShippingAddress) => {
@@ -21,6 +22,8 @@ const Shipping = () => {
   const handleChangeDeliveryMethod = (method: DeliveryMethod) => {
     setSelectedDeliveryMethod(method);
   };
+
+  console.log("selected delivery method");
 
   return (
     <div className="flex gap-10">

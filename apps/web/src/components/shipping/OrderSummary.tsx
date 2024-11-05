@@ -33,7 +33,7 @@ const OrderSummary = ({
     return null;
   }
 
-  const { totalPrice, shippingFee, finalPrice } = cartItem;
+  const { totalPrice, finalPrice } = cartItem;
 
   const handleCreateOrder = async () => {
     setCreating(true);
@@ -81,11 +81,11 @@ const OrderSummary = ({
           </div>
           <div className="flex items-center justify-between">
             <span>Shipping Fee</span>
-            <span>${shippingFee}</span>
+            <span>${deliveryMethod.price}</span>
           </div>
           <div className="flex items-center justify-between font-semibold border-t border-gray-200 pt-2">
             <span>Total</span>
-            <span>${finalPrice}</span>
+            <span>${totalPrice + deliveryMethod?.price} </span>
           </div>
         </div>
       </div>

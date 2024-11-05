@@ -44,7 +44,7 @@ const Payment = () => {
     <div>
       {stripePromise && clientSecret && (
         <Elements stripe={stripePromise} options={options}>
-          <StripeCheckoutForm />
+          <StripeCheckoutForm orderId={orderId} />
         </Elements>
       )}
     </div>

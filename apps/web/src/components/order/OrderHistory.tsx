@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import { Button } from "ui/components/ui/button";
 import { cn } from "ui/lib/utils";
 
-type Order = {
+type OrderHistory = {
   itemsCount: number;
   totalAmount: number;
   shippingFee: number;
@@ -16,7 +16,7 @@ type Order = {
 
 type OrderStatus = "completed" | "pending";
 
-const Order = () => {
+const OrderHistory = () => {
   const { data: session } = useSession();
   //@ts-ignore
   const userId = session?.user?.id;
@@ -25,7 +25,7 @@ const Order = () => {
     data: orders,
     isFetching,
     isError,
-  } = useQuery("userOrder", () => getUserOrder(userId), {
+  } = useQuery("custormerOrder", () => getUserOrder(userId), {
     enabled: !!userId,
   });
 
@@ -67,7 +67,7 @@ const Order = () => {
   return (
     <div className="w-full h-full p-4 rounded-md">
       <h4 className="font-semibold">Order history</h4>
-      <div>
+      <div className="mt-4 flex flex-col gap-8">
         {orders?.data?.map((order: any) => {
           const { bgColor, color, border } = orderStatusButtonStyles(
             order?.status
@@ -75,7 +75,7 @@ const Order = () => {
           return (
             <div
               key={order?._id}
-              className="flex flex-col gap-2 mt-4 divide-y-2 border rounded-md *:p-4"
+              className="flex flex-col gap-2 divide-y-2 border rounded-md *:p-4"
             >
               <div className="flex gap-8 justify-between">
                 <div>
@@ -156,4 +156,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default OrderHistory;

@@ -6,7 +6,7 @@ import {
 import React, { ChangeEvent, useState } from "react";
 import { Button } from "ui/components/ui/button";
 
-const StripeCheckoutForm = () => {
+const StripeCheckoutForm = ({ orderId }: { orderId: string }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -31,7 +31,7 @@ const StripeCheckoutForm = () => {
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:3000/payment/verification",
+        return_url: `http://localhost:3000/payment/verification?oId=${orderId}`,
       },
       // redirect: "if_required",
     });
@@ -61,6 +61,9 @@ const StripeCheckoutForm = () => {
             {isProcessing ? "Processing..." : "Pay"}
           </Button>
         </div>
+        {errorMessage && (
+          <div className="mt-2 text-sm text-red-600">{errorMessage}</div>
+        )}
       </form>
     </div>
   );

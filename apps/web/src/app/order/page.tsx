@@ -1,10 +1,10 @@
-import Order from "@/components/order/Order";
+import OrderHistory from "@/components/order/OrderHistory";
 import React from "react";
 
 const OrderPage = () => {
   return (
     <div>
-      <Order />
+      <OrderHistory />
     </div>
   );
 };

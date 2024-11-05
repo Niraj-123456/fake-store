@@ -38,7 +38,7 @@ const OrderSummary = ({
 
       <Link
         href={"/shipping"}
-        className="flex w-full px-4 py-2 mt-4 text-white rounded-md justify-center cursor-pointer bg-gray-950 transition-all duration-150 hover:bg-opacity-80"
+        className="flex w-full px-4 py-2 mt-4 whitespace-nowrap text-white rounded-md justify-center cursor-pointer bg-gray-950 transition-all duration-150 hover:bg-opacity-80"
       >
         Proceed to Checkout ${finalAmount}
       </Link>
