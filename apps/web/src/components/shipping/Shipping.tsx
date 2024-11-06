@@ -23,10 +23,8 @@ const Shipping = () => {
     setSelectedDeliveryMethod(method);
   };
 
-  console.log("selected delivery method");
-
   return (
-    <div className="flex gap-10">
+    <div className="flex gap-10 mt-5">
       <div className="flex flex-col gap-4 w-full">
         <h4 className="text-2xl font-medium">Shipping Information</h4>
         <div className="flex flex-col gap-6 divide-y">
@@ -50,7 +48,7 @@ const Shipping = () => {
           </div>
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-full max-w-lg">
         <h4 className="text-2xl font-medium">Order Summary</h4>
         <div className="mt-4">
           <OrderSummary

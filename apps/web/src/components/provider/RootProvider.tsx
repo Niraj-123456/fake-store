@@ -22,7 +22,7 @@ const RootProvider = ({ children }: { children: React.ReactNode }) => {
       <QueryClientProvider client={queryClient}>
         <CartProvider>
           <Header />
-          <main className="w-full min-h-[calc(100vh-72px)] grid place-items-center pb-6 px-10 sm:px-14 md:px-20 lg:px-52">
+          <main className="w-full min-h-[calc(100vh-72px)] grid pb-6 px-10 sm:px-14 md:px-20 lg:px-64">
             {children}
           </main>
           <Footer />

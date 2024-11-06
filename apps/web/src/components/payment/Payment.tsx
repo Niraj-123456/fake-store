@@ -7,6 +7,7 @@ import { createPaymentIntent } from "@/app/api/payment";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useQuery } from "react-query";
+import CircularLoading from "ui/components/loading/circular-loading/circular-loading";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || ""
@@ -19,15 +20,13 @@ const Payment = () => {
   const params = useSearchParams();
   const orderId = params.get("oId") ?? "";
 
-  const { data } = useQuery(
+  const { data, isFetching } = useQuery(
     "stripe-payment",
     () => createPaymentIntent(orderId!, userId!),
     {
       enabled: !!userId,
     }
   );
-
-  console.log("data", data);
 
   const clientSecret = data?.data?.client_secret;
 
@@ -41,11 +40,18 @@ const Payment = () => {
   } as StripeElementsOptions;
 
   return (
-    <div>
-      {stripePromise && clientSecret && (
-        <Elements stripe={stripePromise} options={options}>
-          <StripeCheckoutForm orderId={orderId} />
-        </Elements>
+    <div className="flex justify-center items-center h-full">
+      {isFetching ? (
+        <div>
+          <CircularLoading width={"5rem"} thickness={4} />
+        </div>
+      ) : (
+        stripePromise &&
+        clientSecret && (
+          <Elements stripe={stripePromise} options={options}>
+            <StripeCheckoutForm orderId={orderId} />
+          </Elements>
+        )
       )}
     </div>
   );

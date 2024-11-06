@@ -27,7 +27,7 @@ const OrderConfirmation = () => {
   const orderedItems = order?.products;
   const paymentMethod = order?.paymentMethod;
   return (
-    <div className="w-full">
+    <div className="w-full max-w-5xl h-full flex flex-col mx-auto justify-center">
       <div className="flex justify-between">
         <div>
           <h4 className="text-2xl font-semibold">
@@ -48,7 +48,7 @@ const OrderConfirmation = () => {
         </div>
       </div>
       <div className="flex gap-4 mt-4">
-        <div className="grid grid-cols-2 gap-8 border p-4 rounded-md">
+        <div className="w-full grid grid-cols-2 gap-8 border p-4 rounded-md">
           <div>
             <h4 className="font-semibold">Shipping Address</h4>
             <div className="mt-1">
@@ -109,7 +109,7 @@ const OrderConfirmation = () => {
             </div>
           </div>
         </div>
-        <div className="border p-4 rounded-md w-80 flex flex-col gap-4 divide-y">
+        <div className="border p-4 rounded-md min-w-80 flex flex-col gap-4 divide-y">
           <div>
             <h4 className="font-semibold">Order Summary</h4>
             <div className="flex flex-col gap-2 mt-1 divide-y [&>:not(:first-child)]:pt-2 [&>:last-child]:font-semibold">

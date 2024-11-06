@@ -30,7 +30,7 @@ const PaymentVerification = () => {
           if (prev <= 1) {
             clearInterval(timer);
             console.log("redirected to confirmed order page");
-            router.push(`/order/success?oId=${orderId}`);
+            router.replace(`/order/success?oId=${orderId}`);
           }
           return prev - 1;
         });

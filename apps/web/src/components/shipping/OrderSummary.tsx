@@ -47,7 +47,6 @@ const OrderSummary = ({
         status: "pending",
         deliveryMethod: deliveryMethod?.value,
       });
-      console.log("res", res);
       if (res.status === 201) {
         toast.success("Order created successfully");
         router.replace(`/payment?uId=${userId}&oId=${res?.data?._id}`);

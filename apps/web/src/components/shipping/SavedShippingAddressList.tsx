@@ -110,7 +110,7 @@ const SavedShippingAddressList = ({
             key={shippingAddress?._id}
             onClick={() => onChangeShippingAddress(shippingAddress)}
             className={cn(
-              "w-full max-w-xs h-full border p-4 rounded-md relative text-[0.8125rem] text-gray-700 mt-2 cursor-pointer hover:outline hover:outline-2 hover:outline-blue-600",
+              "w-full max-w-xs h-full border p-4 rounded-md relative text-[0.8125rem] text-gray-700 mt-2 cursor-pointer hover:outline hover:outline-2 hover:outline-blue-600 group",
               shippingAddress?._id === selectedAddress?._id
                 ? "outline outline-2 outline-blue-600"
                 : ""
@@ -140,7 +140,7 @@ const SavedShippingAddressList = ({
               )}
             />
 
-            <div className="absolute right-4 bottom-2 flex gap-2">
+            <div className="absolute right-4 bottom-2 flex gap-2 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
               <Button
                 size={"sm"}
                 variant={"link"}

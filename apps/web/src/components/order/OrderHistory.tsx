@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import { Button } from "ui/components/ui/button";
+import { Skeleton } from "ui/components/ui/skeleton";
 import { cn } from "ui/lib/utils";
 
 type OrderHistory = {
@@ -56,101 +57,105 @@ const OrderHistory = () => {
     );
   };
 
-  if (isFetching) {
-    return <div>Loading...</div>;
-  }
-
   if (isError) {
     return <div>Something went wrong.</div>;
   }
 
   return (
-    <div className="w-full h-full p-4 rounded-md">
+    <div className="w-full h-full p-4 rounded-md mt-5">
       <h4 className="font-semibold">Order history</h4>
       <div className="mt-4 flex flex-col gap-8">
-        {orders?.data?.map((order: any) => {
-          const { bgColor, color, border } = orderStatusButtonStyles(
-            order?.status
-          );
-          return (
-            <div
-              key={order?._id}
-              className="flex flex-col gap-2 divide-y-2 border rounded-md *:p-4"
-            >
-              <div className="flex gap-8 justify-between">
-                <div>
-                  <p className="font-semibold">Order Id</p>
-                  <p className="text-gray-400 text-sm pt-1">{order?._id}</p>
-                </div>
-                <div>
-                  <p className="font-semibold">Date Placed</p>
-                  <p className="text-gray-400 text-sm pt-1">
-                    {new Date(order?.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </p>
-                </div>
-                <div>
-                  <p className="font-semibold">Total amount</p>
-                  <p className="pt-1 text-sm">${order?.amount}</p>
-                </div>
-                <div className="text-center">
-                  <p className="font-semibold">Status</p>
-                  <div
-                    className={cn(
-                      "mt-1 py-0.5 px-2 text-xs border uppercase rounded-full",
-                      bgColor,
-                      color,
-                      border
-                    )}
-                  >
-                    {order?.status}
+        {isFetching ? (
+          <>
+            {Array.from({ length: 7 }).map((_, idx) => (
+              <Skeleton key={idx} className="w-full h-32" />
+            ))}
+          </>
+        ) : (
+          orders?.data?.map((order: any) => {
+            const { bgColor, color, border } = orderStatusButtonStyles(
+              order?.status
+            );
+            return (
+              <div
+                key={order?._id}
+                className="flex flex-col gap-2 divide-y-2 border rounded-md *:p-4"
+              >
+                <div className="flex gap-8 justify-between">
+                  <div>
+                    <p className="font-semibold">Order Id</p>
+                    <p className="text-gray-400 text-sm pt-1">{order?._id}</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Button size={"sm"} variant={"outline"}>
-                    View Order
-                  </Button>
-                  {order?.status === "pending" ? (
-                    <Link
-                      href={`/payment?cId=${order?.userId}&oId=${order?._id}`}
-                      className="border h-9 px-3 rounded-sm text-sm flex items-center justify-center font-medium bg-background hover:bg-accent hover:text-accent-foreground"
+                  <div>
+                    <p className="font-semibold">Date Placed</p>
+                    <p className="text-gray-400 text-sm pt-1">
+                      {new Date(order?.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Total amount</p>
+                    <p className="pt-1 text-sm">${order?.amount}</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold">Status</p>
+                    <div
+                      className={cn(
+                        "mt-1 py-0.5 px-2 text-xs border uppercase rounded-full",
+                        bgColor,
+                        color,
+                        border
+                      )}
                     >
-                      Checkout
-                    </Link>
-                  ) : (
+                      {order?.status}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
                     <Button size={"sm"} variant={"outline"}>
-                      View Invoice
+                      View Order
                     </Button>
-                  )}
+                    {order?.status === "pending" ? (
+                      <Link
+                        href={`/payment?cId=${order?.userId}&oId=${order?._id}`}
+                        className="border h-9 px-3 rounded-sm text-sm flex items-center justify-center font-medium bg-background hover:bg-accent hover:text-accent-foreground"
+                      >
+                        Checkout
+                      </Link>
+                    ) : (
+                      <Button size={"sm"} variant={"outline"}>
+                        View Invoice
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4 divide-y [&>:not(:first-child)]:pt-4">
+                  {order?.products?.map((product: any) => (
+                    <div
+                      key={product?.productId}
+                      className="flex justify-between items-center"
+                    >
+                      <div className="relative w-20 h-20 rounded-sm overflow-hidden">
+                        <Image
+                          src={product?.image}
+                          alt=""
+                          fill
+                          sizes="100%*100%"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div>{product?.name}</div>
+                      <div>${product?.price}</div>
+                      <div>Qty: {product?.quantity}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="flex flex-col gap-4 divide-y [&>:not(:first-child)]:pt-4">
-                {order?.products?.map((product: any) => (
-                  <div
-                    key={product?.productId}
-                    className="flex justify-between items-center"
-                  >
-                    <div className="relative w-20 h-20 rounded-sm overflow-hidden">
-                      <Image
-                        src={product?.image}
-                        alt=""
-                        fill
-                        sizes="100%*100%"
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div>{product?.name}</div>
-                    <div>${product?.price}</div>
-                    <div>Qty: {product?.quantity}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </div>
   );
