@@ -1,13 +1,26 @@
 "use client";
+import userOrders from "@next/hooks/orders/useOrders";
 import {
-  Tabs,
-  TabsTrigger,
-  TabsContent,
-  TabsList,
-} from "ui/components/ui/tabs";
-import CompletedOrders from "./CompletedOrders";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "ui/components/ui/table";
+import CircularLoading from "ui/components/loading/circular-loading/circular-loading";
+import { cn } from "ui/lib/utils";
+import { orderStatusButtonStyles } from "ui/lib/order";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "ui/components/ui/select";
 
 const Orders = () => {
+  const { fetching, orders } = userOrders();
   return (
     <div className="mt-2">
       <div className="flex items-center gap-4">
@@ -35,31 +48,99 @@ const Orders = () => {
         </div>
       </div>
 
-      <div className="mt-4 w-full">
-        <Tabs defaultValue="orders" className="w-full">
-          <TabsList>
-            <TabsTrigger value="orders">All Orders</TabsTrigger>
-            <TabsTrigger value="completed">Completed</TabsTrigger>
-            <TabsTrigger value="pending">Pending</TabsTrigger>
-            <TabsTrigger value="cancelled">Cancelled</TabsTrigger>
-            <TabsTrigger value="refunded">Refunded</TabsTrigger>
-          </TabsList>
-          <TabsContent value="orders">
-            <p>This is all orders tab</p>
-          </TabsContent>
-          <TabsContent value="completed" className="mt-4">
-            <CompletedOrders />
-          </TabsContent>
-          <TabsContent value="pending">
-            <p>This is pending orders tab</p>
-          </TabsContent>
-          <TabsContent value="cancelled">
-            <p>This is cancelled orders tab</p>
-          </TabsContent>
-          <TabsContent value="refunded">
-            <p>This is refunded orders tab</p>
-          </TabsContent>
-        </Tabs>
+      <div className="mt-8 w-full">
+        <div className="flex flex-col gap-0.5">
+          <div className="text-xs text-gray-500">Status</div>
+          <Select defaultValue="ALL">
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="select status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All</SelectItem>
+              <SelectItem value="COMPLETED">Completed</SelectItem>
+              <SelectItem value="PENDING">Pending</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="border mt-3">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>OrderId</TableHead>
+                <TableHead>Ordered Date</TableHead>
+                <TableHead>Currency</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead>Shipping Address</TableHead>
+                <TableHead>Payment Method</TableHead>
+                <TableHead>Delivery Method</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {fetching ? (
+                <TableRow>
+                  <TableCell colSpan={8}>
+                    <div className="w-full flex justify-center">
+                      <CircularLoading thickness={4} />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : orders?.length > 0 ? (
+                orders?.map((order: any) => {
+                  const { bgColor, color, border } = orderStatusButtonStyles(
+                    order?.status
+                  );
+                  return (
+                    <TableRow
+                      key={order?._id}
+                      className="*:py-2 *:px-4 *:text-gray-600"
+                    >
+                      <TableCell>{order?._id}</TableCell>
+                      <TableCell>
+                        {new Date(order?.createdAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "2-digit",
+                            year: "numeric",
+                          }
+                        )}
+                      </TableCell>
+                      <TableCell className="uppercase">
+                        {order?.currency}
+                      </TableCell>
+                      <TableCell>
+                        {order?.finalAmount ? `$${order?.finalAmount}` : "-"}
+                      </TableCell>
+                      <TableCell>
+                        {order?.shippingAddress?.city},{" "}
+                        {order?.shippingAddress?.country}
+                      </TableCell>
+                      <TableCell>{order?.paymentMethod?.type || "-"}</TableCell>
+                      <TableCell>{order?.deliveryMethod}</TableCell>
+                      <TableCell>
+                        <div
+                          className={cn(
+                            bgColor,
+                            color,
+                            border,
+                            "px-2 py-0.5 rounded-full text-center w-24 uppercase text-xs"
+                          )}
+                        >
+                          {order?.status}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell>No Orders Found</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );

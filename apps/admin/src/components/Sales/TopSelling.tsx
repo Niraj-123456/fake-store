@@ -15,11 +15,11 @@ const TopSelling = () => {
       setFetching(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/product/sales/top-selling`
+          `${process.env.NEXT_PUBLIC_BASE_URL}/product/top-selling`
         );
         if (res.status === 200) {
           setFetching(false);
-          setTopSellingProducts(res?.data?.data);
+          setTopSellingProducts(res?.data);
         } else {
           setFetching(false);
         }

@@ -28,6 +28,8 @@ const Products = () => {
 
   const { fetching, products, metaData } = useProducts({ pageNumber });
 
+  console.log("products", products);
+
   if (fetching) {
     return (
       <div className="mt-4 w-full">
@@ -89,8 +91,8 @@ const Products = () => {
       {/*pagination */}
       <div className="mt-4 p-2">
         <CustomPagination
-          currentPage={Number(pageNumber)}
-          itemsCount={metaData?.totalCount!}
+          currentPage={metaData?.currentPage || 1}
+          itemsCount={metaData?.itemsCount!}
           itemsPerPage={20}
           className="justify-end"
         />

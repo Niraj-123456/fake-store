@@ -73,7 +73,7 @@ const ProductForm = () => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/category/list`
         );
         if (res.status === 200) {
-          setCategories(res?.data?.data);
+          setCategories(res?.data);
         }
         setFetching(false);
       } catch (err) {
@@ -207,7 +207,7 @@ const ProductForm = () => {
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <Select
-                  disabled={categories.length <= 0 || fetching}
+                  disabled={categories?.length <= 0 || fetching}
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
@@ -219,12 +219,12 @@ const ProductForm = () => {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Category</SelectLabel>
-                      {categories.map((category) => (
+                      {categories?.map((category) => (
                         <SelectItem
                           key={category._id}
                           value={JSON.stringify(category)}
                         >
-                          {category.name}
+                          {category?.name}
                         </SelectItem>
                       ))}
                     </SelectGroup>

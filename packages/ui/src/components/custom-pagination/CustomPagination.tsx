@@ -38,7 +38,7 @@ const CustomPagination = ({
 
   let pageNumberOutofRange: boolean;
 
-  const pageNumbers = [...new Array(pagesCount)].map((_, idx) => {
+  const pageNumbers = [...new Array(pagesCount)]?.map((_, idx) => {
     const pageNumber = idx + 1;
     const isPageNumberFirst = pageNumber === 1;
     const isPageNumberLast = pageNumber === pagesCount;

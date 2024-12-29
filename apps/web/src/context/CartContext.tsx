@@ -28,6 +28,8 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   //@ts-ignore
   const userId = session?.user?.id;
 
+  console.log("userid", userId);
+
   useQuery("cartItems", () => fetchCartItems(userId), {
     enabled: !!userId,
     onSuccess: (data) => {

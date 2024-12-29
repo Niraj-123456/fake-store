@@ -21,7 +21,7 @@ const Categories = () => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/category/list`
         );
         if (res.status === 200) {
-          setCategories(res?.data?.data);
+          setCategories(res?.data);
         }
       } catch (err) {
         //

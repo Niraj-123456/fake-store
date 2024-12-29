@@ -49,7 +49,7 @@ const Products = () => {
       <h4 className="text-xl font-semibold">Recommended For You</h4>
       <div className="mt-3 grid grid-cols-1 gap-6 gap-y-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products?.data?.map((product: Product) => (
-          <Link key={product._id} href={`/product/${product._id}`}>
+          <Link key={product._id} href={`/product/detail/${product._id}`}>
             <ProductCard
               image={
                 <ProductImage

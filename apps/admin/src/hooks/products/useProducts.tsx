@@ -1,17 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+type ProductMetaData = {
+  itemsCount: number;
+  currentPage: number;
+  previousPage: number;
+  nextPage: number;
+};
+
 type Product = {
   _id: string;
   title: string;
   price: number;
   creationAt: string;
-};
-
-type ProductMetaData = {
-  totalCount: number;
-  offset: number;
-  limit: number;
 };
 
 type ProductHookProps = {
@@ -34,10 +35,11 @@ const useProducts = ({ pageNumber }: ProductHookProps) => {
         );
         setFetching(false);
         if (res.status === 200) {
-          setProducts(res?.data?.data?.data);
-          setMetaData(res?.data?.data?.metadata);
+          setProducts(res?.data?.items);
+          setMetaData(res?.data?.metadata);
         }
       } catch (err: any) {
+        console.log("error", err);
         setFetching(false);
       }
     };

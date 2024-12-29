@@ -19,7 +19,7 @@ const Home = () => {
     isFetching,
     isLoading,
   } = useQuery("homeData", getHomeData);
-
+  
   useEffect(() => {
     if (session) {
       //@ts-ignore
