@@ -10,5 +10,5 @@ export function fetchProducts(pageNumber: number, limit: number) {
 }
 
 export function fetchProduct(id: string | undefined) {
-  return axios.get(`${config.baseUrl}/product/${id}`);
+  return axios.get(`${config.baseUrl}/product/detail/${id}`);
 }
