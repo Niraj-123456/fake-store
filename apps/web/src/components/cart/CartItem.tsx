@@ -3,8 +3,8 @@ import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { Button } from "ui/components/ui/button";
-import { Input } from "ui/components/ui/input";
+import { Button } from "ui/lib/components/ui/button";
+import { Input } from "ui/lib/components/ui/input";
 import { toast } from "sonner";
 import useCartContext from "@/context/CartContext";
 

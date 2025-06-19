@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Circle, Plus } from "lucide-react";
 import { cn } from "ui/lib/utils";
-import { Button } from "ui/components/ui/button";
+import { Button } from "ui/lib/components/ui/button";
 import {
   deleteShippingAddress,
   getShippingAddressList,
@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "ui/components/ui/dialog";
+} from "ui/lib/components/ui/dialog";
 
 export type ShippingAddress = {
   _id?: string;

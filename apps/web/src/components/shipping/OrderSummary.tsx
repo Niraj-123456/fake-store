@@ -7,8 +7,8 @@ import useCartContext from "@/context/CartContext";
 import { useSession } from "next-auth/react";
 import { createUserOrder } from "@/app/api/order";
 import { toast } from "sonner";
-import { Button } from "ui/components/ui/button";
-import CircularLoading from "ui/components/loading/circular-loading/circular-loading";
+import { Button } from "ui/lib/components/ui/button";
+import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
 import { useRouter } from "next/navigation";
 
 const OrderSummary = ({

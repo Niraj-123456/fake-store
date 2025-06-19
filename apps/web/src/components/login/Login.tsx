@@ -1,9 +1,9 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Button } from "ui/components/ui/button";
+import { Button } from "ui/lib/components/ui/button";
 import { signIn, useSession } from "next-auth/react";
-import { Input } from "ui/components/ui/input";
-import { Separator } from "ui/components/ui/separator";
+import { Input } from "ui/lib/components/ui/input";
+import { Separator } from "ui/lib/components/ui/separator";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { writeToLocalStorage } from "@/lib/localStorage";

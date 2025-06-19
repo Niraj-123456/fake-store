@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "ui/components/ui/button";
+import { Button } from "ui/lib/components/ui/button";
 
 const ProductAction = () => {
   return (

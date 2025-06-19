@@ -4,8 +4,8 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import { Button } from "ui/components/ui/button";
-import { Skeleton } from "ui/components/ui/skeleton";
+import { Button } from "ui/lib/components/ui/button";
+import { Skeleton } from "ui/lib/components/ui/skeleton";
 import { cn } from "ui/lib/utils";
 
 type OrderHistory = {

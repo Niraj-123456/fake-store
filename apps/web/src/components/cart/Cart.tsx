@@ -1,5 +1,5 @@
 "use client";
-import { Skeleton } from "ui/components/ui/skeleton";
+import { Skeleton } from "ui/lib/components/ui/skeleton";
 import OrderSummary from "./OrderSummary";
 import useCartContext from "@/context/CartContext";
 import CartItem from "./CartItem";

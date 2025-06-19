@@ -9,7 +9,7 @@ import {
   PaginationLink,
 } from "../ui/pagination";
 import { useRouter } from "next/navigation";
-import { cn } from "../../lib/utils";
+import { cn } from "../../utils";
 
 type Pagination = {
   currentPage: number;

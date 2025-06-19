@@ -4,7 +4,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import React, { ChangeEvent, useState } from "react";
-import { Button } from "ui/components/ui/button";
+import { Button } from "ui/lib/components/ui/button";
 
 const StripeCheckoutForm = ({ orderId }: { orderId: string }) => {
   const stripe = useStripe();

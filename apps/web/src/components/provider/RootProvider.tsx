@@ -4,7 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
-import { Toaster } from "ui/components/ui/sonner";
+import { Toaster } from "ui/lib/components/ui/sonner";
 import { CartProvider } from "@/context/CartContext";
 
 const queryClient = new QueryClient({

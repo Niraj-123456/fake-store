@@ -5,9 +5,13 @@ import {
   MenubarLabel,
   MenubarMenu,
   MenubarTrigger,
-} from "ui/components/ui/menubar";
-import { Input } from "ui/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "ui/components/ui/avatar";
+} from "ui/lib/components/ui/menubar";
+import { Input } from "ui/lib/components/ui/input";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "ui/lib/components/ui/avatar";
 import {
   LogOut,
   PlusCircle,

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "./custom-slider.module.css";
 import { cn } from "ui/lib/utils";
-import { Button } from "ui/components/ui/button";
+import { Button } from "ui/lib/components/ui/button";
 import Link from "next/link";
 
 type Image = {

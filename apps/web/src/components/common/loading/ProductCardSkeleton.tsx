@@ -1,4 +1,4 @@
-import { Skeleton } from "ui/components/ui/skeleton";
+import { Skeleton } from "ui/lib/components/ui/skeleton";
 import React from "react";
 
 const ProductCardSkeleton = () => {

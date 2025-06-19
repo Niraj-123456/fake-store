@@ -1,9 +1,9 @@
-import { Button } from "ui/components/ui/button";
+import { Button } from "ui/lib/components/ui/button";
 import {
   Pagination,
   PaginationItem,
   PaginationEllipsis,
-} from "ui/components/ui/pagination";
+} from "ui/lib/components/ui/pagination";
 import { cn } from "ui/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import { Button } from "ui/components/ui/button";
+import { Button } from "ui/lib/components/ui/button";
 import { Home } from "lucide-react";
 
 const Error = ({

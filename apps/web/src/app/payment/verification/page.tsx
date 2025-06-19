@@ -1,11 +1,13 @@
 import PaymentVerification from "@/components/payment/PaymentVerification";
-import React from "react";
+import React, { Suspense } from "react";
 
 const page = () => {
   return (
-    <div>
-      <PaymentVerification />
-    </div>
+    <Suspense fallback={"Loading..."}>
+      <div>
+        <PaymentVerification />
+      </div>
+    </Suspense>
   );
 };
 

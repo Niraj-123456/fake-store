@@ -1,0 +1,12 @@
+version: "1.0"
+
+services:
+  web:
+    dockerfile: Dockerfile
+    context: ./web
+  environment:
+    - NODE_ENV=development
+    - port=3000
+  admin:
+    dockerfile: Dockerfile
+    context: ./admin

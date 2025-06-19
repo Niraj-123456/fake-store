@@ -1,11 +1,13 @@
 import OrderConfirmation from "@/components/order/OrderConfirmation";
-import React from "react";
+import React, { Suspense } from "react";
 
 const OrderSuccessPage = () => {
   return (
-    <div>
-      <OrderConfirmation />
-    </div>
+    <Suspense fallback={"Loading"}>
+      <div>
+        <OrderConfirmation />
+      </div>
+    </Suspense>
   );
 };
 

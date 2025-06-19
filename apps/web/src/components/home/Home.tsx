@@ -6,7 +6,7 @@ import ProductImage from "../products/ProductImage";
 import { Category, Product } from "@/types/product";
 import Link from "next/link";
 import CategoyCard from "../categories/CategoyCard";
-import { Skeleton } from "ui/components/ui/skeleton";
+import { Skeleton } from "ui/lib/components/ui/skeleton";
 import HomeBanner from "../banner/HomeBanner";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -19,7 +19,7 @@ const Home = () => {
     isFetching,
     isLoading,
   } = useQuery("homeData", getHomeData);
-  
+
   useEffect(() => {
     if (session) {
       //@ts-ignore

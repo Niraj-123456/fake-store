@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "ui/components/ui/button";
-import { Input } from "ui/components/ui/input";
-import { Checkbox } from "ui/components/ui/checkbox";
+import { Button } from "ui/lib/components/ui/button";
+import { Input } from "ui/lib/components/ui/input";
+import { Checkbox } from "ui/lib/components/ui/checkbox";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {

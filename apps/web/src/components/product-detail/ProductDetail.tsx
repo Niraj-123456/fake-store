@@ -1,11 +1,16 @@
 "use client";
 import { useState } from "react";
 import ProductRating from "../products/ProductRating";
-import { Button } from "ui/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "ui/components/ui/form";
+import { Button } from "ui/lib/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+} from "ui/lib/components/ui/form";
 import { Minus, Plus } from "lucide-react";
-import { Input } from "ui/components/ui/input";
-import { Skeleton } from "ui/components/ui/skeleton";
+import { Input } from "ui/lib/components/ui/input";
+import { Skeleton } from "ui/lib/components/ui/skeleton";
 import { useForm } from "react-hook-form";
 import ProductImage from "../products/ProductImage";
 import { useParams } from "next/navigation";

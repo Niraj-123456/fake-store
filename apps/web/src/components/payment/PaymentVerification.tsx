@@ -4,7 +4,7 @@ import { CircleCheckBig, CircleX } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import CircularLoading from "ui/components/loading/circular-loading/circular-loading";
+import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
 
 const PaymentVerification = () => {
   const router = useRouter();

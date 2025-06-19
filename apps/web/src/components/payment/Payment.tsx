@@ -7,7 +7,7 @@ import { createPaymentIntent } from "@/app/api/payment";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useQuery } from "react-query";
-import CircularLoading from "ui/components/loading/circular-loading/circular-loading";
+import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || ""

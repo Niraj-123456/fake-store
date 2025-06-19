@@ -1,11 +1,11 @@
 import { addShippingAddress } from "@/app/api/shipping";
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { Button } from "ui/components/ui/button";
-import { Input } from "ui/components/ui/input";
-import { Label } from "ui/components/ui/label";
+import { Button } from "ui/lib/components/ui/button";
+import { Input } from "ui/lib/components/ui/input";
+import { Label } from "ui/lib/components/ui/label";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
-import CircularLoading from "ui/components/loading/circular-loading/circular-loading";
+import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
 
 const ShippingForm = () => {
   const { data: session } = useSession();
