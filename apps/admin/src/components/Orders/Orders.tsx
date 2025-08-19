@@ -7,8 +7,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "ui/components/ui/table";
-import CircularLoading from "ui/components/loading/circular-loading/circular-loading";
+} from "ui/lib/components/ui/table";
+import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
 import { cn } from "ui/lib/utils";
 import { orderStatusButtonStyles } from "ui/lib/order";
 import {
@@ -17,7 +17,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "ui/components/ui/select";
+} from "ui/lib/components/ui/select";
 
 const Orders = () => {
   const { fetching, orders } = userOrders();

@@ -8,7 +8,7 @@ import {
   FormControl,
   FormLabel,
   FormMessage,
-} from "ui/components/ui/form";
+} from "ui/lib/components/ui/form";
 import {
   Select,
   SelectGroup,
@@ -17,11 +17,11 @@ import {
   SelectTrigger,
   SelectContent,
   SelectLabel,
-} from "ui/components/ui/select";
+} from "ui/lib/components/ui/select";
 import { Plus, X } from "lucide-react";
-import { DialogClose, DialogFooter } from "ui/components/ui/dialog";
-import { Input } from "ui/components/ui/input";
-import { Button } from "ui/components/ui/button";
+import { DialogClose, DialogFooter } from "ui/lib/components/ui/dialog";
+import { Input } from "ui/lib/components/ui/input";
+import { Button } from "ui/lib/components/ui/button";
 import axios from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

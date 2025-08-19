@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "ui/components/ui/table";
+} from "ui/lib/components/ui/table";
 
 const orders = [
   {

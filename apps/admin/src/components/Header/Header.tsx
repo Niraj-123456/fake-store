@@ -1,6 +1,10 @@
 "use client";
 import { Bell } from "lucide-react";
-import { Avatar, AvatarImage, AvatarFallback } from "ui/components/ui/avatar";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "ui/lib/components/ui/avatar";
 import {
   Menubar,
   MenubarContent,
@@ -9,7 +13,7 @@ import {
   MenubarMenu,
   MenubarSeparator,
   MenubarTrigger,
-} from "ui/components/ui/menubar";
+} from "ui/lib/components/ui/menubar";
 import { User, Settings, LogOut } from "lucide-react";
 
 const Header = () => {

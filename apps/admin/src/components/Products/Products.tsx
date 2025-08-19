@@ -7,13 +7,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "ui/components/ui/table";
+} from "ui/lib/components/ui/table";
 import { Search } from "lucide-react";
-import CustomPagination from "ui/components/custom-pagination/CustomPagination";
+import CustomPagination from "ui/lib/components/custom-pagination/CustomPagination";
 import { useSearchParams } from "next/navigation";
-import { Skeleton } from "ui/components/ui/skeleton";
+import { Skeleton } from "ui/lib/components/ui/skeleton";
 import useProducts from "@next/hooks/products/useProducts";
-import { Suspense } from "react";
 
 type Product = {
   _id: string;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "ui/components/ui/skeleton";
+import { Skeleton } from "ui/lib/components/ui/skeleton";
 
 const RootLoading = () => {
   return (

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { Card, CardContent, CardFooter } from "ui/components/ui/card";
+import { Card, CardContent, CardFooter } from "ui/lib/components/ui/card";
 
 type CategoryCard = {
   image: string;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "ui/components/ui/button";
+import { Button } from "ui/lib/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "ui/components/ui/dialog";
+} from "ui/lib/components/ui/dialog";
 import { Plus } from "lucide-react";
 import ProductForm from "../common/ProductForm/ProductForm";
 

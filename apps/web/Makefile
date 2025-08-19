@@ -1,0 +1,29 @@
+
+IMAGE_NAME=fake-store-web-frontend
+CONTAINER_NAME=fake-store-web-frontend-container
+PORT=3000
+DOCKER_FILE=Dockerfile
+
+# build docker image
+docker-build:
+	docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE} .
+
+# remove docker image
+docker-image-remove:
+	docker image rm ${IMAGE_NAME}
+
+# run docker container
+docker-run: 
+	docker run -d --name ${CONTAINER_NAME} --restart=always -p ${PORT}:${PORT} ${IMAGE_NAME}
+
+# start docker container
+docker-start:
+	docker start -a ${CONTAINER_NAME}
+
+# stop docker container
+docker-stop:
+	docker stop ${CONTAINER_NAME}
+
+#remove docker container
+docker-remove:
+	docker container rm ${CONTAINER_NAME}

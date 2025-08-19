@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { imageURLCleaner } from "ui/lib/imageFormatter";
-import { Skeleton } from "ui/components/ui/skeleton";
+import { Skeleton } from "ui/lib/components/ui/skeleton";
 import axios from "axios";
 
 const TopSelling = () => {
