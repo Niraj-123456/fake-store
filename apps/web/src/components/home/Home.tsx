@@ -63,7 +63,7 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fit, minmax(10em, 25em)] gap-4 gap-x-6 mt-4 overflow-hidden sm:grid-flow-col sm:auto-cols-fr">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 gap-x-6 mt-4 overflow-hidden">
           {homeData?.data?.recommended?.map((product: Product) => (
             <Link key={product._id} href={`/product/${product._id}`}>
               <ProductCard
@@ -95,7 +95,7 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fit, minmax(10em, 25em)] gap-4 gap-x-6 mt-4 overflow-hidden sm:grid-flow-col sm:auto-cols-fr">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 gap-x-6 mt-4 overflow-hidden">
           {homeData?.data?.categories?.map((category: Category) => (
             <CategoyCard
               key={category._id}
@@ -116,7 +116,7 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fit, minmax(10em, 25em)] gap-4 gap-x-6 mt-4 overflow-hidden sm:grid-flow-col sm:auto-cols-fr">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 gap-x-6 mt-4 overflow-hidden">
           {homeData?.data?.newArrivals?.map((product: Product) => (
             <Link key={product._id} href={`/product/${product._id}`}>
               <ProductCard

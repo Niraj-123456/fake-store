@@ -98,7 +98,7 @@ const OrderHistory = () => {
                   </div>
                   <div>
                     <p className="font-semibold">Total amount</p>
-                    <p className="pt-1 text-sm">${order?.amount}</p>
+                    <p className="pt-1 text-sm">${order?.finalAmount}</p>
                   </div>
                   <div className="text-center">
                     <p className="font-semibold">Status</p>

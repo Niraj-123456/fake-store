@@ -19,12 +19,26 @@ const PaymentVerification = () => {
     () => paymentVerification(paymentIntentId),
     {
       enabled: !!paymentIntentId,
+      refetchInterval: (data: any) => {
+        // keep polling if payment is still processing
+        console.log("data", data);
+        if (!data || data?.data?.status === "processing") {
+          return 2000; // poll every 2s
+        }
+        return false;
+      },
+      refetchIntervalInBackground: true,
     }
   );
 
+  console.log("is fetching", isFetching);
+
   const paymentStatus = data?.data?.status;
+
+  console.log("payment status", paymentStatus);
+
   useEffect(() => {
-    if (paymentStatus) {
+    if (paymentStatus === "succeeded") {
       const timer = setInterval(() => {
         setCountDown((prev) => {
           if (prev <= 1) {
@@ -43,12 +57,13 @@ const PaymentVerification = () => {
     <div className="border border-gray-200 rounded-sm py-4 px-8 text-center">
       <h4 className="text-3xl font-semibold">Payment Verification</h4>
       <div className="grid place-items-center p-4">
-        {isFetching && (
-          <div className="grid place-items-center">
-            <CircularLoading width={"6rem"} thickness={3} />
-            <p className="pt-2">Please wait...</p>
-          </div>
-        )}
+        {isFetching ||
+          (paymentStatus === "processing" && (
+            <div className="grid place-items-center">
+              <CircularLoading width={"6rem"} thickness={3} />
+              <p className="pt-2">Please wait...</p>
+            </div>
+          ))}
         {data?.data?.status === "succeeded" && (
           <div className="grid place-items-center">
             <CircleCheckBig className="h-24 w-24 stroke-green-600" />
@@ -68,7 +83,9 @@ const PaymentVerification = () => {
         <p className="text-2xl font-semibold">$200</p>
       </div>
 
-      <div className="mt-4">Redirecting in {countDown}s</div>
+      {paymentStatus === "succeeded" && (
+        <div className="mt-4">Redirecting in {countDown}s</div>
+      )}
     </div>
   );
 };

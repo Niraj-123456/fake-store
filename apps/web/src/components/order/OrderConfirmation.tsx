@@ -41,7 +41,7 @@ const OrderConfirmation = () => {
         <div>
           <Link
             href={"/"}
-            className="border rounded-md py-3 px-4 bg-primary text-white transition-all duration-200 ease-in-out hover:bg-primary/80"
+            className="border whitespace-nowrap rounded-md py-3 px-4 bg-primary text-white transition-all duration-200 ease-in-out hover:bg-primary/80"
           >
             Continue Shopping
           </Link>
