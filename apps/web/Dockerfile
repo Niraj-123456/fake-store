@@ -1,30 +1,64 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine3.19 AS base
+
+# Generate a partial monorepo for a target package. The output will be placed into a directory named "out"
+FROM base AS prune
+RUN apk update
+RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
-
-# 2. Install dependencies
-COPY package*.json ./
-RUN npm install --frozen-lockfile
-
-# 3. Copy app source code
+RUN npm install turbo --global
 COPY . .
+RUN turbo prune web --docker
 
-# 4. Build the Next.js app
-RUN npm run build
-
-# 5. Production image
-FROM node:18-alpine AS runner
+# Responsible for creating an authentication between our dockerfile and the private gituhb repositories
+FROM base AS authentication
 WORKDIR /app
 
-# Create non-root user
-RUN addgroup -S web-group && adduser -S web-user -G web-group
+# This Step only installs Production & Dev dependencies
+FROM base AS installer
+RUN apk update
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+# the /out/json contain the package.json file that is used to install packages related to the "web" 
+COPY --from=prune /app/out/json/ .
+
+RUN npm install
+
+# This Step only installs Production dependencies only
+FROM base AS installer-production
+RUN apk update
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+# the /out/json contain the package.json file that is used to install packages related to the "web" 
+COPY --from=prune /app/out/json/ .
+
+RUN npm install --only=production
+
+# Uses the dev & production dependencies to make a production build
+FROM base AS builder
+WORKDIR /app
+COPY --from=installer /app/node_modules /app/node_modules
+
+# the /out/full contain the code files that is used to run the package "web" 
+COPY --from=prune /app/out/full/ .
+
+RUN npx turbo build --filter=web
+
+# runner will use the builder output, and use only the node_modules for production to reduce the size of the final image
+FROM base AS runner
+WORKDIR /app
+
+# Don't run production as root
+RUN addgroup --system --gid 1001 web-group
+RUN adduser --system --uid 1001 web-user
 USER web-user
 
-# Copy built app and dependencies
-COPY --from=base /app/.next ./.next
-COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/public ./public
-COPY --from=base /app/package.json ./package.json
+# Copy Production dependencies, build and public dirctories
+COPY --from=installer-production --chown=web-user:web-group /app/node_modules /app/node_modules
+COPY --from=prune   --chown=web-user:web-group /app/out/json/ .
+COPY --from=builder --chown=web-user:web-group /app/apps/web/build /app/apps/web/build
+COPY --from=builder --chown=web-user:web-group /app/apps/web/public /app/apps/web/public
 
-# 6. Expose port and run
-EXPOSE 3000
+WORKDIR /app/apps/web
+
 CMD ["npm", "run", "start"]
