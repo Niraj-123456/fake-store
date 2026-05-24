@@ -29,7 +29,7 @@ const Home = () => {
 
   if (isFetching || isLoading) {
     return (
-      <>
+      <div className="w-full max-w-7xl mx-auto px-6 py-8">
         <Skeleton className="w-full h-80" />
 
         <div className="mt-12">
@@ -48,36 +48,52 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <HomeBanner banners={homeData?.data?.banners} />
+    <div className="w-full max-w-7xl mx-auto px-6 py-8">
+      {homeData?.data?.banners?.length > 0 && (
+        <HomeBanner banners={homeData?.data?.banners || []} />
+      )}
+
       <section aria-label="recommended for you" className="mt-12 w-full">
-        <div className="flex justify-between items-end">
-          <h1 className="text-2xl font-semibold">Recommended For You</h1>
-          <Link href={"/products"} className="text-sm underline text-blue-800">
+        <div className="flex justify-between items-end mb-10">
+          <div>
+            <h2 className="text-3xl font-extrabold tracking-tight">
+              Recommended For You
+            </h2>
+            <p className="text-slate-400 text-sm font-medium mt-1">
+              Based on your recent browsing.
+            </p>
+          </div>
+          <Link
+            href={"/products"}
+            className="ttext-sm font-bold text-blue-600 hover:underline"
+          >
             See All
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 gap-x-6 mt-4 overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {homeData?.data?.recommended?.map((product: Product) => (
             <Link key={product._id} href={`/product/${product._id}`}>
               <ProductCard
                 image={
-                  <ProductImage
-                    image={product.images[0]}
-                    alt={"product"}
-                    className="w-full h-full"
-                  />
+                  <ProductImage image={product.images[0]} alt={"product"} />
                 }
                 info={
-                  <div className="px-2 py-4">
-                    <p className="line-clamp-2 max-h-12">{product.title}</p>
-                    <p className="text-gray-600 pt-2">${product.price}</p>
+                  <div className="px-2">
+                    <h4 className="font-bold text-slate-800 mb-1">
+                      {product.title}
+                    </h4>
+                    <p className="text-slate-400 text-xs mb-4">
+                      Footwear • Crimson Red
+                    </p>
+                    <span className="text-2xl font-black text-slate-900">
+                      ${product.price}
+                    </span>
                   </div>
                 }
               />
@@ -88,14 +104,17 @@ const Home = () => {
 
       {/* categories */}
       <section aria-label="categories" className="mt-12">
-        <div className="flex justify-between">
-          <h1 className="text-2xl font-semibold">Categories</h1>
-          <Link href={"/products"} className="text-sm underline text-blue-800">
-            See All
+        <div className="flex justify-between items-end mb-8">
+          <h2 className="text-3xl font-extrabold tracking-tight">Categories</h2>
+          <Link
+            href={"/products"}
+            className="text-sm font-bold text-blue-600 hover:underline"
+          >
+            Explore All
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 gap-x-6 mt-4 overflow-hidden">
+        <div className="flex gap-10 overflow-x-auto hide-scrollbar pb-4 px-2">
           {homeData?.data?.categories?.map((category: Category) => (
             <CategoyCard
               key={category._id}
@@ -138,7 +157,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

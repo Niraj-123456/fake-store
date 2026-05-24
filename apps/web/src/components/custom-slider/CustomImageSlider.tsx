@@ -27,13 +27,13 @@ const CustomImageSlider = ({ images }: { images: Image[] }) => {
 
   const handleNext = () => {
     setActiveIndex((prev) =>
-      prev >= images?.length - 1 ? 0 : activeIndex + 1
+      prev >= images?.length - 1 ? 0 : activeIndex + 1,
     );
   };
 
   const handlePrev = () => {
     setActiveIndex((prev) =>
-      prev <= 0 ? images?.length - 1 : activeIndex - 1
+      prev <= 0 ? images?.length - 1 : activeIndex - 1,
     );
   };
 
@@ -56,7 +56,7 @@ const CustomImageSlider = ({ images }: { images: Image[] }) => {
       aria-label="image-slider"
       onMouseEnter={autoPlayStop}
       onMouseLeave={autoPlayStart}
-      className="relative border w-full h-80 p-0 aspect-[4/3] overflow-hidden flex justify-start items-center flex-nowrap rounded-sm"
+      className="relative h-[500px] rounded-[3rem] overflow-hidden mb-16 shadow-2xl shadow-slate-200"
     >
       <Link
         href={"#skip-image-slider-controls"}
@@ -105,7 +105,7 @@ const CustomImageSlider = ({ images }: { images: Image[] }) => {
               "w-4 h-4 rounded-full border-2 transition-all duration-1000",
               activeIndex === index
                 ? "bg-gray-900 bg-opacity-1"
-                : "bg-opacity-0"
+                : "bg-opacity-0",
             )}
             onClick={() => handleGoto(index)}
           />

@@ -10,7 +10,7 @@ import { useQuery } from "react-query";
 import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || ""
+  process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || "",
 );
 
 const Payment = () => {
@@ -25,7 +25,7 @@ const Payment = () => {
     () => createPaymentIntent(orderId!, userId!),
     {
       enabled: !!userId,
-    }
+    },
   );
 
   const clientSecret = data?.data?.client_secret;
@@ -40,7 +40,7 @@ const Payment = () => {
   } as StripeElementsOptions;
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex w-full  justify-center items-center h-full">
       {isFetching ? (
         <div>
           <CircularLoading width={"5rem"} thickness={4} />

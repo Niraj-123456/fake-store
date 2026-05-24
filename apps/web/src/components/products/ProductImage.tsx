@@ -18,7 +18,10 @@ const ProductImage = ({ image, alt, className, priority }: ProductImage) => {
       fill
       priority={priority}
       sizes="100%"
-      className={cn("object-cover object-center", className)}
+      className={cn(
+        "w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700",
+        className,
+      )}
     />
   );
 };

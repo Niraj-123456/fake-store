@@ -6,6 +6,7 @@ import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { Toaster } from "ui/lib/components/ui/sonner";
 import { CartProvider } from "@/context/CartContext";
+import { usePathname } from "next/navigation";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,15 +18,17 @@ const queryClient = new QueryClient({
 });
 
 const RootProvider = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
         <CartProvider>
-          <Header />
-          <main className="w-full mx-auto max-w-[95vw] min-h-[calc(100vh-72px)] grid pb-6 px-10 sm:px-14 md:px-20">
+          {pathname !== "/login" && pathname !== "/register" && <Header />}
+          <main className="w-full mx-auto min-h-[calc(100vh-72px)] grid">
             {children}
           </main>
-          <Footer />
+
+          {pathname !== "/login" && pathname !== "/register" && <Footer />}
         </CartProvider>
         <Toaster />
       </QueryClientProvider>

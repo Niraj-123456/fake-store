@@ -3,17 +3,21 @@ import type { Category } from "@/types/product";
 
 const CategoyCard = ({ image, name }: Category) => {
   return (
-    <div className="w-full h-full border rounded-md cursor-pointer hover:shadow-md overflow-hidden transition-all duration-300 hover:bg-gray-200 hover:bg-opacity-40">
-      <div className="w-full h-64 relative -z-10 bg-white overflow-hidden grid place-items-center">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          sizes="100%"
-          className="w-full h-full object-cover object-center"
-        />
+    <div className="flex flex-col justify-center items-center gap-3 shrink-0 group cursor-pointer">
+      <div className="p-1 border-2 border-slate-100 rounded-full group group-hover:border-slate-900 transition-all">
+        <div className="w-24 h-24 rounded-full bg-white relative">
+          <Image
+            src={image}
+            alt={name}
+            fill
+            sizes="100%"
+            className="w-full h-full object-cover rounded-full"
+          />
+        </div>
       </div>
-      <div className="p-6 justify-center font-semibold">{name}</div>
+      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-slate-900">
+        {name}
+      </span>
     </div>
   );
 };

@@ -75,10 +75,8 @@ const AppleIcon = () => (
     width="22"
     height="22"
     viewBox="0,0,256,256"
-    style={{ fill: "#000000" }}
   >
     <g
-      fill="#ffffff"
       fillRule="nonzero"
       stroke="none"
       strokeWidth="1"
@@ -144,89 +142,178 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="bg-gray-100 max-w-xl px-4 py-10 w-[36rem] flex flex-col justify-center items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold p-4">
-            Please login to continue...
-          </h1>
-        </div>
+    <div className="w-full h-full flex max-h-screen">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-slate-900 overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2000&auto=format&fit=crop"
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          alt="Discover Collections"
+        />
 
-        <div className="w-full py-4 px-20">
-          <form onSubmit={handleLoginWithCredentials}>
-            <div className="flex flex-col gap-2">
-              <label className="text-gray-600">Email</label>
+        <div className="relative z-10 w-full flex flex-col justify-between p-16 text-white">
+          <div className="flex items-center gap-2 font-extrabold text-2xl tracking-tight">
+            <div className="bg-white text-slate-900 p-1.5 rounded-xl">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
+            </div>
+            Fake Store
+          </div>
+
+          <div className="max-w-md">
+            <h2 className="text-5xl font-extrabold leading-tight mb-6">
+              Welcome back to the collection.
+            </h2>
+            <p className="text-lg text-slate-200 leading-relaxed mb-8">
+              Log in to access your saved items, track your recent orders, and
+              see what's new in your personalized feed.
+            </p>
+
+            <div className="p-6 bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20">
+              <p className="italic text-slate-100 mb-4 text-sm">
+                "The best shopping experience I've had online. The curated
+                collections are always on point!"
+              </p>
+              <div className="flex items-center gap-3">
+                <img
+                  className="w-10 h-10 rounded-full border-2 border-white/20"
+                  src="https://i.pravatar.cc/100?img=5"
+                />
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest">
+                    Sarah Jenkins
+                  </p>
+                  <p className="text-[10px] text-slate-400">Verified Shopper</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-sm text-slate-400">
+            &copy; 2024 Fake Store Inc. All rights reserved.
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 lg:p-24 bg-white">
+        <div className="w-full max-w-md">
+          <div className="lg:hidden flex items-center gap-2 font-extrabold text-xl mb-12">
+            <div className="bg-slate-900 text-white p-1 rounded-lg">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
+            </div>
+            Fake Store
+          </div>
+
+          <div className="mb-10">
+            <h1 className="text-4xl font-extrabold tracking-tight mb-3">
+              Sign In
+            </h1>
+            <p className="text-slate-500 font-medium">
+              Enter your credentials to access your account.
+            </p>
+          </div>
+
+          <form onSubmit={handleLoginWithCredentials} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">
+                Email
+              </label>
               <Input
                 name="username"
-                placeholder="Your Username..."
+                placeholder="name@company.com"
                 value={userCredentials?.username}
                 onChange={handleChange}
+                className="w-full px-5 py-4 h-14 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
               />
             </div>
-            <div className="flex flex-col gap-2 mt-3">
-              <label className="text-gray-600">Password</label>
+            <div className="space-y-2 mt-3">
+              <div className="flex justify-between items-center px-1">
+                <label className="text-xs font-bold uppercase tracking-widest text-slate-400">
+                  Password
+                </label>
+                <a
+                  href="#"
+                  className="text-xs font-bold text-blue-600 hover:underline"
+                >
+                  Forgot?
+                </a>
+              </div>
               <Input
                 name="password"
                 type="password"
-                placeholder="Your Password..."
+                placeholder="••••••••••••"
                 value={userCredentials?.password}
                 onChange={handleChange}
+                className="w-full px-5 py-4 h-14 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
               />
             </div>
-            <div className="mt-4 flex justify-between">
-              <Button type="submit" className="text-md">
-                Login
-              </Button>
-              <div className="text-right">
-                <a href="/forgot-password" className="text-xs text-blue-700">
-                  Forgot Password
-                </a>
-                <p className="text-xs">
-                  Don't have account?{" "}
-                  <a href="/register" className="text-blue-700">
-                    Register
-                  </a>
-                </p>
-              </div>
-            </div>
+
+            <Button
+              type="submit"
+              className="text-base w-full bg-slate-900 h-14 rounded-2xl font-bold"
+            >
+              Login
+            </Button>
           </form>
-        </div>
 
-        <div className="flex items-center justify-center my-8">
-          <Separator />
-          <p className="px-4 whitespace-nowrap text-sm text-gray-400">
-            Or Signin with
+          <div className="relative my-10">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-100"></div>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase font-bold tracking-widest text-slate-300">
+              <span className="bg-white px-4">Or continue with</span>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <button className="w-full flex items-center justify-center gap-3 border border-slate-200 py-3.5 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-[0.98]">
+              {signingIn ? "..." : <GoogleIcon />}
+              Google
+            </button>
+
+            <div className="grid grid-cols-2 gap-3">
+              <button className="flex items-center justify-center gap-2 border border-slate-200 py-3 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-[0.98]">
+                <FacebookIcon />
+                Facebook
+              </button>
+              <button className="flex items-center justify-center gap-2 border border-slate-200 py-3 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-[0.98]">
+                <AppleIcon />
+                Apple
+              </button>
+            </div>
+          </div>
+
+          <p className="text-center mt-10 text-sm text-slate-400 font-medium">
+            New to Fake Store?{" "}
+            <a
+              href="/register"
+              className="text-blue-600 font-bold hover:underline"
+            >
+              Create an account
+            </a>
           </p>
-          <Separator />
-        </div>
-
-        <div className="flex flex-col gap-4 w-full px-24">
-          <Button
-            size={"lg"}
-            className="w-full"
-            onClick={() => handleLoginWithProvider("google")}
-          >
-            Login with Google
-            {signingIn ? (
-              "..."
-            ) : (
-              <span className="ml-4">
-                <GoogleIcon />
-              </span>
-            )}
-          </Button>
-          <Button size={"lg"} className="w-full">
-            Login with Facebook
-            <span className="ml-4">
-              <FacebookIcon />
-            </span>
-          </Button>
-          <Button size={"lg"} className="w-full">
-            Login with Apple
-            <span className="ml-4">
-              <AppleIcon />
-            </span>
-          </Button>
         </div>
       </div>
     </div>

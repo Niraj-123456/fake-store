@@ -122,31 +122,31 @@ const ProductDetail = () => {
       <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
         {product?.images?.length > 0 && (
           <div className="flex flex-col gap-6 p-2">
-            <div className="relative w-full h-[490px]">
+            <div className="relative w-full h-[490px] group overflow-hidden rounded-3xl">
               <ProductImage
-                className="w-full h-full"
+                className="w-full h-full group-hover:scale-110 transition-transform duration-500"
                 image={product?.images[selectedImageIdx]}
                 alt={product?.title}
                 priority={true}
               />
             </div>
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center gap-3">
               {product?.images?.map((image, idx) => (
                 <div
                   onClick={() => handleUpdateSelectedImageIdx(idx)}
                   key={idx}
                   className={cn(
-                    "rounded-md p-1 cursor-pointer transition-all hover:border-gray-800 hover:shadow-md",
+                    "rounded-2xl relative w-20 h-20 p-1 cursor-pointer transition-all border-2",
                     idx === selectedImageIdx
-                      ? "ring-2 ring-gray-800"
-                      : "ring-1 ring-gray-400"
+                      ? "ring-4 ring-blue-50 border-blue-600"
+                      : "border-transparent hover:border-slate-300",
                   )}
                 >
-                  <div className="relative w-20 h-20">
+                  <div className="w-full h-full overflow-hidden relative">
                     <ProductImage
                       image={image}
                       alt={product.title}
-                      className="w-full h-full"
+                      className="w-full h-full rounded-xl"
                     />
                   </div>
                 </div>
@@ -157,27 +157,29 @@ const ProductDetail = () => {
 
         {/* Product info */}
         <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            {product?.title}
-          </h1>
-
-          <div className="mt-3">
-            <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-gray-900">
-              ${product?.price}
-            </p>
-          </div>
-
           {/* Reviews */}
-          <div className="mt-3">
-            <ProductRating rating={{ rate: 4, count: 140 }} />
+          <div className="space-y-2">
+            <div className="mt-3">
+              <ProductRating rating={{ rate: 4, count: 140 }} />
+            </div>
+
+            <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">
+              {product?.title}
+            </h1>
+
+            <div className="mt-3">
+              <h2 className="sr-only">Product information</h2>
+              <p className="text-3xl font-bold text-blue-600">
+                ${product?.price}
+              </p>
+            </div>
           </div>
 
           <div className="mt-6">
             <h3 className="sr-only">Description</h3>
 
             <div
-              className="space-y-6 text-base text-gray-700"
+              className="text-slate-500 leading-relaxed text-sm"
               dangerouslySetInnerHTML={{ __html: product?.description }}
             />
           </div>
@@ -185,49 +187,55 @@ const ProductDetail = () => {
           <div className="mt-6">
             <Form {...form}>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="flex gap-2 items-center">
-                  <Button
-                    type="button"
-                    variant={"default"}
-                    size={"sm"}
-                    className="text-lg"
-                    onClick={() => setValue("quantity", quantity - 1)}
-                    disabled={quantity === 1}
-                  >
-                    <Minus />
-                  </Button>
-                  <FormField
-                    control={control}
-                    name="quantity"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            readOnly
-                            placeholder="Quantity"
-                            {...field}
-                            className="py-3 text-lg max-w-sm w-40"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <Button
-                    type="button"
-                    className="text-lg"
-                    size={"sm"}
-                    onClick={() => setValue("quantity", quantity + 1)}
-                    disabled={quantity === maxStockQuantity}
-                  >
-                    <Plus />
-                  </Button>
+                <div className="flex gap-6 items-center">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    Quantity
+                  </span>
+                  <div className="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200">
+                    <Button
+                      type="button"
+                      variant={"ghost"}
+                      size={"sm"}
+                      className="text-lg hover:opacity-50 transition-all duration-300"
+                      onClick={() => setValue("quantity", quantity - 1)}
+                      disabled={quantity === 1}
+                    >
+                      <Minus />
+                    </Button>
+                    <FormField
+                      control={control}
+                      name="quantity"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              readOnly
+                              placeholder="Quantity"
+                              {...field}
+                              className="py-3 text-lg max-w-sm w-10 border-none shadow-none"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      variant={"ghost"}
+                      type="button"
+                      className="text-lg hover:opacity-50 transition-all duration-300"
+                      size={"sm"}
+                      onClick={() => setValue("quantity", quantity + 1)}
+                      disabled={quantity === maxStockQuantity}
+                    >
+                      <Plus />
+                    </Button>
+                  </div>
                 </div>
                 <div className="mt-6 flex gap-2 flex-col sm:flex-row">
                   <Button
                     disabled={addingToCart}
                     size={"lg"}
                     type="submit"
-                    className="bg-indigo-600 text-base  text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                    className="text-base focus:outline-none rounded-full h-14 sm:w-full"
                   >
                     {addingToCart ? "..." : "Add To Cart"}
                   </Button>
@@ -237,7 +245,7 @@ const ProductDetail = () => {
                     variant={"outline"}
                     size={"lg"}
                     type="submit"
-                    className="text-base  sm:w-full"
+                    className="text-base rounded-full h-14  sm:w-full"
                   >
                     Buy Now
                   </Button>
@@ -247,14 +255,31 @@ const ProductDetail = () => {
           </div>
 
           <div className="mt-8 border-t border-gray-200 pt-8">
-            <h2 className="text-sm font-medium text-gray-900">Features</h2>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
+              Highlights
+            </h3>
 
             <div className="prose prose-sm mt-4 text-gray-500">
-              <ul role="list">
-                <li>Only the best materials</li>
-                <li>Ethically and locally made</li>
-                <li>Pre-washed and pre-shrunk</li>
-                <li>Machine wash cold with similar colors</li>
+              <ul
+                role="list"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6"
+              >
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <span className="text-blue-600">●</span> 40h Only the best
+                  materials
+                </li>
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <span className="text-blue-600">●</span> Ethically and locally
+                  made
+                </li>
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <span className="text-blue-600">●</span> Pre-washed and
+                  pre-shrunk
+                </li>
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <span className="text-blue-600">●</span> Machine wash cold
+                  with similar colors
+                </li>
               </ul>
             </div>
           </div>

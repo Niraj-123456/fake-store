@@ -8,8 +8,8 @@ type ProductCard = {
 
 const ProductCard = ({ image, info, action }: ProductCard) => {
   return (
-    <div className="border border-gray-300 rounded-md w-full overflow-hidden flex flex-col h-full shadow-sm transition-all duration-300 hover:cursor-pointer hover:bg-gray-200 hover:bg-opacity-40">
-      <div className="relative w-full h-64 -z-10 bg-white overflow-hidden grid place-items-center">
+    <div className="group bg-white rounded-[2.5rem] p-4 border border-slate-100 hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500">
+      <div className="spect-square h-[16rem] rounded-[2rem] overflow-hidden bg-slate-50 mb-6 relative">
         {image}
       </div>
       {info}
