@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import styles from "./custom-slider.module.css";
 import { cn } from "ui/lib/utils";
 import { Button } from "ui/lib/components/ui/button";
 import Link from "next/link";
@@ -13,43 +12,56 @@ type Image = {
 };
 
 const CustomImageSlider = ({ images }: { images: Image[] }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  let timerId = useRef<NodeJS.Timeout | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
-  useEffect(() => {
-    timerId.current = setTimeout(() => {
-      handleNext();
-    }, 4000);
-    return () => {
-      clearTimeout(timerId.current!);
-    };
-  }, [activeIndex]);
+  const extendedImages = images?.length
+    ? [images[images.length - 1], ...images, images[0]]
+    : [];
 
-  const handleNext = () => {
-    setActiveIndex((prev) =>
-      prev >= images?.length - 1 ? 0 : activeIndex + 1,
-    );
-  };
+  const handleNext = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev + 1);
+  }, [isTransitioning]);
 
-  const handlePrev = () => {
-    setActiveIndex((prev) =>
-      prev <= 0 ? images?.length - 1 : activeIndex - 1,
-    );
-  };
+  const handlePrev = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev - 1);
+  }, [isTransitioning]);
 
-  const handleGoto = (idx: number) => {
-    setActiveIndex(idx);
-  };
+  const handleGoto = useCallback((idx: number) => {
+    setIsTransitioning(true);
+    setCurrentIndex(idx + 1);
+  }, []);
 
-  const autoPlayStop = () => {
-    if (timerId.current) {
-      clearTimeout(timerId.current);
+  const handleTransitionEnd = () => {
+    setIsTransitioning(false);
+    if (currentIndex === 0) {
+      setCurrentIndex(images.length);
+    } else if (currentIndex === images.length + 1) {
+      setCurrentIndex(1);
     }
   };
 
-  const autoPlayStart = () => {
-    handleNext();
-  };
+  useEffect(() => {
+    if (isPaused) return;
+    const timerId = setTimeout(() => {
+      handleNext();
+    }, 4000);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [currentIndex, isPaused, handleNext]);
+
+  const autoPlayStop = () => setIsPaused(true);
+  const autoPlayStart = () => setIsPaused(false);
+
+  if (!images || images.length === 0) return null;
+
+  const activeIndex = (currentIndex - 1 + images.length) % images.length;
 
   return (
     <section
@@ -64,24 +76,33 @@ const CustomImageSlider = ({ images }: { images: Image[] }) => {
       >
         Skip Image Slider
       </Link>
-      {images?.map((image, idx) => (
-        <div
-          key={idx}
-          aria-hidden={activeIndex !== idx}
-          className={`${styles.slider__item} ${
-            styles[`slider__item__active__${activeIndex + 1}`]
-          }`}
-        >
-          <Image
-            src={image.src}
-            alt={image.alt}
-            fill
-            priority
-            sizes="100%*100%"
-            className="object-cover w-full h-full object-center"
-          />
-        </div>
-      ))}
+      <div
+        className={cn(
+          "flex h-full",
+          isTransitioning && "transition-transform duration-1000 ease-in-out",
+        )}
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        onTransitionEnd={handleTransitionEnd}
+      >
+        {extendedImages.map((image, idx) => (
+          <div
+            key={idx}
+            aria-hidden={
+              activeIndex !== (idx - 1 + images.length) % images.length
+            }
+            className="relative min-w-full h-full"
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              priority={idx === 1}
+              sizes="100%*100%"
+              className="object-cover w-full h-full object-center"
+            />
+          </div>
+        ))}
+      </div>
       <Button
         aria-label="slider-image-previous"
         onClick={handlePrev}

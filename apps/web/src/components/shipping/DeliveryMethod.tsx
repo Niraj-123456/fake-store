@@ -28,7 +28,7 @@ const DeliveryMethod = ({
               "rounded-lg p-4 w-full relative cursor-pointer border",
               selectedMethod?.value === deliveryMethod?.value
                 ? "outline-2 outline-blue-600 outline"
-                : ""
+                : "",
             )}
           >
             <p className="font-medium">{deliveryMethod?.label}</p>
@@ -42,7 +42,7 @@ const DeliveryMethod = ({
                 "fill-blue-600 stroke-white absolute right-2 top-4 w-5 h-5 transition-opacity duration-200 ease-in-out",
                 selectedMethod?.value === deliveryMethod?.value
                   ? "opacity-100"
-                  : "opacity-0"
+                  : "opacity-0",
               )}
             />
           </div>

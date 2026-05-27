@@ -3,6 +3,7 @@ import { Skeleton } from "ui/lib/components/ui/skeleton";
 import OrderSummary from "./OrderSummary";
 import useCartContext from "@/context/CartContext";
 import CartItem from "./CartItem";
+import { ShoppingCart } from "lucide-react";
 
 const Cart = () => {
   const { fetching, cartItem, count } = useCartContext();
@@ -37,13 +38,79 @@ const Cart = () => {
   if (!cartItem?.products?.length) {
     return (
       <div className="mt-4 grid place-items-center">
-        <div>Cart is empty</div>
-        <a
-          href="/"
-          className="border bg-gray-900 text-white py-2 px-3 rounded-md transition-all duration-200 hover:bg-gray-700"
-        >
-          Continue Shopping
-        </a>
+        <div className="text-center max-w-md">
+          <div className="relative mb-10">
+            <div className="absolute inset-0 bg-blue-100/50 scale-150 blur-3xl rounded-full -z-10"></div>
+
+            <div className="w-32 h-32 bg-white rounded-[2.5rem] shadow-xl shadow-slate-200 flex items-center justify-center mx-auto border border-slate-100">
+              <ShoppingCart className="w-16 h-16 text-slate-300" />
+            </div>
+          </div>
+
+          <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-slate-900">
+            Your cart is lonely.
+          </h1>
+          <p className="text-slate-500 font-medium mb-10 leading-relaxed">
+            Looks like you haven't added anything to your shopping bag yet.
+            Explore our latest collections to find something special.
+          </p>
+
+          <a
+            href="/"
+            className="inline-block bg-slate-900 text-white px-10 py-5 rounded-3xl font-extrabold shadow-2xl shadow-slate-900/20 hover:scale-105 transition-all active:scale-95"
+          >
+            Start Shopping
+          </a>
+        </div>
+
+        <div className="mt-24 w-full max-w-2xl">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-px bg-slate-200 flex-1"></div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              Popular Categories
+            </span>
+            <div className="h-px bg-slate-200 flex-1"></div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <a
+              href="#"
+              className="group p-6 bg-white border border-slate-100 rounded-3xl text-center hover:shadow-lg transition-all"
+            >
+              <span className="block text-2xl mb-2 group-hover:scale-125 transition-transform">
+                👟
+              </span>
+              <span className="text-xs font-bold text-slate-600">Footwear</span>
+            </a>
+            <a
+              href="#"
+              className="group p-6 bg-white border border-slate-100 rounded-3xl text-center hover:shadow-lg transition-all"
+            >
+              <span className="block text-2xl mb-2 group-hover:scale-125 transition-transform">
+                🎧
+              </span>
+              <span className="text-xs font-bold text-slate-600">Audio</span>
+            </a>
+            <a
+              href="#"
+              className="group p-6 bg-white border border-slate-100 rounded-3xl text-center hover:shadow-lg transition-all"
+            >
+              <span className="block text-2xl mb-2 group-hover:scale-125 transition-transform">
+                ⌚
+              </span>
+              <span className="text-xs font-bold text-slate-600">Watches</span>
+            </a>
+            <a
+              href="#"
+              className="group p-6 bg-white border border-slate-100 rounded-3xl text-center hover:shadow-lg transition-all"
+            >
+              <span className="block text-2xl mb-2 group-hover:scale-125 transition-transform">
+                👜
+              </span>
+              <span className="text-xs font-bold text-slate-600">Bags</span>
+            </a>
+          </div>
+        </div>
       </div>
     );
   }

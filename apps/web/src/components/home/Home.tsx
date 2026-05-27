@@ -128,14 +128,24 @@ const Home = () => {
       {/* new arrivals */}
 
       <section aria-label="new arrivals" className="mt-12">
-        <div className="flex justify-between">
-          <h1 className="text-2xl font-semibold">New Arrivals</h1>
-          <Link href={"/products"} className="text-sm underline text-blue-800">
+        <div className="flex justify-between mb-10">
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-tight">
+              New Arrivals
+            </h1>
+            <p className="text-slate-400 text-sm font-medium mt-1">
+              The latest drops from our curated global brands.
+            </p>
+          </div>
+          <Link
+            href={"/products"}
+            className="ttext-sm font-bold text-blue-600 hover:underline"
+          >
             See All
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 gap-x-6 mt-4 overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {homeData?.data?.newArrivals?.map((product: Product) => (
             <Link key={product._id} href={`/product/${product._id}`}>
               <ProductCard
