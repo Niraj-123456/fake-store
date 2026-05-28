@@ -12,7 +12,7 @@ const Shipping = () => {
   const [selectedShippingAddress, setSelectedShippingAddress] =
     useState<ShippingAddress>();
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
-    deliveryMethods.STANDARD
+    deliveryMethods.STANDARD,
   );
 
   const handleChangeShippingAddress = (address: ShippingAddress) => {
@@ -24,37 +24,46 @@ const Shipping = () => {
   };
 
   return (
-    <div className="flex gap-10 mt-5">
-      <div className="flex flex-col gap-4 w-full">
-        <h4 className="text-2xl font-medium">Shipping Information</h4>
-        <div className="flex flex-col gap-6 divide-y">
-          <SavedShippingAddressList
-            selectedAddress={selectedShippingAddress}
-            onChangeShippingAddress={handleChangeShippingAddress}
-          />
-          <div className="w-full min-w-[40rem] mt-2 pt-4">
-            <h4 className="text-gray-700 text-lg font-medium">
-              New Shipping Address
-            </h4>
-            <div className="mt-4">
-              <ShippingForm />
-            </div>
-          </div>
-          <div className="mt-6 pt-4">
-            <DeliveryMethod
-              selectedMethod={selectedDeliveryMethod}
-              onChangeDeliveryMethod={handleChangeDeliveryMethod}
+    <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="lg:col-span-2 space-y-12">
+        <div>
+          <h2 className="text-2xl font-extrabold tracking-tight mb-6">
+            Shipping Information
+          </h2>
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
+            Saved Address
+          </h3>
+          <div className="flex flex-col gap-6 divide-y divide-gray-200/80">
+            <SavedShippingAddressList
+              selectedAddress={selectedShippingAddress}
+              onChangeShippingAddress={handleChangeShippingAddress}
             />
+            <div className="w-full min-w-[40rem] mt-4 pt-8">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
+                Add New Address
+              </h3>
+              <div className="mt-4">
+                <ShippingForm />
+              </div>
+            </div>
+            <div className="mt-6 pt-4">
+              <DeliveryMethod
+                selectedMethod={selectedDeliveryMethod}
+                onChangeDeliveryMethod={handleChangeDeliveryMethod}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className="w-full max-w-lg">
-        <h4 className="text-2xl font-medium">Order Summary</h4>
-        <div className="mt-4">
-          <OrderSummary
-            deliveryMethod={selectedDeliveryMethod}
-            shippingAddress={selectedShippingAddress}
-          />
+      <div className="relative">
+        <div className="lg:sticky lg:top-24 bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-2xl shadow-slate-900/20">
+          <h4 className="text-xl font-bold mb-8">Order Summary</h4>
+          <div className="mt-4">
+            <OrderSummary
+              deliveryMethod={selectedDeliveryMethod}
+              shippingAddress={selectedShippingAddress}
+            />
+          </div>
         </div>
       </div>
     </div>

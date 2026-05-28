@@ -13,6 +13,7 @@ const ShippingForm = () => {
   const userId = session?.user?.id;
   const [submitting, setSubmitting] = useState(false);
   const [shippingAddress, setShippinAddress] = useState({
+    title: "HOME",
     firstName: "",
     lastName: "",
     email: "",
@@ -29,6 +30,13 @@ const ShippingForm = () => {
     setShippinAddress((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleLabelChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setShippinAddress((prev) => ({
+      ...prev,
+      title: e.target.value.toUpperCase(),
     }));
   };
 
@@ -60,88 +68,183 @@ const ShippingForm = () => {
     <form
       onSubmit={handleSubmitShippingAddress}
       id="shippingForm"
-      className="mt-4 flex flex-col gap-4"
+      className="mt-4 flex flex-col gap-6"
     >
       <div className="flex gap-2 items-center">
         <div className="flex flex-col gap-2 w-full">
-          <Label>First Name</Label>
+          <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+            First Name
+          </Label>
           <Input
             id="firstName"
             name="firstName"
             value={shippingAddress?.firstName}
             onChange={handleChange}
+            className="w-full p-3.5 h-12 bg-white border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
           />
         </div>
         <div className="flex flex-col gap-2 w-full">
-          <Label>Last Name</Label>
+          <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+            Last Name
+          </Label>
           <Input
             id="lastName"
             name="lastName"
             value={shippingAddress?.lastName}
             onChange={handleChange}
+            className="w-full p-3.5 h-12 bg-white border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
           />
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Label>Email</Label>
+        <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+          Email
+        </Label>
         <Input
           id="email"
           name="email"
+          placeholder="johndoe@gmail.com"
           value={shippingAddress?.email}
           onChange={handleChange}
+          className="w-full p-3.5 h-12 bg-white border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
         />
       </div>
       <div className="flex flex-col gap-2">
-        <Label>Phone Number</Label>
+        <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+          Phone Number
+        </Label>
         <Input
           id="phoneNumber"
           name="phoneNumber"
           value={shippingAddress?.phoneNumber}
           onChange={handleChange}
+          className="w-full p-3.5 h-12 bg-white border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
         />
       </div>
       <div className="flex flex-col gap-2">
-        <Label>Street Name</Label>
+        <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+          Street Name
+        </Label>
         <Input
           id="streetName"
           name="streetName"
           value={shippingAddress?.streetName}
           onChange={handleChange}
+          className="w-full p-3.5 h-12 bg-white border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
         />
       </div>
       <div className="flex flex-col gap-2">
-        <Label>City</Label>
+        <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+          City
+        </Label>
         <Input
           id="city"
           name="city"
           value={shippingAddress?.city}
           onChange={handleChange}
+          className="w-full p-3.5 h-12 bg-white border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
         />
       </div>
       <div className="flex gap-2">
         <div className="flex flex-col gap-2 w-full">
-          <Label>Country</Label>
+          <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+            Country
+          </Label>
           <Input
             id="country"
             name="country"
             value={shippingAddress?.country}
             onChange={handleChange}
+            className="w-full p-3.5 h-12 bg-white border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
           />
         </div>
         <div className="flex flex-col gap-2 w-full">
-          <Label>Zip Code</Label>
+          <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+            Zip Code
+          </Label>
           <Input
             id="zipCode"
             name="zipCode"
             value={shippingAddress?.zipCode}
             onChange={handleChange}
+            className="w-full p-3.5 h-12 bg-white border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
           />
         </div>
       </div>
 
-      <div className="mt-2">
-        <Button type="submit" className="w-full" disabled={submitting}>
-          Add Shipping Information
+      <div className="space-y-2">
+        <p className="text-[11px] font-bold text-slate-400 uppercase ml-1">
+          Select a label for effective delivery
+        </p>
+
+        <div className="grid grid-cols-2 gap-4 mb-10">
+          <label className="relative cursor-pointer group">
+            <input
+              type="radio"
+              name="address_label"
+              value="home"
+              className="peer hidden"
+              checked={shippingAddress?.title === "HOME"}
+              onChange={handleLabelChange}
+            />
+
+            <div
+              className="flex items-center justify-center gap-3 py-4 px-6 border-2 border-slate-100 rounded-2xl bg-white transition-all 
+                            peer-checked:border-orange-500 peer-checked:bg-orange-50 peer-checked:shadow-lg peer-checked:shadow-orange-500/10
+                            group-hover:border-slate-200"
+            >
+              <svg
+                className="w-5 h-5 text-slate-400 peer-checked:text-orange-500 transition-colors"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+
+              <span className="text-xs font-black uppercase tracking-widest text-slate-600">
+                Home
+              </span>
+            </div>
+          </label>
+
+          <label className="relative cursor-pointer group">
+            <input
+              type="radio"
+              name="address_label"
+              value="office"
+              className="peer hidden"
+              checked={shippingAddress?.title === "OFFICE"}
+              onChange={handleLabelChange}
+            />
+
+            <div
+              className="flex items-center justify-center gap-3 py-4 px-6 border-2 border-slate-100 rounded-2xl bg-white transition-all 
+                            peer-checked:border-cyan-500 peer-checked:bg-cyan-50 peer-checked:shadow-lg peer-checked:shadow-cyan-500/10
+                            group-hover:border-slate-200"
+            >
+              <svg
+                className="w-5 h-5 text-slate-400 peer-checked:text-cyan-500 transition-colors"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
+              </svg>
+
+              <span className="text-xs font-black uppercase tracking-widest text-slate-600">
+                Office
+              </span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <Button
+          type="submit"
+          className="w-full h-14 rounded-2xl text-base tracking-wider"
+          disabled={submitting}
+        >
+          Save Address
           {submitting && (
             <CircularLoading
               width={"1.5rem"}

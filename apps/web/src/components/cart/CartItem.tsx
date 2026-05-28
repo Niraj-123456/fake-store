@@ -8,13 +8,21 @@ import { Input } from "ui/lib/components/ui/input";
 import { toast } from "sonner";
 import useCartContext from "@/context/CartContext";
 
-const CartItem = ({ cartId, product }: { cartId: string; product: any }) => {
+const CartItem = ({
+  cartId,
+  product,
+  showActions = true,
+}: {
+  cartId: string;
+  product: any;
+  showActions?: boolean;
+}) => {
   const { handleUpdateCartItemCount } = useCartContext();
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
     ({ cartId, productId }: { cartId: string; productId: string }) =>
-      deleteCartItem(cartId, productId)
+      deleteCartItem(cartId, productId),
   );
 
   return (
@@ -37,46 +45,54 @@ const CartItem = ({ cartId, product }: { cartId: string; product: any }) => {
             </div>
             <div className="text-sm pt-1 text-gray-600">${product?.price}</div>
           </div>
-          <div className="flex-1 mt-auto flex items-end">
-            <Button
-              size={"sm"}
-              variant={"link"}
-              className="text-red-700 p-0"
-              onClick={() =>
-                mutation.mutate(
-                  {
-                    cartId,
-                    productId: product?.productId,
-                  },
-                  {
-                    onSuccess: (data) => {
-                      toast.success("Cart item removed successfully");
-                      queryClient.setQueryData("cartItems", data);
-                      handleUpdateCartItemCount(1, "DECREMENT");
+          {showActions && (
+            <div className="flex-1 mt-auto flex items-end">
+              <Button
+                size={"sm"}
+                variant={"link"}
+                className="text-red-700 p-0"
+                onClick={() =>
+                  mutation.mutate(
+                    {
+                      cartId,
+                      productId: product?.productId,
                     },
-                    onError: () => {
-                      toast.error(
-                        "Something went wrong while removing cart item. Please try again"
-                      );
+                    {
+                      onSuccess: (data) => {
+                        toast.success("Cart item removed successfully");
+                        queryClient.setQueryData("cartItems", data);
+                        handleUpdateCartItemCount(1, "DECREMENT");
+                      },
+                      onError: () => {
+                        toast.error(
+                          "Something went wrong while removing cart item. Please try again",
+                        );
+                      },
                     },
-                  }
-                )
-              }
-            >
-              <Trash2 className="mr-1 w-4 h-4" />
-              Remove
-            </Button>
-          </div>
+                  )
+                }
+              >
+                <Trash2 className="mr-1 w-4 h-4" />
+                Remove
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="flex items-center gap-1">
-        <Button className="h-9" onClick={() => {}}>
-          -
-        </Button>
-        <Input value={product?.quantity} onChange={() => {}} className="w-12" />
-        <Button className="h-9">+</Button>
-      </div>
+      {showActions && (
+        <div className="flex items-center gap-1">
+          <Button className="h-9" onClick={() => {}}>
+            -
+          </Button>
+          <Input
+            value={product?.quantity}
+            onChange={() => {}}
+            className="w-12"
+          />
+          <Button className="h-9">+</Button>
+        </div>
+      )}
     </div>
   );
 };

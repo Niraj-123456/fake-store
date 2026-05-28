@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { Button } from "ui/lib/components/ui/button";
 import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
 import { useRouter } from "next/navigation";
+import CartItemSummary from "./CartItemSummary";
 
 const OrderSummary = ({
   deliveryMethod,
@@ -62,36 +63,38 @@ const OrderSummary = ({
   };
 
   return (
-    <div className="border py-4 rounded-md w-full">
-      <div className="flex flex-col divide-y gap-4">
+    <div className="py-4 rounded-md w-full">
+      <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-4 divide-y [&>:not(:first-child)]:pt-4">
           {cartItem?.products?.map((item: any) => (
-            <CartItem
-              key={item?.productId}
-              cartId={cartItem?._id}
-              product={item}
-            />
+            <CartItemSummary key={item?.productId} product={item} />
           ))}
         </div>
-        <div className="pt-4 flex flex-col gap-4 px-4">
+        <div className="pt-4 flex flex-col space-y-4 border-t border-slate-800 gap-4 px-4">
           <div className="flex items-center justify-between">
-            <span>Subtotal ({count} items)</span>
+            <span className="flex justify-between opacity-60">
+              Subtotal ({count} items)
+            </span>
             <span>${totalPrice}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span>Shipping Fee</span>
+            <span className="flex justify-between opacity-60">
+              Shipping Fee
+            </span>
             <span>${deliveryMethod.price}</span>
           </div>
-          <div className="flex items-center justify-between font-semibold border-t border-gray-200 pt-2">
-            <span>Total</span>
-            <span>${totalPrice + deliveryMethod?.price} </span>
+          <div className="flex items-center justify-between font-semibold border-t border-slate-800 pt-2">
+            <span className="text-lg opacity-80">Total</span>
+            <span className="text-3xl font-bold tracking-tighter">
+              ${finalPrice}
+            </span>
           </div>
         </div>
       </div>
       <div className="mt-4 px-4">
         <Button
           onClick={handleCreateOrder}
-          className="w-full"
+          className="w-full mt-10 bg-blue-600 h-14 hover:bg-blue-700 active:scale-[0.98] py-5 rounded-2xl font-bold shadow-lg shadow-blue-600/20"
           disabled={creating}
         >
           Proceed to Payment (${finalPrice})
@@ -104,6 +107,9 @@ const OrderSummary = ({
             />
           )}
         </Button>
+        <p className="text-[10px] text-slate-500 text-center mt-6 uppercase tracking-widest font-bold">
+          🔒 Secure Encrypted Checkout
+        </p>
       </div>
     </div>
   );

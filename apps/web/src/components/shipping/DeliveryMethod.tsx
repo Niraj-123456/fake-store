@@ -25,7 +25,7 @@ const DeliveryMethod = ({
             key={idx}
             onClick={() => onChangeDeliveryMethod(deliveryMethod)}
             className={cn(
-              "rounded-lg p-4 w-full relative cursor-pointer border",
+              "rounded-2xl p-4 w-full relative cursor-pointer border",
               selectedMethod?.value === deliveryMethod?.value
                 ? "outline-2 outline-blue-600 outline"
                 : "",
@@ -39,7 +39,7 @@ const DeliveryMethod = ({
 
             <CircleCheck
               className={cn(
-                "fill-blue-600 stroke-white absolute right-2 top-4 w-5 h-5 transition-opacity duration-200 ease-in-out",
+                "fill-blue-600 stroke-white absolute right-2 top-4 w-8 h-8 transition-opacity duration-200 ease-in-out",
                 selectedMethod?.value === deliveryMethod?.value
                   ? "opacity-100"
                   : "opacity-0",

@@ -119,7 +119,7 @@ const Cart = () => {
     <div className="max-w-6xl mx-auto p-8 mt-8">
       <h4 className="text-2xl text-bold">{`Your Cart (${count} Items)`}</h4>
 
-      <div className="flex gap-40 mt-10">
+      <div className="flex gap-40 mt-10 relative">
         <div className="flex flex-col gap-8 divide-y w-full max-w-6xl [&>:not(:first-child)]:pt-4">
           {cartItem?.products?.map((product: any) => (
             <CartItem
@@ -129,12 +129,15 @@ const Cart = () => {
             />
           ))}
         </div>
-        <OrderSummary
-          itemsCount={count}
-          totalAmount={cartItem?.totalPrice}
-          shippingFee={cartItem?.shippingFee}
-          finalAmount={cartItem?.finalPrice}
-        />
+
+        <div className="sticky top-24">
+          <OrderSummary
+            itemsCount={count}
+            totalAmount={cartItem?.totalPrice}
+            shippingFee={cartItem?.shippingFee}
+            finalAmount={cartItem?.finalPrice}
+          />
+        </div>
       </div>
     </div>
   );
