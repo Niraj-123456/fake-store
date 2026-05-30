@@ -30,7 +30,7 @@ const Home = () => {
   if (isFetching || isLoading) {
     return (
       <div className="w-full max-w-7xl mx-auto px-6 py-8">
-        <Skeleton className="w-full h-80" />
+        <Skeleton className="w-full h-96 rounded-[3rem]" />
 
         <div className="mt-12">
           <Skeleton className="w-48 h-8" />

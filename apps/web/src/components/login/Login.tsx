@@ -1,12 +1,12 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button } from "ui/lib/components/ui/button";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { Input } from "ui/lib/components/ui/input";
-import { Separator } from "ui/lib/components/ui/separator";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { writeToLocalStorage } from "@/lib/localStorage";
+import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
+import { Eye, EyeOff } from "lucide-react";
 
 const GoogleIcon = () => (
   <svg
@@ -103,10 +103,12 @@ const Login = () => {
   // const { user } = session;
   const router = useRouter();
   const [signingIn, setSigningIn] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(false);
   const [userCredentials, setUserCredentials] = useState({
-    username: "",
+    email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -118,16 +120,20 @@ const Login = () => {
 
   const handleLoginWithCredentials = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoggingIn(true);
     const result = await signIn("credentials", {
       redirect: false,
-      username: userCredentials.username,
+      email: userCredentials.email,
       password: userCredentials.password,
     });
+    console.log("result", result);
     if (result?.error) {
+      setLoggingIn(false);
       toast.error("Invalid credentials");
       return;
     }
 
+    setLoggingIn(false);
     toast.success("Login Successful");
     router.push("/");
   };
@@ -237,20 +243,28 @@ const Login = () => {
 
           <form onSubmit={handleLoginWithCredentials} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">
+              <label
+                htmlFor="email"
+                className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1"
+              >
                 Email
               </label>
               <Input
-                name="username"
+                name="email"
+                id="email"
+                type="email"
                 placeholder="name@company.com"
-                value={userCredentials?.username}
+                value={userCredentials?.email}
                 onChange={handleChange}
                 className="w-full px-5 py-4 h-14 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
               />
             </div>
             <div className="space-y-2 mt-3">
               <div className="flex justify-between items-center px-1">
-                <label className="text-xs font-bold uppercase tracking-widest text-slate-400">
+                <label
+                  htmlFor="password"
+                  className="text-xs font-bold uppercase tracking-widest text-slate-400"
+                >
                   Password
                 </label>
                 <a
@@ -260,21 +274,36 @@ const Login = () => {
                   Forgot?
                 </a>
               </div>
-              <Input
-                name="password"
-                type="password"
-                placeholder="••••••••••••"
-                value={userCredentials?.password}
-                onChange={handleChange}
-                className="w-full px-5 py-4 h-14 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••••••"
+                  value={userCredentials?.password}
+                  onChange={handleChange}
+                  className="w-full px-5 py-4 h-14 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all"
+                />
+
+                <button
+                  type="button"
+                  className="absolute top-1/2 right-6 text-gray-400 -translate-y-1/2"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? <Eye /> : <EyeOff />}
+                </button>
+              </div>
             </div>
 
             <Button
+              disabled={loggingIn}
               type="submit"
               className="text-base w-full bg-slate-900 h-14 rounded-2xl font-bold"
             >
               Login
+              {loggingIn && (
+                <CircularLoading color="#fff" width={"4rem"} thickness={4} />
+              )}
             </Button>
           </form>
 
@@ -288,13 +317,19 @@ const Login = () => {
           </div>
 
           <div className="space-y-3">
-            <button className="w-full flex items-center justify-center gap-3 border border-slate-200 py-3.5 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-[0.98]">
+            <button
+              type="button"
+              className="w-full flex items-center justify-center gap-3 border border-slate-200 py-3.5 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-[0.98]"
+            >
               {signingIn ? "..." : <GoogleIcon />}
               Google
             </button>
 
             <div className="grid grid-cols-2 gap-3">
-              <button className="flex items-center justify-center gap-2 border border-slate-200 py-3 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-[0.98]">
+              <button
+                type="button"
+                className="flex items-center justify-center gap-2 border border-slate-200 py-3 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-[0.98]"
+              >
                 <FacebookIcon />
                 Facebook
               </button>

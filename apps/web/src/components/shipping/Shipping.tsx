@@ -11,6 +11,9 @@ import { deliveryMethods } from "@/lib/shippingFee";
 const Shipping = () => {
   const [selectedShippingAddress, setSelectedShippingAddress] =
     useState<ShippingAddress>();
+  const [editingAddress, setEditingAddress] = useState<ShippingAddress | null>(
+    null,
+  );
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods.STANDARD,
   );
@@ -21,6 +24,18 @@ const Shipping = () => {
 
   const handleChangeDeliveryMethod = (method: DeliveryMethod) => {
     setSelectedDeliveryMethod(method);
+  };
+
+  const handleEditAddress = (address: ShippingAddress) => {
+    setEditingAddress(address);
+    const shippingForm = document.getElementById("shippingForm");
+    if (shippingForm) {
+      shippingForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingAddress(null);
   };
 
   return (
@@ -37,13 +52,17 @@ const Shipping = () => {
             <SavedShippingAddressList
               selectedAddress={selectedShippingAddress}
               onChangeShippingAddress={handleChangeShippingAddress}
+              onEditAddress={handleEditAddress}
             />
             <div className="w-full min-w-[40rem] mt-4 pt-8">
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-                Add New Address
+                {editingAddress ? "Update Address" : "Add New Address"}
               </h3>
               <div className="mt-4">
-                <ShippingForm />
+                <ShippingForm
+                  editingAddress={editingAddress}
+                  onCancelEdit={handleCancelEdit}
+                />
               </div>
             </div>
             <div className="mt-6 pt-4">

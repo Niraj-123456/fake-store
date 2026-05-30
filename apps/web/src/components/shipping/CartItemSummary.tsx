@@ -1,13 +1,14 @@
+import { imageFormatter } from "@/lib/imageFormatter";
 import Image from "next/image";
 import React from "react";
 
 const CartItemSummary = ({ product }: { product: any }) => {
   return (
     <>
-      <div className="flex gap-4 mb-8">
+      <div className="flex gap-4">
         <div className="relative w-16 h-16 aspect-square overflow-hidden bg-gray-200 col-span-2 rounded-2xl">
           <Image
-            src={product?.image}
+            src={imageFormatter(product?.image)}
             alt={product?.name}
             fill
             sizes="100%*100%"

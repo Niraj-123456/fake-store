@@ -116,10 +116,14 @@ const Cart = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-8 mt-8">
-      <h4 className="text-2xl text-bold">{`Your Cart (${count} Items)`}</h4>
-
-      <div className="flex gap-40 mt-10 relative">
+    <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="lg:col-span-2 space-y-8">
+        <h4 className="text-3xl font-bold tracking-tight">
+          Your Cart{" "}
+          <span className="text-slate-400 font-medium">
+            ({count} {count > 1 ? "Items" : "Item"})
+          </span>
+        </h4>
         <div className="flex flex-col gap-8 divide-y w-full max-w-6xl [&>:not(:first-child)]:pt-4">
           {cartItem?.products?.map((product: any) => (
             <CartItem
@@ -129,15 +133,15 @@ const Cart = () => {
             />
           ))}
         </div>
+      </div>
 
-        <div className="sticky top-24">
-          <OrderSummary
-            itemsCount={count}
-            totalAmount={cartItem?.totalPrice}
-            shippingFee={cartItem?.shippingFee}
-            finalAmount={cartItem?.finalPrice}
-          />
-        </div>
+      <div className="relative">
+        <OrderSummary
+          itemsCount={count}
+          totalAmount={cartItem?.totalPrice}
+          shippingFee={cartItem?.shippingFee}
+          finalAmount={cartItem?.finalPrice}
+        />
       </div>
     </div>
   );

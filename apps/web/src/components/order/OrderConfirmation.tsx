@@ -1,4 +1,5 @@
 "use client";
+import { imageFormatter } from "@/lib/imageFormatter";
 import { getOrderById } from "@/app/api/order";
 import { mapShippingEnumToObj } from "@/lib/shippingFee";
 import Image from "next/image";
@@ -11,7 +12,7 @@ const OrderConfirmation = () => {
   const orderId = params.get("oId") ?? "";
 
   const { data, isFetching, isError } = useQuery("order", () =>
-    getOrderById(orderId)
+    getOrderById(orderId),
   );
 
   if (isFetching) {
@@ -27,47 +28,111 @@ const OrderConfirmation = () => {
   const orderedItems = order?.products;
   const paymentMethod = order?.paymentMethod;
   return (
-    <div className="w-full max-w-5xl h-full flex flex-col mx-auto justify-center">
-      <div className="flex justify-between">
-        <div>
-          <h4 className="text-2xl font-semibold">
-            Thank you for your order #{order?._id}
-          </h4>
-          <p className="text-gray-500 pt-2">
-            An email confirmation with tracking id has been sent to your email
-            address.
-          </p>
-        </div>
-        <div>
-          <Link
-            href={"/"}
-            className="border whitespace-nowrap rounded-md py-3 px-4 bg-primary text-white transition-all duration-200 ease-in-out hover:bg-primary/80"
+    <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full mb-6">
+          <svg
+            className="w-10 h-10"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            Continue Shopping
-          </Link>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="3"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
         </div>
+        <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+          Order Confirmed!
+        </h1>
+        <p className="text-slate-500 font-medium">
+          Order #{order?._id} has been successfully placed.
+        </p>
+        <p className="text-slate-400 text-sm mt-1">
+          A confirmation email is on its way to{" "}
+          <span className="text-slate-600 font-semibold">lama@gmail.com</span>
+        </p>
       </div>
-      <div className="flex gap-4 mt-4">
-        <div className="w-full grid grid-cols-2 gap-8 border p-4 rounded-md">
-          <div>
-            <h4 className="font-semibold">Shipping Address</h4>
-            <div className="mt-1">
-              <div>
-                {shippingAddress?.firstName} {shippingAddress?.lastName}
-              </div>
-              <div>{shippingAddress?.streetName}</div>
-              <div>
-                {shippingAddress?.city}, {shippingAddress?.zipCode},{" "}
-                {shippingAddress?.country}
-              </div>
-              <div>{shippingAddress?.phoneNumber}</div>
-              <div>{shippingAddress?.email}</div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white border border-slate-200 rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8 shadow-sm">
+            <div className="flex-1">
+              <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">
+                Expected Delivery
+              </span>
+              <h2 className="text-2xl font-extrabold mt-1">Wed, 25 October</h2>
+              <p className="text-slate-500 text-sm mt-1">
+                Standard Shipping (3-5 Business Days)
+              </p>
             </div>
+            <button className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10">
+              Track Order
+            </button>
           </div>
-          <div>
-            <h4 className="font-semibold">Payment Method</h4>
-            <div className="mt-1">
-              <div className="flex gap-2 text-gray-700">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+              <div className="flex items-center gap-3 text-slate-400 mb-4">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <span className="text-xs font-bold uppercase tracking-widest">
+                  Shipping Address
+                </span>
+              </div>
+              <div className="text-slate-800 font-semibold leading-relaxed">
+                {shippingAddress?.firstName} {shippingAddress?.lastName}
+                <br />
+                {shippingAddress?.streetName}, {shippingAddress?.city}
+                <br />
+                {shippingAddress?.country}, {shippingAddress?.zipCode}
+                <br />
+                <span className="text-slate-400 font-medium text-sm">
+                  {shippingAddress?.phoneNumber}
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+              <div className="flex items-center gap-3 text-slate-400 mb-4">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </svg>
+                <span className="text-xs font-bold uppercase tracking-widest">
+                  Payment Method
+                </span>
+              </div>
+              <div className="flex items-center gap-3 mb-2">
                 <svg
                   height="24px"
                   version="1.1"
@@ -95,64 +160,86 @@ const OrderConfirmation = () => {
                 <span>{paymentMethod?.type} **** **** **** </span>
                 <span>{paymentMethod?.card?.last4}</span>
               </div>
-              <div className="text-sm text-gray-700">
-                Exp: {paymentMethod?.card?.exp_month}/
+              <p className="text-sm text-slate-400 font-medium">
+                Expires {paymentMethod?.card?.exp_month}/
                 {paymentMethod?.card?.exp_year}
-              </div>
+              </p>
             </div>
           </div>
-          <div>
-            <h4 className="font-semibold">Shipping Method</h4>
-            <div className="mt-1">
-              {mapShippingEnumToObj(order?.deliveryMethod).period} business days
-              ({mapShippingEnumToObj(order?.deliveryMethod).label})
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">
+              Order Items ({orderedItems?.length})
+            </h3>
+            <div className="space-y-6">
+              {orderedItems?.map((item: any) => (
+                <div key={item?.productId} className="flex items-center gap-6">
+                  <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-slate-100">
+                    <Image
+                      src={imageFormatter(item?.image)}
+                      alt={item?.name}
+                      fill
+                      sizes="100%*100%"
+                      className="w-full h-full object-cover "
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-bold text-slate-900">{item?.name}</h4>
+                    <p className="text-sm text-slate-500">
+                      Qty: {item?.quantity ?? 1}
+                    </p>
+                  </div>
+                  <span className="font-bold text-lg">${item?.price}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        <div className="border p-4 rounded-md min-w-80 flex flex-col gap-4 divide-y">
-          <div>
-            <h4 className="font-semibold">Order Summary</h4>
-            <div className="flex flex-col gap-2 mt-1 divide-y [&>:not(:first-child)]:pt-2 [&>:last-child]:font-semibold">
-              <div className="flex justify-between gap-4">
-                <span>subtotal ({2} items)</span>
+        <div className="space-y-6">
+          <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-xl">
+            <h3 className="text-xl font-bold mb-8">Order Summary</h3>
+            <div className="space-y-4 text-sm font-medium">
+              <div className="flex justify-between opacity-70">
+                <span>Subtotal</span>
                 <span>${order?.totalAmount}</span>
               </div>
-              <div className="flex justify-between gap-4">
-                <span>Shipping Fee</span>
+              <div className="flex justify-between opacity-70">
+                <span>Shipping</span>
                 <span>
                   ${mapShippingEnumToObj(order?.deliveryMethod).price}
                 </span>
               </div>
-              <div className="flex justify-between gap-4">
-                <span>Order Total</span>
-                <span>${order?.finalAmount}</span>
+              <div className="pt-4 border-t border-slate-800 flex justify-between items-center">
+                <span className="text-lg opacity-80">Order Total</span>
+                <span className="text-3xl font-extrabold tracking-tighter">
+                  ${order?.finalAmount}
+                </span>
               </div>
             </div>
-            <div className="text-xs text-gray-500 text-right">
-              (Inclusive of all taxes)
-            </div>
+            <p className="text-[10px] text-slate-500 text-center mt-6">
+              Inclusive of all local taxes and VAT
+            </p>
           </div>
-          <div className="pt-4">
-            <h4 className="font-semibold">Items Ordered</h4>
-            <div className="mt-2">
-              {orderedItems?.map((item: any) => (
-                <div key={item?.productId} className="flex gap-2">
-                  <div className="relative w-12 h-12 rounded-sm overflow-hidden">
-                    <Image
-                      src={item?.image}
-                      alt={item?.name}
-                      fill
-                      sizes="100%*100%"
-                    />
-                  </div>
-                  <div className="text-xs text-gray-600 flex flex-col leading-tight">
-                    <p className="font-medium text-gray-700">{item?.name}</p>
-                    <p>Qty: {item?.quantity ?? 1}</p>
-                    <p>${item?.price}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+
+          <div className="flex flex-col gap-3">
+            <button className="w-full bg-white border border-slate-200 text-slate-700 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                />
+              </svg>
+              Print Invoice
+            </button>
+            <button className="w-full bg-blue-50 text-blue-700 py-4 rounded-2xl font-bold hover:bg-blue-100 transition-all">
+              Continue Shopping
+            </button>
           </div>
         </div>
       </div>

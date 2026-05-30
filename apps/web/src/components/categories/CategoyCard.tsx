@@ -1,3 +1,4 @@
+import { imageFormatter } from "@/lib/imageFormatter";
 import Image from "next/image";
 import type { Category } from "@/types/product";
 
@@ -7,7 +8,7 @@ const CategoyCard = ({ image, name }: Category) => {
       <div className="p-1 border-2 border-slate-100 rounded-full group group-hover:border-slate-900 transition-all">
         <div className="w-24 h-24 rounded-full bg-white relative">
           <Image
-            src={image}
+            src={imageFormatter(image)}
             alt={name}
             fill
             sizes="100%"

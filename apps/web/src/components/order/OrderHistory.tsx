@@ -1,4 +1,5 @@
 "use client";
+import { imageFormatter } from "@/lib/imageFormatter";
 import { getUserOrder } from "@/app/api/order";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -191,7 +192,7 @@ const OrderHistory = () => {
                     >
                       <div className="relative w-20 h-20 rounded-sm overflow-hidden">
                         <Image
-                          src={product?.image}
+                          src={imageFormatter(product?.image)}
                           alt=""
                           fill
                           sizes="100%*100%"

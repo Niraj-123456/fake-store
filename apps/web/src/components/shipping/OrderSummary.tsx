@@ -63,14 +63,14 @@ const OrderSummary = ({
   };
 
   return (
-    <div className="py-4 rounded-md w-full">
+    <div className="rounded-md w-full">
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-4 divide-y [&>:not(:first-child)]:pt-4">
+        <div className="flex flex-col gap-4 divide-y divide-slate-800 [&>:not(:first-child)]:pt-4">
           {cartItem?.products?.map((item: any) => (
             <CartItemSummary key={item?.productId} product={item} />
           ))}
         </div>
-        <div className="pt-4 flex flex-col space-y-4 border-t border-slate-800 gap-4 px-4">
+        <div className="pt-4 mt-4 flex flex-col space-y-4 border-t border-slate-800 gap-4 px-4">
           <div className="flex items-center justify-between">
             <span className="flex justify-between opacity-60">
               Subtotal ({count} items)

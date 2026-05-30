@@ -1,3 +1,4 @@
+import { imageURLCleaner } from "ui/lib/imageFormatter";
 import Image from "next/image";
 import React from "react";
 import { Card, CardContent, CardFooter } from "ui/lib/components/ui/card";
@@ -13,7 +14,7 @@ const CategoryCard = ({ image, name }: CategoryCard) => {
       <CardContent className="p-0">
         <div className="w-full h-32 relative">
           <Image
-            src={image}
+            src={imageURLCleaner(image)}
             alt=""
             fill
             sizes="100%*100%"

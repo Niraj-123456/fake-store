@@ -7,8 +7,8 @@ type User = {
   password: string;
 };
 
-export function login(username: string, password: string) {
-  return axios.post(`${config.baseUrl}/login`, { username, password });
+export function login(email: string, password: string) {
+  return axios.post(`${config.baseUrl}/login`, { email, password });
 }
 
 export function register(data: User) {

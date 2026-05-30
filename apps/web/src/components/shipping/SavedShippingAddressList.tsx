@@ -7,7 +7,7 @@ import {
   getShippingAddressList,
 } from "@/app/api/shipping";
 import { useSession } from "next-auth/react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -22,7 +22,10 @@ import {
 
 export type ShippingAddress = {
   _id?: string;
+  title?: string;
   userId: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phoneNumber: number;
   city: string;
@@ -34,14 +37,21 @@ export type ShippingAddress = {
 const SavedShippingAddressList = ({
   selectedAddress,
   onChangeShippingAddress,
+  onEditAddress,
 }: {
   selectedAddress: ShippingAddress | undefined;
   onChangeShippingAddress: (address: ShippingAddress) => void;
+  onEditAddress: (address: ShippingAddress) => void;
 }) => {
   const { data: session } = useSession();
   //@ts-ignore
   const userId = session?.user?.id;
   const [open, setOpen] = useState(false);
+  const [addressToDelete, setAddressToDelete] = useState<string | undefined>(
+    undefined,
+  );
+
+  const queryClient = useQueryClient();
 
   const {
     data: shippingAddressList,
@@ -54,10 +64,14 @@ const SavedShippingAddressList = ({
     {
       enabled: !!userId,
       onSuccess: (data) => {
-        onChangeShippingAddress(data[0]);
+        if (!selectedAddress && data.length > 0) {
+          onChangeShippingAddress(data[0]);
+        }
       },
     },
   );
+
+  console.log("shipping address list", shippingAddressList);
 
   const handleClickAddNewBtn = () => {
     const shippingForm = document.getElementById("shippingForm");
@@ -106,14 +120,16 @@ const SavedShippingAddressList = ({
           key={shippingAddress?._id}
           onClick={() => onChangeShippingAddress(shippingAddress)}
           className={cn(
-            "relative p-5 rounded-2xl border-2  bg-blue-50/50 cursor-pointer transition-all",
+            "relative h-full p-5 border rounded-2xl border-2  bg-blue-50/50 cursor-pointer transition-all group",
             shippingAddress?._id === selectedAddress?._id
               ? "border-blue-600"
               : "",
           )}
         >
           <div className="flex justify-between items-start mb-2">
-            <span className="font-bold text-slate-900">Home</span>
+            <span className="font-bold text-slate-900">
+              {shippingAddress?.title || "-"}
+            </span>
             <span
               className={cn(
                 "w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center transition-all",
@@ -138,6 +154,9 @@ const SavedShippingAddressList = ({
             </span>
           </div>
           <p className="text-sm text-slate-600 leading-relaxed ">
+            <span className="capitalize font-semibold block mb-1">
+              {shippingAddress?.firstName} {shippingAddress?.lastName}
+            </span>
             <span className="capitalize">
               {shippingAddress?.streetName}, {shippingAddress?.city},
               {shippingAddress?.zipCode}, {shippingAddress?.country}
@@ -153,20 +172,35 @@ const SavedShippingAddressList = ({
               size={"sm"}
               variant={"link"}
               className="p-0 m-0 text-xs text-blue-500"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditAddress(shippingAddress);
+              }}
             >
-              View
+              Edit
             </Button>
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog
+              open={open && addressToDelete === shippingAddress?._id}
+              onOpenChange={(isOpen) => {
+                setOpen(isOpen);
+                if (!isOpen) setAddressToDelete(undefined);
+              }}
+            >
               <DialogTrigger asChild>
                 <Button
                   size={"sm"}
                   variant={"link"}
                   className="p-0 m-0 text-xs text-red-700"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAddressToDelete(shippingAddress?._id);
+                    setOpen(true);
+                  }}
                 >
                   Delete
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent onClick={(e) => e.stopPropagation()}>
                 <DialogHeader>
                   <DialogTitle>Delete Shipping Address?</DialogTitle>
                   <DialogDescription>
@@ -178,9 +212,10 @@ const SavedShippingAddressList = ({
                   <Button
                     onClick={() =>
                       mutation.mutate(shippingAddress?._id, {
-                        onSuccess: (data) => {
-                          console.log("data", data);
+                        onSuccess: () => {
                           setOpen(false);
+                          setAddressToDelete(undefined);
+                          queryClient.invalidateQueries("shipping");
                           toast.success(
                             "Shipping Address deleted successfully.",
                           );

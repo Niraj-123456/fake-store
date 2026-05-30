@@ -1,18 +1,28 @@
-import { addShippingAddress } from "@/app/api/shipping";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { addShippingAddress, updateShippingAddress } from "@/app/api/shipping";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Button } from "ui/lib/components/ui/button";
 import { Input } from "ui/lib/components/ui/input";
 import { Label } from "ui/lib/components/ui/label";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import CircularLoading from "ui/lib/components/loading/circular-loading/circular-loading";
+import { ShippingAddress } from "./SavedShippingAddressList";
+import { useQueryClient } from "react-query";
 
-const ShippingForm = () => {
+const ShippingForm = ({
+  editingAddress,
+  onCancelEdit,
+}: {
+  editingAddress?: ShippingAddress | null;
+  onCancelEdit?: () => void;
+}) => {
   const { data: session } = useSession();
   //@ts-ignore
   const userId = session?.user?.id;
   const [submitting, setSubmitting] = useState(false);
-  const [shippingAddress, setShippinAddress] = useState({
+  const queryClient = useQueryClient();
+
+  const initialFormState = {
     title: "HOME",
     firstName: "",
     lastName: "",
@@ -22,7 +32,27 @@ const ShippingForm = () => {
     city: "",
     country: "",
     zipCode: "",
-  });
+  };
+
+  const [shippingAddress, setShippinAddress] = useState(initialFormState);
+
+  useEffect(() => {
+    if (editingAddress) {
+      setShippinAddress({
+        title: editingAddress.title || "HOME",
+        firstName: editingAddress.firstName || "",
+        lastName: editingAddress.lastName || "",
+        email: editingAddress.email || "",
+        phoneNumber: editingAddress.phoneNumber?.toString() || "",
+        streetName: editingAddress.streetName || "",
+        city: editingAddress.city || "",
+        country: editingAddress.country || "",
+        zipCode: editingAddress.zipCode?.toString() || "",
+      });
+    } else {
+      setShippinAddress(initialFormState);
+    }
+  }, [editingAddress]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,17 +74,32 @@ const ShippingForm = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const res = await addShippingAddress({
+      const payload = {
         ...shippingAddress,
         userId,
         phoneNumber: Number(shippingAddress?.phoneNumber),
         zipCode: Number(shippingAddress?.zipCode),
-      });
+        _id: editingAddress?._id,
+      };
 
-      if (res.status === 201) {
-        toast.success("Shipping address added successfully");
+      const res = editingAddress
+        ? await updateShippingAddress(payload)
+        : await addShippingAddress(payload);
+
+      if (res.status === 201 || res.status === 200) {
+        toast.success(
+          `Shipping address ${editingAddress ? "updated" : "added"} successfully`,
+        );
+        queryClient.invalidateQueries("shipping");
+        if (editingAddress) {
+          onCancelEdit?.();
+        } else {
+          setShippinAddress(initialFormState);
+        }
       } else {
-        toast.error("Unable to add shipping address. Please try again later");
+        toast.error(
+          `Unable to ${editingAddress ? "update" : "add"} shipping address. Please try again later`,
+        );
       }
     } catch (ex) {
       console.log("error", ex);
@@ -70,6 +115,19 @@ const ShippingForm = () => {
       id="shippingForm"
       className="mt-4 flex flex-col gap-6"
     >
+      {editingAddress && (
+        <div className="flex">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={onCancelEdit}
+            className="text-xs"
+          >
+            Cancel Edit
+          </Button>
+        </div>
+      )}
       <div className="flex gap-2 items-center">
         <div className="flex flex-col gap-2 w-full">
           <Label className="text-[11px] font-bold text-slate-400 uppercase ml-1">
@@ -244,7 +302,7 @@ const ShippingForm = () => {
           className="w-full h-14 rounded-2xl text-base tracking-wider"
           disabled={submitting}
         >
-          Save Address
+          {editingAddress ? "Update Address" : "Save Address"}
           {submitting && (
             <CircularLoading
               width={"1.5rem"}
