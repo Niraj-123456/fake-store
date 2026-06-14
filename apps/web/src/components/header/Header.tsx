@@ -95,7 +95,7 @@ const Header = () => {
           {session ? (
             <Menubar className="border-none">
               <MenubarMenu>
-                <MenubarTrigger className="-p-1 rounded-full transition-all data-[state=open]:bg-transparent data-[state=open]:ring-4 data-[state=open]:ring-gray-200 hover:ring-4 hover:ring-gray-200">
+                <MenubarTrigger className="-p-1 bg-red-600 rounded-full transition-all data-[state=open]:bg-transparent data-[state=open]:ring-4 data-[state=open]:ring-gray-200 hover:ring-4 hover:ring-gray-200">
                   <Avatar className="cursor-pointer border-2 border-white ">
                     <AvatarImage
                       src={session.user?.image || ""}
@@ -106,10 +106,12 @@ const Header = () => {
                 </MenubarTrigger>
                 <MenubarContent className="*:cursor-pointer" align="end">
                   <MenubarLabel>My Account</MenubarLabel>
-                  <MenubarItem>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </MenubarItem>
+                  <Link href={"/profile"}>
+                    <MenubarItem>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </MenubarItem>
+                  </Link>
                   <Link href={"/order"}>
                     <MenubarItem className="cursor-pointer">
                       <ShoppingBag className="mr-2 h-4 w-4" />

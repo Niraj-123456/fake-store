@@ -11,6 +11,8 @@ import { Skeleton } from "ui/lib/components/ui/skeleton";
 import { cn } from "ui/lib/utils";
 import { useSearchParams } from "next/navigation";
 import Pagination from "../common/pagination/Pagination";
+import OrderDetailModal from "./OrderDetailModal";
+import OrderInvoiceModal from "./OrderInvoiceModal";
 
 type OrderHistory = {
   itemsCount: number;
@@ -29,6 +31,11 @@ const OrderHistory = () => {
   //@ts-ignore
   const userId = session?.user?.id;
   const [filter, setFilter] = useState<FilterStatus>("all");
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+
   const searchParams = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") ?? "1");
 
@@ -59,6 +66,16 @@ const OrderHistory = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
     return params;
+  };
+
+  const handleViewOrder = (order: any) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
+
+  const handleViewInvoice = (order: any) => {
+    setSelectedOrderId(order?._id);
+    setIsInvoiceModalOpen(true);
   };
 
   const orderStatusButtonStyles = (status: OrderStatus) => {
@@ -195,6 +212,7 @@ const OrderHistory = () => {
                       size={"sm"}
                       variant={"outline"}
                       className="px-5 py-2 bg-gray-50 border border-slate-200 rounded-xl text-xs font-bold hover:bg-white"
+                      onClick={() => handleViewOrder(order)}
                     >
                       View Order
                     </Button>
@@ -210,6 +228,7 @@ const OrderHistory = () => {
                         size={"sm"}
                         variant={"outline"}
                         className="px-5 py-2 bg-gray-50 border border-slate-200 rounded-xl text-xs font-bold hover:bg-white"
+                        onClick={() => handleViewInvoice(order)}
                       >
                         View Invoice
                       </Button>
@@ -284,6 +303,18 @@ const OrderHistory = () => {
           />
         </div>
       )}
+
+      <OrderDetailModal
+        order={selectedOrder}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
+      <OrderInvoiceModal
+        orderId={selectedOrderId}
+        isOpen={isInvoiceModalOpen}
+        onClose={() => setIsInvoiceModalOpen(false)}
+      />
     </div>
   );
 };

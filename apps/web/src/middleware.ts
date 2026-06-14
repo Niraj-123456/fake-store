@@ -22,4 +22,4 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/cart", "/order", "/payment", "/shipping"] };
+export const config = { matcher: ["/cart", "/order", "/payment", "/shipping", "/profile"] };

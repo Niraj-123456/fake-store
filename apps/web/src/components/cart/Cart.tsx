@@ -37,7 +37,7 @@ const Cart = () => {
 
   if (!cartItem?.products?.length) {
     return (
-      <div className="mt-4 grid place-items-center">
+      <div className="mt-8 grid place-items-center">
         <div className="text-center max-w-md">
           <div className="relative mb-10">
             <div className="absolute inset-0 bg-blue-100/50 scale-150 blur-3xl rounded-full -z-10"></div>
