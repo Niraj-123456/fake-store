@@ -29,6 +29,7 @@ const Payment = () => {
   );
 
   const clientSecret = data?.data?.client_secret;
+  const metadata = data?.data?.metadata;
 
   const appearance = {
     theme: "stripe",
@@ -49,7 +50,7 @@ const Payment = () => {
         stripePromise &&
         clientSecret && (
           <Elements stripe={stripePromise} options={options}>
-            <StripeCheckoutForm orderId={orderId} />
+            <StripeCheckoutForm orderId={orderId} metadata={metadata} />
           </Elements>
         )
       )}

@@ -1,4 +1,5 @@
 "use client";
+import React, { useState, useMemo } from "react";
 import { imageFormatter } from "@/lib/imageFormatter";
 import { getUserOrder } from "@/app/api/order";
 import { useSession } from "next-auth/react";
@@ -8,6 +9,8 @@ import { useQuery } from "react-query";
 import { Button } from "ui/lib/components/ui/button";
 import { Skeleton } from "ui/lib/components/ui/skeleton";
 import { cn } from "ui/lib/utils";
+import { useSearchParams } from "next/navigation";
+import Pagination from "../common/pagination/Pagination";
 
 type OrderHistory = {
   itemsCount: number;
@@ -17,21 +20,46 @@ type OrderHistory = {
 };
 
 type OrderStatus = "completed" | "pending";
+type FilterStatus = "all" | OrderStatus;
+
+const pageSize = 10;
 
 const OrderHistory = () => {
   const { data: session } = useSession();
   //@ts-ignore
   const userId = session?.user?.id;
+  const [filter, setFilter] = useState<FilterStatus>("all");
+  const searchParams = useSearchParams();
+  const currentPage = parseInt(searchParams.get("page") ?? "1");
 
   const {
     data: orders,
     isFetching,
     isError,
-  } = useQuery("custormerOrder", () => getUserOrder(userId), {
-    enabled: !!userId,
-  });
+  } = useQuery(
+    ["custormerOrder", currentPage],
+    () => getUserOrder(userId, pageSize, currentPage),
+    {
+      enabled: !!userId,
+      keepPreviousData: true,
+    },
+  );
+
+  const orderList = orders?.data?.items || [];
+  const totalCount = orders?.data?.metadata?.itemsCount || 0;
 
   console.log("orders", orders);
+
+  const filteredOrders = useMemo(() => {
+    if (filter === "all") return orderList;
+    return orderList.filter((order: any) => order.status === filter);
+  }, [orderList, filter]);
+
+  const handleChangePageNumber = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", page.toString());
+    return params;
+  };
 
   const orderStatusButtonStyles = (status: OrderStatus) => {
     const styles: Record<
@@ -76,33 +104,38 @@ const OrderHistory = () => {
         </div>
 
         <div className="flex gap-2 bg-slate-200/50 p-1 rounded-xl">
-          <button className="px-4 py-1.5 bg-white shadow-sm rounded-lg text-xs font-bold">
-            All
-          </button>
-          <button className="px-4 py-1.5 text-slate-500 hover:text-slate-900 text-xs font-bold transition-all">
-            Pending
-          </button>
-          <button className="px-4 py-1.5 text-slate-500 hover:text-slate-900 text-xs font-bold transition-all">
-            Completed
-          </button>
+          {(["all", "pending", "completed"] as FilterStatus[]).map((status) => (
+            <button
+              key={status}
+              onClick={() => setFilter(status)}
+              className={cn(
+                "px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 capitalize",
+                filter === status
+                  ? "bg-white shadow-sm text-slate-900"
+                  : "text-slate-500 hover:text-slate-900",
+              )}
+            >
+              {status}
+            </button>
+          ))}
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-8">
+      <div className="mt-4 flex flex-col gap-8 transition-all duration-500">
         {isFetching ? (
           <>
             {Array.from({ length: 7 }).map((_, idx) => (
               <Skeleton key={idx} className="w-full h-32" />
             ))}
           </>
-        ) : (
-          orders?.data?.map((order: any) => {
+        ) : filteredOrders.length > 0 ? (
+          filteredOrders.map((order: any) => {
             const { bgColor, color, border } = orderStatusButtonStyles(
               order?.status,
             );
             return (
               <div
                 key={order?._id}
-                className="bg-white rounded-[2.5rem] border border-slate-200/80 shadow-xl shadow-slate-200/40 overflow-hidden"
+                className="bg-white rounded-[2.5rem] border border-slate-200/80 shadow-xl shadow-slate-200/40 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500"
               >
                 <div className="bg-slate-50/80 px-8 py-5 flex flex-wrap items-center justify-between gap-4 border-b border-slate-100">
                   <div className="flex items-center gap-8">
@@ -184,7 +217,7 @@ const OrderHistory = () => {
                   </div>
                 </div>
 
-                <div className="p-8">
+                <div className="p-8 space-y-4">
                   {order?.products?.map((product: any) => (
                     <div
                       key={product?.productId}
@@ -211,19 +244,46 @@ const OrderHistory = () => {
                         <p className="text-xl font-extrabold text-slate-900">
                           ${product?.price}
                         </p>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                          Total: ${product?.finalAmount} (Including Delivery
-                          Charges)
-                        </p>
                       </div>
                     </div>
                   ))}
+
+                  <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center">
+                    <div>
+                      <p className="text-sm font-bold text-slate-600 uppercase tracking-widest">
+                        Total Amount
+                      </p>
+                      <p className="text-xs font-medium text-slate-400 mt-1">
+                        (Includes shipping and taxes)
+                      </p>
+                    </div>
+                    <p className="text-3xl font-black text-slate-900">
+                      ${order?.finalAmount}
+                    </p>
+                  </div>
                 </div>
               </div>
             );
           })
+        ) : (
+          <div className="text-center py-20 bg-slate-50 rounded-[2.5rem] border border-dashed border-slate-200">
+            <p className="text-slate-400 font-medium capitalize">
+              No {filter !== "all" ? filter : ""} orders found.
+            </p>
+          </div>
         )}
       </div>
+
+      {totalCount > pageSize && (
+        <div className="flex justify-center mt-12">
+          <Pagination
+            currentPage={currentPage}
+            itemsCount={totalCount}
+            itemsPerPage={pageSize}
+            onChangePageNumber={handleChangePageNumber}
+          />
+        </div>
+      )}
     </div>
   );
 };

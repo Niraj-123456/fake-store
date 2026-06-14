@@ -28,8 +28,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   //@ts-ignore
   const userId = session?.user?.id;
 
-  console.log("userid", userId);
-
   useQuery("cartItems", () => fetchCartItems(userId), {
     enabled: !!userId,
     onSuccess: (data) => {
@@ -38,7 +36,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       setCount(
         data?.data?.products?.reduce((acc: number, product: any) => {
           return acc + product?.quantity;
-        }, 0)
+        }, 0),
       );
     },
     onError: () => {
@@ -54,7 +52,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
 
   const handleUpdateCartItemCount = (
     qty: number,
-    action: "INCREMENT" | "DECREMENT"
+    action: "INCREMENT" | "DECREMENT",
   ) => {
     if (action === "INCREMENT") setCount((prev) => prev + qty);
     else setCount((prev) => (prev > 0 ? prev - qty : 0));

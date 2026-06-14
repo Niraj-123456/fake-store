@@ -11,6 +11,10 @@ export function login(email: string, password: string) {
   return axios.post(`${config.baseUrl}/login`, { email, password });
 }
 
+export function refresh(refreshToken: string) {
+  return axios.post(`${config.baseUrl}/refresh`, { refresh_token: refreshToken });
+}
+
 export function register(data: User) {
   return axios.post(`${config.baseUrl}/register`, { ...data });
 }
